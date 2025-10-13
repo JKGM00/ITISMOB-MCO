@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MCO" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <!-- Primary brand color (framework attributes). -->
+        <item name="android:statusBarColor">#0A314F</item>
+    </style>
+</resources>
