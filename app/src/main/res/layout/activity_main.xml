@@ -58,30 +58,11 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.703"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
+        app:layout_constraintVertical_bias="0.358"
         tools:ignore="RtlSymmetry" />
-
-    <EditText
-        android:id="@+id/psPassword"
-        android:layout_width="324dp"
-        android:layout_height="48dp"
-        android:autofillHints=""
-        android:background="@color/BG_White"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textColorHint="@color/Dark_Blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.788" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -99,4 +80,22 @@
         app:layout_constraintTop_toBottomOf="@+id/psPassword"
         app:layout_constraintVertical_bias="0.19" />
 
+    <EditText
+        android:id="@+id/psPassword"
+        android:layout_width="324dp"
+        android:layout_height="48dp"
+        android:autofillHints=""
+        android:background="@color/BG_White"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColorHint="@color/Dark_Blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
+        app:layout_constraintVertical_bias="0.518" />
 </androidx.constraintlayout.widget.ConstraintLayout>
