@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp"
+    app:contentPadding="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:contentDescription="To be preset"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Aaron's Pizza"
+            android:textColor="#0D3B66"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/llActionButtons"
+            app:layout_constraintStart_toEndOf="@+id/ivProductImage"
+            app:layout_constraintTop_toTopOf="@+id/ivProductImage" />
+
+        <TextView
+            android:id="@+id/tvProductStock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Stock: 150 pcs."
+            android:textColor="#757575"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivProductImage"
+            app:layout_constraintEnd_toStartOf="@+id/llActionButtons"
+            app:layout_constraintStart_toEndOf="@+id/ivProductImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductName"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <LinearLayout
+            android:id="@+id/llActionButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnEditProduct"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                android:clickable="true"
+                android:src="@android:drawable/ic_menu_edit"
+                android:contentDescription="Edit Product"
+                android:tint="#007AFF" />
+
+            <ImageView
+                android:id="@+id/btnDeleteProduct"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                android:layout_marginTop="4dp"
+                android:clickable="true"
+                android:src="@android:drawable/ic_menu_delete"
+                android:contentDescription="Delete Product"
+                android:tint="#D32F2F" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

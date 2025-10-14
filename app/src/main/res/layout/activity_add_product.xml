@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FAF4E6">
+
+    <LinearLayout
+        android:id="@+id/topMenuBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0D3B66"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvBackToMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/montserrat"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"
+            android:text="← Back to Main"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:drawableStart="@android:drawable/ic_menu_add"
+            android:drawableTint="#0D3B66"
+            android:fontFamily="@font/montserrat"
+            android:text="Add New Product"
+            android:textColor="#0D3B66"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Product Name"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/text_border"
+            android:fontFamily="@font/montserrat"
+            android:hint="e.g., Delicious Pizza"
+            android:inputType="textCapWords"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Unit Cost (₱)"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etUnitCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/text_border"
+            android:fontFamily="@font/montserrat"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Selling Price (₱)"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etSellingPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/text_border"
+            android:fontFamily="@font/montserrat"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Quantity"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/text_border"
+            android:fontFamily="@font/montserrat"
+            android:hint="0"
+            android:inputType="number"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Category"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <!-- Dropdown for the categories -->
+        <Spinner
+            android:id="@+id/spCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/text_border"
+            android:padding="8dp"
+            android:popupBackground="#FFFFFF"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Barcode"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnScanBarcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5B6F46"
+                android:fontFamily="@font/montserrat"
+                android:paddingVertical="12dp"
+                android:text="Scan Barcode"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/etBarcodeManual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/text_border"
+                android:fontFamily="@font/montserrat"
+                android:hint="Input Code..."
+                android:inputType="number"
+                android:padding="12dp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#FAF4E6"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#007AFF"
+            android:fontFamily="@font/montserrat"
+            android:padding="12dp"
+            android:paddingVertical="12dp"
+            android:text="Add Product"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#CCCCCC"
+            android:fontFamily="@font/montserrat"
+            android:padding="12dp"
+            android:paddingVertical="12dp"
+            android:text="Cancel"
+            android:textColor="#0D3B66"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</LinearLayout>
