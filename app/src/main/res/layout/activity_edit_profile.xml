@@ -28,7 +28,7 @@
             android:paddingEnd="10dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
     </LinearLayout>
 

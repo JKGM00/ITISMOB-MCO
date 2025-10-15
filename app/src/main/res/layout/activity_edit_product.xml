@@ -28,7 +28,7 @@
             android:paddingEnd="10dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,17 +76,41 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvProductPrice"
+            android:id="@+id/tvUnitCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/montserrat"
-            android:text="Product Price (₱)"
+            android:text="Unit Cost (₱)"
             android:textColor="#333333"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/etProductPrice"
+            android:id="@+id/etUnitCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/text_border"
+            android:fontFamily="@font/montserrat"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvSellingPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Selling Price (₱)"
+            android:textColor="#333333"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etSellingPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -166,7 +190,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:backgroundTint="#5B6F46"
                 android:fontFamily="@font/montserrat"
                 android:paddingVertical="12dp"
@@ -193,17 +217,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
+        android:layout_height="match_parent"
         android:background="#FAF4E6"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="top"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:backgroundTint="#007AFF"
@@ -217,7 +242,8 @@
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="top"
             android:layout_weight="1"
             android:backgroundTint="#CCCCCC"
             android:fontFamily="@font/montserrat"

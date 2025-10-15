@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FAF4E6">
+    android:background="#FAF4E6"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/topMenuBar"
@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:background="#0D3B66"
         android:gravity="center_vertical"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tvBack2Main"
@@ -28,7 +28,7 @@
             android:paddingEnd="10dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,6 +38,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/tvAddProductLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -51,6 +52,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -74,6 +76,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvUnitCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -97,6 +100,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvSellingPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -120,11 +124,12 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/montserrat"
-            android:text="Quantity"
+            android:text="Quantity (in pcs.)"
             android:textColor="#333333"
             android:textSize="18sp" />
 
@@ -143,6 +148,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -153,7 +159,7 @@
 
         <!-- Dropdown for the categories -->
         <Spinner
-            android:id="@+id/spProductCategory"
+            android:id="@+id/spnProductCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -181,15 +187,15 @@
             <Button
                 android:id="@+id/btnScanBarcode"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:backgroundTint="#5B6F46"
                 android:fontFamily="@font/montserrat"
                 android:paddingVertical="12dp"
                 android:text="Scan Barcode"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/etBarcodeEntry"
@@ -210,18 +216,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
+        android:layout_height="match_parent"
         android:background="#FAF4E6"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_height="80dp"
+            android:layout_gravity="top"
             android:layout_weight="1"
             android:backgroundTint="#007AFF"
             android:fontFamily="@font/montserrat"
@@ -234,7 +240,8 @@
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="top"
             android:layout_weight="1"
             android:backgroundTint="#CCCCCC"
             android:fontFamily="@font/montserrat"
