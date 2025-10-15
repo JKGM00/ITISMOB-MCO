@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BG_Register"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="378dp"
+        android:layout_height="300dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clLoginSection"
+        android:layout_width="411dp"
+        android:layout_height="240dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="324dp"
+            android:layout_height="48dp"
+            android:autofillHints=""
+            android:background="@color/BG_White"
+            android:ems="10"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/password"
+            android:inputType="text|textPassword|textNoSuggestions"
+            android:paddingStart="5dp"
+            android:textColorHint="@color/Dark_Blue"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etEmail"
+            app:layout_constraintVertical_bias="0.085"
+            tools:ignore="RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="324dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
+            android:background="@color/BG_White"
+            android:ems="10"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/email"
+            android:inputType="text|textEmailAddress"
+            android:paddingStart="5dp"
+            android:textColorHint="@color/Dark_Blue"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLoginMessage"
+            tools:ignore="RtlSymmetry" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="324dp"
+            android:layout_height="48dp"
+            android:background="@color/Orange"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/login"
+            android:textColor="@color/Dark_Blue"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etPassword"
+            app:layout_constraintVertical_bias="0.333" />
+
+        <TextView
+            android:id="@+id/tvLoginMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="LoginMsg"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.124"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.044" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvRegisterLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/montserrat"
+        android:text="No Account Yet?"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clLoginSection" />
+
+    <TextView
+        android:id="@+id/tvRegisterLink2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/register"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tvRegisterLink"
+        app:layout_constraintTop_toBottomOf="@+id/clLoginSection" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

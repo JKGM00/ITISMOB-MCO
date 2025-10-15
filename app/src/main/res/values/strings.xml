@@ -2,8 +2,11 @@
 <resources>
     <string name="app_name">MCO</string>
     <string name="register">Register</string>
+    <string name="login">Log In</string>
     <string name="store_name">Store Name</string>
     <string name="email">Email</string>
+    <string name="phone_no">Phone No.</string>
     <string name="password">Password</string>
     <string name="logo_image">logo image</string>
+
 </resources>
