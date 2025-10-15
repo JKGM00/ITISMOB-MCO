@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/topMenuBar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="67dp"
         android:background="#0D3B66"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -32,7 +32,7 @@
             android:paddingEnd="10dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="#0091FF"
+                        android:background="#007AFF"
                         android:text="Add"
                         android:textColor="#FFFFFF" />
 
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="#0091FF"
+                        android:background="#007AFF"
                         android:text="Scan"
                         android:textColor="#FFFF" />
                 </LinearLayout>
