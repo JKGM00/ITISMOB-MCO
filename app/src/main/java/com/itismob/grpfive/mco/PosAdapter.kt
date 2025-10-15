@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.grpfive.mco.databinding.ItemsPosBinding
 
-class PosAdapter(private val itemsTransaction: List<TransactionItem>) :
-    RecyclerView.Adapter<PosViewHolder>() {
+class PosAdapter(
+    private val itemsTransaction: List<TransactionItem>,
+    private val onDelete: (TransactionItem) -> Unit
+) : RecyclerView.Adapter<PosViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -16,7 +18,7 @@ class PosAdapter(private val itemsTransaction: List<TransactionItem>) :
             parent,
             false
         )
-        return PosViewHolder(itemViewBinding)
+        return PosViewHolder(itemViewBinding, onDelete)
     }
 
 
