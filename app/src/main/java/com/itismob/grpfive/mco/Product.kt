@@ -8,6 +8,7 @@ data class Product(
     val productCategory: String = "",
     val productImage: Int = 0,
     val productBarcode: String = "",
-    val productPrice: BigDecimal = BigDecimal.ZERO,
+    val unitCost: BigDecimal = BigDecimal.ZERO,
+    val sellingPrice: BigDecimal = BigDecimal.ZERO,
     val stockQuantity: Int = 0
 )

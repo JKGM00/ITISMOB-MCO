@@ -5,15 +5,16 @@ import java.util.UUID
 
 object DataGenerator {
 
-	// 🛒 1️⃣ Sample products — typical sari-sari store items
+	// 🛒 1️⃣ Sample products — sari-sari store style with cost + selling price
 	fun sampleProducts(): List<Product> = listOf(
 		Product(
 			productID = "p100",
-			productName = "Toyo Oil 1L",
+			productName = "Toyo Cooking Oil 1L",
 			productCategory = "Cooking Oil",
-			productImage = 0, // Placeholder image ID
+			productImage = 0,
 			productBarcode = "8901000001000",
-			productPrice = BigDecimal("200.00"),
+			unitCost = BigDecimal("120.00"),          // store buys at ₱120
+			sellingPrice = BigDecimal("160.00"),      // sells at ₱160 (33% markup)
 			stockQuantity = 20
 		),
 		Product(
@@ -22,7 +23,8 @@ object DataGenerator {
 			productCategory = "Snacks",
 			productImage = 0,
 			productBarcode = "8901000001001",
-			productPrice = BigDecimal("20.00"),
+			unitCost = BigDecimal("10.00"),
+			sellingPrice = BigDecimal("15.00"),
 			stockQuantity = 120
 		),
 		Product(
@@ -31,7 +33,8 @@ object DataGenerator {
 			productCategory = "Canned Goods",
 			productImage = 0,
 			productBarcode = "8901000001002",
-			productPrice = BigDecimal("25.00"),
+			unitCost = BigDecimal("18.00"),
+			sellingPrice = BigDecimal("25.00"),
 			stockQuantity = 60
 		),
 		Product(
@@ -40,7 +43,8 @@ object DataGenerator {
 			productCategory = "Instant Food",
 			productImage = 0,
 			productBarcode = "8901000001003",
-			productPrice = BigDecimal("75.00"),
+			unitCost = BigDecimal("10.00"),
+			sellingPrice = BigDecimal("15.00"),
 			stockQuantity = 200
 		),
 		Product(
@@ -49,7 +53,8 @@ object DataGenerator {
 			productCategory = "Hygiene",
 			productImage = 0,
 			productBarcode = "8901000001004",
-			productPrice = BigDecimal("85.00"),
+			unitCost = BigDecimal("30.00"),
+			sellingPrice = BigDecimal("45.00"),
 			stockQuantity = 90
 		),
 		Product(
@@ -58,7 +63,8 @@ object DataGenerator {
 			productCategory = "Miscellaneous",
 			productImage = 0,
 			productBarcode = "8901000001005",
-			productPrice = BigDecimal("200.00"),
+			unitCost = BigDecimal("150.00"),
+			sellingPrice = BigDecimal("200.00"),
 			stockQuantity = 40
 		),
 		Product(
@@ -67,7 +73,8 @@ object DataGenerator {
 			productCategory = "Drinks",
 			productImage = 0,
 			productBarcode = "8901000001006",
-			productPrice = BigDecimal("75.00"),
+			unitCost = BigDecimal("10.00"),
+			sellingPrice = BigDecimal("20.00"),
 			stockQuantity = 300
 		),
 		Product(
@@ -76,18 +83,19 @@ object DataGenerator {
 			productCategory = "Drinks",
 			productImage = 0,
 			productBarcode = "8901000001007",
-			productPrice = BigDecimal("150.00"),
+			unitCost = BigDecimal("25.00"),
+			sellingPrice = BigDecimal("40.00"),
 			stockQuantity = 180
 		)
 	)
 
-	// 🧺 2️⃣ Helper: make a TransactionItem (cart item) from product ID + quantity
+	// 🧺 2️⃣ Helper: make a TransactionItem (cart item)
 	fun makeTransactionItem(productID: String, quantity: Int): TransactionItem {
 		val product = sampleProducts().first { it.productID == productID }
 		return TransactionItem(
 			productID = product.productID,
 			productName = product.productName,
-			productPrice = product.productPrice,
+			productPrice = product.sellingPrice, // use sellingPrice now
 			quantity = quantity
 		)
 	}
@@ -99,7 +107,7 @@ object DataGenerator {
 		makeTransactionItem("p101", 1)  // Biscuit pack x1
 	)
 
-	// 💵 4️⃣ Sample transactions (for history or reports)
+	// 💵 4️⃣ Sample transactions (for reports or history)
 	fun sampleTransactions(): List<Transaction> {
 
 		val items1 = listOf(
@@ -129,4 +137,5 @@ object DataGenerator {
 	fun findByBarcode(barcode: String): Product? =
 		sampleProducts().firstOrNull { it.productBarcode == barcode }
 }
+
 
