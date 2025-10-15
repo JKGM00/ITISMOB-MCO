@@ -20,7 +20,7 @@
             android:id="@+id/tvBack2Main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/Dark_Blue"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/montserrat"
@@ -38,19 +38,21 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/tvEditProductLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:drawableStart="@android:drawable/ic_menu_add"
+            android:drawableStart="@android:drawable/ic_menu_edit"
             android:drawableTint="#0D3B66"
             android:fontFamily="@font/montserrat"
-            android:text="Add New Product"
+            android:text="Edit a Product"
             android:textColor="#0D3B66"
             android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -74,11 +76,12 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvProductPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/montserrat"
-            android:text="Unit Cost (₱)"
+            android:text="Product Price (₱)"
             android:textColor="#333333"
             android:textSize="18sp" />
 
@@ -97,34 +100,12 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvStockQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/montserrat"
-            android:text="Selling Price (₱)"
-            android:textColor="#333333"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/etSellingPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/text_border"
-            android:fontFamily="@font/montserrat"
-            android:hint="0.00"
-            android:inputType="numberDecimal"
-            android:padding="12dp"
-            android:textColor="#333333"
-            android:textColorHint="#999999"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/montserrat"
-            android:text="Quantity"
+            android:text="Stock Quantity"
             android:textColor="#333333"
             android:textSize="18sp" />
 
@@ -143,6 +124,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tvProductCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -163,6 +145,7 @@
             android:spinnerMode="dropdown" />
 
         <TextView
+            android:id="@+id/tvBarcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"

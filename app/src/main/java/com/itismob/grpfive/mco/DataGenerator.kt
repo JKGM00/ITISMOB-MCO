@@ -13,7 +13,7 @@ object DataGenerator {
 			productCategory = "Cooking Oil",
 			productImage = 0, // Placeholder image ID
 			productBarcode = "8901000001000",
-			productPrice = BigDecimal("1800.00"),
+			productPrice = BigDecimal("200.00"),
 			stockQuantity = 20
 		),
 		Product(
@@ -22,7 +22,7 @@ object DataGenerator {
 			productCategory = "Snacks",
 			productImage = 0,
 			productBarcode = "8901000001001",
-			productPrice = BigDecimal("120.00"),
+			productPrice = BigDecimal("20.00"),
 			stockQuantity = 120
 		),
 		Product(
@@ -31,7 +31,7 @@ object DataGenerator {
 			productCategory = "Canned Goods",
 			productImage = 0,
 			productBarcode = "8901000001002",
-			productPrice = BigDecimal("55.00"),
+			productPrice = BigDecimal("25.00"),
 			stockQuantity = 60
 		),
 		Product(
@@ -40,7 +40,7 @@ object DataGenerator {
 			productCategory = "Instant Food",
 			productImage = 0,
 			productBarcode = "8901000001003",
-			productPrice = BigDecimal("95.00"),
+			productPrice = BigDecimal("75.00"),
 			stockQuantity = 200
 		),
 		Product(
@@ -58,7 +58,7 @@ object DataGenerator {
 			productCategory = "Miscellaneous",
 			productImage = 0,
 			productBarcode = "8901000001005",
-			productPrice = BigDecimal("1200.00"),
+			productPrice = BigDecimal("200.00"),
 			stockQuantity = 40
 		),
 		Product(
