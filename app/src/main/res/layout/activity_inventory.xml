@@ -33,7 +33,7 @@
             android:fontFamily="@font/montserrat"
             android:text="＋ Add Product"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 

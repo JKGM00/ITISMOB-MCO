@@ -41,7 +41,7 @@
             android:tint="#D90E0E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/etn_price"
+            app:layout_constraintStart_toEndOf="@+id/tv_price"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -57,8 +57,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.511" />
 
-        <EditText
-            android:id="@+id/etn_price"
+        <TextView
+            android:id="@+id/tv_price"
             android:layout_width="74dp"
             android:layout_height="22dp"
             android:autofillHints=""
@@ -75,8 +75,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.511" />
 
-        <EditText
-            android:id="@+id/etn_quantity"
+        <TextView
+            android:id="@+id/tv_quantity"
             android:layout_width="42dp"
             android:layout_height="22dp"
             android:autofillHints=""
@@ -103,7 +103,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/etn_quantity"
+            app:layout_constraintStart_toEndOf="@+id/tv_quantity"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.522" />
 
@@ -115,7 +115,7 @@
             android:background="#00FFFFFF"
             android:text="-"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/etn_quantity"
+            app:layout_constraintEnd_toStartOf="@+id/tv_quantity"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
