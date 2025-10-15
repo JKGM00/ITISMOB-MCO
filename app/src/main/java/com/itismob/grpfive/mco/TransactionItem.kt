@@ -2,12 +2,13 @@ package com.itismob.grpfive.mco
 
 import java.math.BigDecimal
 
-data class Product(
+data class TransactionItem(
     val productID: String = "",
     val productName: String = "",
-    val productCategory: String = "",
-    val productImage: Int = 0,
-    val productBarcode: String = "",
     val productPrice: BigDecimal = BigDecimal.ZERO,
-    val stockQuantity: Int = 0
-)
+    var quantity: Int = 0
+) {
+    val subtotal: BigDecimal
+        get() = productPrice.multiply(BigDecimal(quantity))
+}
+
