@@ -6,7 +6,6 @@ data class Product(
     val productID: String = "",
     val productName: String = "",
     val productCategory: String = "",
-    val productImage: Int = 0,
     val productBarcode: String = "",
     val unitCost: BigDecimal = BigDecimal.ZERO,
     val sellingPrice: BigDecimal = BigDecimal.ZERO,

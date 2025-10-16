@@ -19,7 +19,6 @@ class ProductInventoryAdapter(
         const val PRODUCT_ID_KEY = "PRODUCT_ID"
         const val PRODUCT_NAME_KEY = "PRODUCT_NAME"
         const val PRODUCT_CATEGORY_KEY = "PRODUCT_CATEGORY"
-        const val PRODUCT_IMAGE_KEY = "PRODUCT_IMAGE"
         const val PRODUCT_BARCODE_KEY = "PRODUCT_BARCODE"
         const val PRODUCT_UNIT_COST_KEY = "PRODUCT_UNIT_COST"
         const val PRODUCT_SELLING_PRICE_KEY = "PRODUCT_SELLING_PRICE"
@@ -42,7 +41,6 @@ class ProductInventoryAdapter(
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val itemViewBinding =
             ItemInventoryProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -60,11 +58,10 @@ class ProductInventoryAdapter(
             intent.putExtra(PRODUCT_ID_KEY, product.productID)
             intent.putExtra(PRODUCT_NAME_KEY, product.productName)
             intent.putExtra(PRODUCT_CATEGORY_KEY, product.productCategory)
-            intent.putExtra(PRODUCT_IMAGE_KEY, product.productImage)
             intent.putExtra(PRODUCT_BARCODE_KEY, product.productBarcode)
 
-            intent.putExtra(PRODUCT_UNIT_COST_KEY, product.unitCost)
-            intent.putExtra(PRODUCT_SELLING_PRICE_KEY, product.sellingPrice)
+            intent.putExtra(PRODUCT_UNIT_COST_KEY, product.unitCost.toPlainString())
+            intent.putExtra(PRODUCT_SELLING_PRICE_KEY, product.sellingPrice.toPlainString())
 
             intent.putExtra(PRODUCT_STOCK_KEY, product.stockQuantity)
             intent.putExtra(POSITION, position)
@@ -86,7 +83,7 @@ class ProductInventoryAdapter(
             .setTitle("Delete Product")
             .setMessage("Are you sure you want to delete '${product.productName}'?")
             .setPositiveButton("Yes") { dialog, which ->
-                // User confirmed, proceed with deletion in the adapter
+                // User confirmed, proceed with deletion
                 products.removeAt(position)
                 notifyItemRemoved(position)
 
