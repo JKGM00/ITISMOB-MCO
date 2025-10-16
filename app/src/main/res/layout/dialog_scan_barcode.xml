@@ -9,40 +9,48 @@
 
     <!-- Dialog Title -->
     <TextView
-        android:id="@+id/tvDialogTitle"
+        android:id="@+id/tvScanTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Product"
+        android:text="Scan Barcode"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#0D3B66"
         android:gravity="center"
         android:layout_marginBottom="24dp" />
 
-    <!-- Barcode Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilBarcode"
+    <!-- Camera Placeholder -->
+    <TextView
+        android:id="@+id/tvCameraPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:text="Camera Here"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:background="#E0E0E0"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Scanned Barcode Display -->
+    <TextView
+        android:id="@+id/tvScannedBarcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Barcode"
-        app:boxStrokeColor="#0D3B66"
-        app:hintTextColor="#0D3B66">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etBarcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLines="1"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:text="No barcode scanned"
+        android:textSize="16sp"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="#F5F5F5"
+        android:layout_marginBottom="16dp" />
 
     <!-- Product Info Card (Initially Hidden) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvProductInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:visibility="gone"
         app:cardBackgroundColor="#E8F5E9"
         app:cardCornerRadius="8dp"
@@ -80,7 +88,7 @@
         android:id="@+id/tvErrorMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="#FFEBEE"
         android:gravity="center"
         android:padding="12dp"
@@ -120,17 +128,17 @@
         android:gravity="end">
 
         <Button
-            android:id="@+id/btnAddtoTransc"
+            android:id="@+id/btnAddToCart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#0D3B66"
             android:minWidth="120dp"
-            android:text="Add"
+            android:text="Add to Cart"
             android:textColor="#FFFFFFFF"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnCancelItem"
+            android:id="@+id/btnClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
