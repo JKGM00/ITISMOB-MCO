@@ -5,6 +5,30 @@ import java.util.UUID
 
 object DataGenerator {
 
+	fun sampleUsers(): List<User> = listOf(
+		User(
+			userID = "u001",
+			storeName = "Aaron's Store",
+			profilePic = R.drawable.profile,
+			userEmail = "ajc_barcelita@gmail.com",
+			userHashedPw = "DLSU1234!"
+		),
+		User(
+			userID = "u002",
+			storeName = "JK's Store",
+			profilePic = R.drawable.profile,
+			userEmail = "jk_mendoza@gmail.com",
+			userHashedPw = "DLSU1234!"
+		),
+		User(
+			userID = "u003",
+			storeName = "Enrico's Store",
+			profilePic = R.drawable.profile,
+			userEmail = "enrico_cariaga@gmail.com",
+			userHashedPw = "DLSU1234!"
+		)
+	)
+
 	// 🛒 1️⃣ Sample products — sari-sari store style with cost + selling price
 	fun sampleProducts(): List<Product> = mutableListOf(
 		Product(

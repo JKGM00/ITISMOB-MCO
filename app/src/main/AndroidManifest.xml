@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MCO">
         <activity
-            android:name=".DashboardActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MCO">
@@ -23,7 +23,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false"
+            android:label="Dashboard"
+            android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="Dashboard"
+            android:theme="@style/Theme.MCO" />
 
 
 

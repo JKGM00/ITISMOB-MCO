@@ -14,15 +14,15 @@
         android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.233" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clLoginSection"
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="220dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,6 @@
             android:id="@+id/etEmail"
             android:layout_width="324dp"
             android:layout_height="48dp"
-            android:layout_marginTop="8dp"
             android:autofillHints=""
             android:background="@color/BG_White"
             android:ems="10"
@@ -68,8 +67,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLoginMessage"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            tools:layout_editor_absoluteY="28dp" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -86,22 +85,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etPassword"
             app:layout_constraintVertical_bias="0.333" />
-
-        <TextView
-            android:id="@+id/tvLoginMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:text="LoginMsg"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.124"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.044" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

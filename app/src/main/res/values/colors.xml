@@ -5,4 +5,6 @@
     <color name="Dark_Blue">#0C3B60</color>
     <color name="Orange">#F2A84E</color>
     <color name="BG_App">#FAF4E6</color>
+    <color name="Error">#FF0000</color>
+    <color name="Success">#00FF00</color>
 </resources>
