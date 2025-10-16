@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.itismob.grpfive.mco.databinding.ActivityDashboardBinding
 import java.math.BigDecimal
 import java.util.Calendar
 
-class DashboardActivity : ComponentActivity() {
+class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var lowStockAdapter: LowStockAdapter
     
@@ -83,7 +83,14 @@ class DashboardActivity : ComponentActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
-        
+
+        binding.tvNavLogOut.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+
+            startActivity(intent)
+            finish()
+        }
+
         // Load initial data
         updateRevenueDisplay("Daily")
         updateLowStockDisplay()

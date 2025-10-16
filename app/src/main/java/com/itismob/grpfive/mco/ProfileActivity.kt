@@ -1,11 +1,11 @@
 package com.itismob.grpfive.mco
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.enableEdgeToEdge
 import com.itismob.grpfive.mco.databinding.ActivityProfileBinding
 
-class ProfileActivity : ComponentActivity() {
+class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     
     override fun onCreate(savedInstanceState: Bundle?) {

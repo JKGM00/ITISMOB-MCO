@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.itismob.grpfive.mco.databinding.ActivityRegisterBinding
 import java.util.UUID
 
-class RegisterActivity : ComponentActivity() {
+class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
     // Temporary list to simulate a database or existing users

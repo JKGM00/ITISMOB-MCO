@@ -38,7 +38,7 @@ object DataGenerator {
 			productBarcode = "8901000001000",
 			unitCost = BigDecimal("120.00"),          // store buys at ₱120
 			sellingPrice = BigDecimal("160.00"),      // sells at ₱160 (33% markup)
-			stockQuantity = 3  // LOW STOCK!
+			stockQuantity = 7  // LOW STOCK!
 		),
 		Product(
 			productID = "p101",

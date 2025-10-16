@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.itismob.grpfive.mco.databinding.ActivityLoginBinding
 
-class LoginActivity : ComponentActivity() {
+class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val usersList = DataGenerator.sampleUsers()
 
