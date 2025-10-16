@@ -5,7 +5,7 @@ import java.util.UUID
 
 object DataGenerator {
 
-	fun sampleUsers(): List<User> = listOf(
+	fun sampleUsers(): MutableList<User> = mutableListOf(
 		User(
 			userID = "u001",
 			storeName = "Aaron's Store",
@@ -30,7 +30,7 @@ object DataGenerator {
 	)
 
 	// 🛒 1️⃣ Sample products — sari-sari store style with cost + selling price
-	fun sampleProducts(): List<Product> = mutableListOf(
+	fun sampleProducts(): MutableList<Product> = mutableListOf(
 		Product(
 			productID = "p100",
 			productName = "Toyo Cooking Oil 1L",
@@ -132,7 +132,7 @@ object DataGenerator {
 	)
 
 	// 💵 4️⃣ Sample transactions (for reports or history)
-	fun sampleTransactions(): List<Transaction> {
+	fun sampleTransactions(): MutableList<Transaction> {
 		val now = System.currentTimeMillis()
 		val oneHourAgo = now - (60 * 60 * 1000)
 		val oneDayAgo = now - (24 * 60 * 60 * 1000)
@@ -165,7 +165,7 @@ object DataGenerator {
 			makeTransactionItem("p101", 3)  // Biscuits
 		)
 
-		return listOf(
+		return mutableListOf(
 			// Today's transactions
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",

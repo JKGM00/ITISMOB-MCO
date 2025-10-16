@@ -2,6 +2,8 @@ package com.itismob.grpfive.mco
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.itismob.grpfive.mco.databinding.ActivityRegisterBinding
@@ -20,6 +22,11 @@ class RegisterActivity : ComponentActivity() {
 
         binding.btnRegister.setOnClickListener {
             handleRegistration()
+        }
+
+        binding.tvLoginLink.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -53,10 +60,12 @@ class RegisterActivity : ComponentActivity() {
 
         Toast.makeText(this, "Registration successful! Please log in.", Toast.LENGTH_LONG).show()
 
-        // Go back to login screen
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra("newUser", newUser)
-        startActivity(intent)
-        finish()
+        // Delays the move to login screen by a bit to show successful registration (this bit is AI-generated)
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("newUser", newUser)
+            startActivity(intent)
+            finish()
+        }, 1500) // delay by 1.5s
     }
 }

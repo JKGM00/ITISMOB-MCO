@@ -17,6 +17,14 @@ class LoginActivity : ComponentActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Do a check if a new user was registered and was sent via intent to here
+        val newUser = intent.getSerializableExtra("newUser") as? User
+        if (newUser != null) {
+            // add this new user temporarily to the usersList for the MCO2 interactive demo
+            usersList.add(newUser)
+            showToast("Registration successful! You can now log in as ${newUser.storeName}.")
+        }
+
         setupLogin()
     }
 

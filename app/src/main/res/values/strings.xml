@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MCO</string>
+    <string name="app_name">PanindaPOS</string>
     <string name="register"><u>Register</u></string>
     <string name="login"><u>Log In</u></string>
     <string name="store_name">Store Name</string>

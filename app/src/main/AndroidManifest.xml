@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MCO">
         <activity
@@ -35,8 +35,23 @@
             android:label="Dashboard"
             android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".PosActivity"
+            android:exported="false"
+            android:label="Point of Sale"
+            android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".InventoryActivity"
+            android:exported="false"
+            android:label="Inventory"
+            android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="Profile"
+            android:theme="@style/Theme.MCO" />
 
         <meta-data
             android:name="preloaded_fonts"
