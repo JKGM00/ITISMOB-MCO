@@ -28,6 +28,7 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/montserrat"
+            android:gravity="center_horizontal|center_vertical"
             android:paddingStart="5dp"
             android:paddingEnd="10dp"
             android:text="← Back to Main"
@@ -54,13 +55,15 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_width="378dp"
-                android:layout_height="737dp"
+                android:layout_width="379dp"
+                android:layout_height="671dp"
                 android:layout_marginBottom="15dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout
                 android:id="@+id/linearLayout6"

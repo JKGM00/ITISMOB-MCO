@@ -11,8 +11,8 @@ class PosViewHolder(
 
     fun bindData(itemsTransaction: TransactionItem) {
         itemViewBinding.tvProduct.text = itemsTransaction.productName
-        // format price (BigDecimal) to 2 decimal places
-        itemViewBinding.tvPrice.text = itemsTransaction.productPrice.setScale(2).toPlainString()
+        // Display subtotal (price * quantity) instead of unit price
+        itemViewBinding.tvPrice.text = itemsTransaction.subtotal.setScale(2).toPlainString()
         itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
 
         itemViewBinding.ibtnDelete.setOnClickListener {
