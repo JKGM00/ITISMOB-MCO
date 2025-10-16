@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MCO">
         <activity
-            android:name=".InventoryActivity"
+            android:name=".DashboardActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MCO">

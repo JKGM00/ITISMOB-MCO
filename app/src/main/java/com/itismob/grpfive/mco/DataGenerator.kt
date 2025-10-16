@@ -15,7 +15,7 @@ object DataGenerator {
 			productBarcode = "8901000001000",
 			unitCost = BigDecimal("120.00"),          // store buys at ₱120
 			sellingPrice = BigDecimal("160.00"),      // sells at ₱160 (33% markup)
-			stockQuantity = 20
+			stockQuantity = 3  // LOW STOCK!
 		),
 		Product(
 			productID = "p101",
@@ -35,7 +35,7 @@ object DataGenerator {
 			productBarcode = "8901000001002",
 			unitCost = BigDecimal("18.00"),
 			sellingPrice = BigDecimal("25.00"),
-			stockQuantity = 60
+			stockQuantity = 7  // LOW STOCK!
 		),
 		Product(
 			productID = "p103",
@@ -55,7 +55,7 @@ object DataGenerator {
 			productBarcode = "8901000001004",
 			unitCost = BigDecimal("30.00"),
 			sellingPrice = BigDecimal("45.00"),
-			stockQuantity = 90
+			stockQuantity = 10  // LOW STOCK! (at threshold)
 		),
 		Product(
 			productID = "p105",
@@ -109,26 +109,67 @@ object DataGenerator {
 
 	// 💵 4️⃣ Sample transactions (for reports or history)
 	fun sampleTransactions(): List<Transaction> {
+		val now = System.currentTimeMillis()
+		val oneHourAgo = now - (60 * 60 * 1000)
+		val oneDayAgo = now - (24 * 60 * 60 * 1000)
+		val oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000)
+		val oneMonthAgo = now - (30L * 24 * 60 * 60 * 1000)
 
 		val items1 = listOf(
-			makeTransactionItem("p106", 2),
-			makeTransactionItem("p103", 1)
+			makeTransactionItem("p106", 2), // Water
+			makeTransactionItem("p103", 1)  // Noodles
 		)
 
 		val items2 = listOf(
-			makeTransactionItem("p105", 1),
-			makeTransactionItem("p101", 2),
-			makeTransactionItem("p104", 1)
+			makeTransactionItem("p105", 1), // Cigarettes
+			makeTransactionItem("p101", 2), // Biscuits
+			makeTransactionItem("p104", 1)  // Soap
+		)
+
+		val items3 = listOf(
+			makeTransactionItem("p100", 1), // Cooking Oil
+			makeTransactionItem("p107", 3)  // Soft Drink
+		)
+
+		val items4 = listOf(
+			makeTransactionItem("p102", 2), // Sardines
+			makeTransactionItem("p106", 5)  // Water
+		)
+
+		val items5 = listOf(
+			makeTransactionItem("p103", 5), // Noodles
+			makeTransactionItem("p101", 3)  // Biscuits
 		)
 
 		return listOf(
+			// Today's transactions
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
-				items = items1
+				items = items1,
+				timestampMillis = now
 			),
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
-				items = items2
+				items = items2,
+				timestampMillis = oneHourAgo
+			),
+			// Yesterday's transaction
+			Transaction(
+				transactionID = "tx-${UUID.randomUUID()}",
+				items = items3,
+				timestampMillis = oneDayAgo
+			),
+			// Last week's transaction
+			Transaction(
+				transactionID = "tx-${UUID.randomUUID()}",
+				items = items4,
+				timestampMillis = oneWeekAgo
+			),
+			// Last month's transaction
+			Transaction(
+				transactionID = "tx-${UUID.randomUUID()}",
+				items = items5,
+				timestampMillis = oneMonthAgo
 			)
 		)
 	}
