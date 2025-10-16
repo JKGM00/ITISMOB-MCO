@@ -6,11 +6,11 @@ import java.util.UUID
 object DataGenerator {
 
 	// 🛒 1️⃣ Sample products — sari-sari store style with cost + selling price
-	fun sampleProducts(): List<Product> = listOf(
+	fun sampleProducts(): List<Product> = mutableListOf(
 		Product(
 			productID = "p100",
 			productName = "Toyo Cooking Oil 1L",
-			productCategory = "Cooking Oil",
+			productCategory = "Cooking Essentials",
 			productImage = 0,
 			productBarcode = "8901000001000",
 			unitCost = BigDecimal("120.00"),          // store buys at ₱120

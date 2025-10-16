@@ -10,6 +10,8 @@ class ProductViewHolder(val itemViewBinding: ItemInventoryProductBinding) :
     fun bindData(product: Product) {
         itemViewBinding.tvProductName.text = product.productName
         itemViewBinding.tvProductStock.text = "Stock: ${product.stockQuantity} pcs."
-        itemViewBinding.ivProductImage.setImageResource(product.productImage)
+
+        val imageResource = ProductInventoryAdapter.getCategoryImageResource(product.productCategory)
+        itemViewBinding.ivProductImage.setImageResource(imageResource)
     }
 }
