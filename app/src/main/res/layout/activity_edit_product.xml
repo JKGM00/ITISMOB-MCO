@@ -26,7 +26,7 @@
             android:fontFamily="@font/montserrat"
             android:paddingStart="5dp"
             android:paddingEnd="10dp"
-            android:text="← Back to Main"
+            android:text="← Back to Inventory"
             android:textColor="#FFFFFF"
             android:textSize="24sp" />
     </LinearLayout>

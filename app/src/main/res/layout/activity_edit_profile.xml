@@ -17,7 +17,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tvBackToMain"
+            android:id="@+id/tvBack2Main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -63,7 +63,7 @@
             android:focusable="true"
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_camera"
-            android:tint="#0D3B66" />
+            app:tint="#0D3B66" />
 
         <TextView
             android:id="@+id/tvStoreName"
@@ -76,7 +76,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/etProductName2"
+            android:id="@+id/etStoreName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -105,6 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:background="@drawable/text_border"
+            android:editable="false"
             android:fontFamily="@font/montserrat"
             android:padding="12dp"
             android:text="your.email@example.com"

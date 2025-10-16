@@ -1,7 +1,6 @@
 package com.itismob.grpfive.mco
 
 import android.R
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -21,7 +20,6 @@ class EditProductActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         viewBinding.tvBack2Main.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
             finish()
         }
 
@@ -43,7 +41,7 @@ class EditProductActivity : AppCompatActivity() {
         viewBinding.etStockQuantity.setText(stockQuantity.toString())
         viewBinding.etBarcodeEntry.setText(productBarcode)
 
-        // Setup Spinner / Drop-down
+        // Setup Spinner / Drop-down (Adapter and View Binding)
         val categories = listOf(
             "Cooking Essentials",
             "Snacks",
@@ -73,7 +71,7 @@ class EditProductActivity : AppCompatActivity() {
 
         // Barcode Scanning
         viewBinding.btnScanBarcode.setOnClickListener {
-            // To be implemented
+            // TODO : Barcode Scanning to be implemented
         }
 
     }
@@ -115,6 +113,7 @@ class EditProductActivity : AppCompatActivity() {
             stockQuantity = stockQtyNumber
         )
 
+        // Send back as Intent to InventoryActivity (EditProductLauncher)
         val resultIntent = Intent()
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_ID_KEY, updatedProduct.productID)
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_NAME_KEY, updatedProduct.productName)

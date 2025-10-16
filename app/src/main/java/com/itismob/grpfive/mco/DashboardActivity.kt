@@ -1,20 +1,25 @@
 package com.itismob.grpfive.mco
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.itismob.grpfive.mco.databinding.ActivityDashboardBinding
 import java.math.BigDecimal
 import java.util.Calendar
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity : ComponentActivity() {
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var lowStockAdapter: LowStockAdapter
+    private lateinit var currentUser : User
     
     // Category image mapping
     private val categoryImageMap = mapOf(
@@ -26,13 +31,42 @@ class DashboardActivity : AppCompatActivity() {
         "Hygiene" to R.drawable.hygiene,
         "Miscellaneous" to R.drawable.miscellaneous
     )
+
+    private val profileActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            if (data != null) {
+                val updatedUser: User? = data.getSerializableExtra(ProfileActivity.USER_KEY) as? User
+                if (updatedUser != null) {
+                    currentUser = updatedUser // Update the current user data
+                    Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(this, "Profile edit cancelled.", Toast.LENGTH_SHORT).show()
+        }
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
+        // Retrieve CurrentUser from LOGIN
+        val userFromLogin: User? = intent.getSerializableExtra("user") as? User
+        if (userFromLogin != null) {
+            currentUser = userFromLogin // Initialize currentUser here
+        } else {
+            Toast.makeText(this, "User data missing. Please log in again.", Toast.LENGTH_LONG).show()
+            val loginIntent = Intent(this, LoginActivity::class.java)
+            startActivity(loginIntent)
+            finish()
+            return
+        }
+
         // Create adapter with the string array
         val adapter = ArrayAdapter.createFromResource(
             this,
@@ -78,19 +112,14 @@ class DashboardActivity : AppCompatActivity() {
             val intent = Intent(this, InventoryActivity::class.java)
             startActivity(intent)
         }
-        
+
         binding.tvNavProfile.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, ProfileActivity::class.java).apply {
+                putExtra(ProfileActivity.USER_KEY, currentUser)
+            }
+            profileActivityLauncher.launch(intent)
         }
-
-        binding.tvNavLogOut.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-
-            startActivity(intent)
-            finish()
-        }
-
+        
         // Load initial data
         updateRevenueDisplay("Daily")
         updateLowStockDisplay()

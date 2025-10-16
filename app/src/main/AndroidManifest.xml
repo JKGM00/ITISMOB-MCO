@@ -24,6 +24,12 @@
         </activity>
 
         <activity
+            android:name=".InventoryActivity"
+            android:exported="false"
+            android:label="Dashboard"
+            android:theme="@style/Theme.MCO" />
+
+        <activity
             android:name=".DashboardActivity"
             android:exported="false"
             android:label="Dashboard"
@@ -41,8 +47,9 @@
             android:label="Point of Sale"
             android:theme="@style/Theme.MCO" />
 
+
         <activity
-            android:name=".InventoryActivity"
+            android:name=".EditProductActivity"
             android:exported="false"
             android:label="Inventory"
             android:theme="@style/Theme.MCO" />
