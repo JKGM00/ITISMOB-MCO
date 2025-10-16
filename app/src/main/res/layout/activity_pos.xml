@@ -28,6 +28,7 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/montserrat"
+            android:gravity="center_horizontal|center_vertical"
             android:paddingStart="5dp"
             android:paddingEnd="10dp"
             android:text="← Back to Main"

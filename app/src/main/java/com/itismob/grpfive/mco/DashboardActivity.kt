@@ -1,17 +1,20 @@
 package com.itismob.grpfive.mco
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.itismob.grpfive.mco.databinding.ActivityDashboardBinding
 import java.math.BigDecimal
 import java.util.Calendar
 
 class DashboardActivity : ComponentActivity() {
     private lateinit var binding: ActivityDashboardBinding
+    private lateinit var lowStockAdapter: LowStockAdapter
     
     // Category image mapping
     private val categoryImageMap = mapOf(
@@ -41,13 +44,13 @@ class DashboardActivity : ComponentActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         
         // Apply the adapter to the spinner
-        binding.spinner2.adapter = adapter
+        binding.spinnerRevenuePeriod.adapter = adapter
         
         // Set default selection to "Daily" (position 0)
-        binding.spinner2.setSelection(0)
+        binding.spinnerRevenuePeriod.setSelection(0)
         
         // Set up listener for spinner selection changes
-        binding.spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerRevenuePeriod.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedPeriod = parent?.getItemAtPosition(position).toString()
                 // Handle the selection change here
@@ -58,6 +61,27 @@ class DashboardActivity : ComponentActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Optional: handle case when nothing is selected
             }
+        }
+        
+        // Set up RecyclerView for low stock items
+        lowStockAdapter = LowStockAdapter(emptyList())
+        binding.rvLowStock.layoutManager = LinearLayoutManager(this@DashboardActivity)
+        binding.rvLowStock.adapter = lowStockAdapter
+        
+        // Set up navigation click listeners
+        binding.tvNavPos.setOnClickListener {
+            val intent = Intent(this, PosActivity::class.java)
+            startActivity(intent)
+        }
+        
+        binding.tvNavInventory.setOnClickListener {
+            val intent = Intent(this, InventoryActivity::class.java)
+            startActivity(intent)
+        }
+        
+        binding.tvNavProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
         
         // Load initial data
@@ -89,7 +113,7 @@ class DashboardActivity : ComponentActivity() {
         val transactionCount = filteredTransactions.size
         
         // Update the TextViews with formatted revenue using ViewBinding
-        binding.textView6.text = "₱${totalRevenue.setScale(2).toPlainString()}"
+        binding.tvRevenueAmount.text = "₱${totalRevenue.setScale(2).toPlainString()}"
         binding.tvTransactionCount.text = "$transactionCount transaction${if (transactionCount != 1) "s" else ""}"
         
         // Update category sales
@@ -116,39 +140,25 @@ class DashboardActivity : ComponentActivity() {
         // Sort categories by revenue (highest first)
         val sortedCategories = categoryTotals.entries.sortedByDescending { it.value }
         
-        // Get category amount TextViews from binding
-        val category1Amount = binding.llCategory1.getChildAt(1) as android.widget.TextView
-        val category2Amount = binding.llCategory2.getChildAt(1) as android.widget.TextView
-        val category3Amount = binding.llCategory3.getChildAt(1) as android.widget.TextView
-        val category4Amount = binding.llCategory4.getChildAt(1) as android.widget.TextView
-        
         // Update category displays (show top 4 categories)
         if (sortedCategories.isNotEmpty()) {
-            category1Amount.text = "₱${sortedCategories[0].value.setScale(2).toPlainString()}"
-            (category1Amount.parent as android.widget.LinearLayout).getChildAt(0).let {
-                (it as android.widget.TextView).text = sortedCategories[0].key
-            }
+            binding.tvCategoryName1.text = sortedCategories[0].key
+            binding.tvCategoryAmount1.text = "₱${sortedCategories[0].value.setScale(2).toPlainString()}"
         }
         
         if (sortedCategories.size > 1) {
-            category2Amount.text = "₱${sortedCategories[1].value.setScale(2).toPlainString()}"
-            (category2Amount.parent as android.widget.LinearLayout).getChildAt(0).let {
-                (it as android.widget.TextView).text = sortedCategories[1].key
-            }
+            binding.tvCategoryName2.text = sortedCategories[1].key
+            binding.tvCategoryAmount2.text = "₱${sortedCategories[1].value.setScale(2).toPlainString()}"
         }
         
         if (sortedCategories.size > 2) {
-            category3Amount.text = "₱${sortedCategories[2].value.setScale(2).toPlainString()}"
-            (category3Amount.parent as android.widget.LinearLayout).getChildAt(0).let {
-                (it as android.widget.TextView).text = sortedCategories[2].key
-            }
+            binding.tvCategoryName3.text = sortedCategories[2].key
+            binding.tvCategoryAmount3.text = "₱${sortedCategories[2].value.setScale(2).toPlainString()}"
         }
         
         if (sortedCategories.size > 3) {
-            category4Amount.text = "₱${sortedCategories[3].value.setScale(2).toPlainString()}"
-            (category4Amount.parent as android.widget.LinearLayout).getChildAt(0).let {
-                (it as android.widget.TextView).text = sortedCategories[3].key
-            }
+            binding.tvCategoryName4.text = sortedCategories[3].key
+            binding.tvCategoryAmount4.text = "₱${sortedCategories[3].value.setScale(2).toPlainString()}"
         }
     }
     
@@ -159,32 +169,8 @@ class DashboardActivity : ComponentActivity() {
             .filter { it.stockQuantity <= lowStockThreshold }
             .sortedBy { it.stockQuantity } // Sort by quantity ascending (lowest first)
         
-        // Hide all low stock items by default using ViewBinding
-        binding.llLowStock1.visibility = View.GONE
-        binding.llLowStock2.visibility = View.GONE
-        binding.llLowStock3.visibility = View.GONE
-        
-        // Display up to 3 low stock items
-        if (lowStockProducts.isNotEmpty()) {
-            binding.llLowStock1.visibility = View.VISIBLE
-            binding.tvLowStockProduct1.text = lowStockProducts[0].productName
-            binding.tvLowStockCategory1.text = lowStockProducts[0].productCategory
-            binding.tvLowStockQuantity1.text = "${lowStockProducts[0].stockQuantity} left"
-        }
-        
-        if (lowStockProducts.size > 1) {
-            binding.llLowStock2.visibility = View.VISIBLE
-            binding.tvLowStockProduct2.text = lowStockProducts[1].productName
-            binding.tvLowStockCategory2.text = lowStockProducts[1].productCategory
-            binding.tvLowStockQuantity2.text = "${lowStockProducts[1].stockQuantity} left"
-        }
-        
-        if (lowStockProducts.size > 2) {
-            binding.llLowStock3.visibility = View.VISIBLE
-            binding.tvLowStockProduct3.text = lowStockProducts[2].productName
-            binding.tvLowStockCategory3.text = lowStockProducts[2].productCategory
-            binding.tvLowStockQuantity3.text = "${lowStockProducts[2].stockQuantity} left"
-        }
+        // Update RecyclerView with low stock products
+        lowStockAdapter.updateProducts(lowStockProducts)
     }
     
     private fun filterByDay(transactions: List<Transaction>, currentTime: Long): List<Transaction> {

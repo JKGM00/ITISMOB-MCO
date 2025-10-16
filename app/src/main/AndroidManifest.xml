@@ -22,11 +22,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
-
-
+        
+        <activity
+            android:name=".PosActivity"
+            android:exported="false"
+            android:label="Point of Sale"
+            android:theme="@style/Theme.MCO" />
+        
+        <activity
+            android:name=".InventoryActivity"
+            android:exported="false"
+            android:label="Inventory"
+            android:theme="@style/Theme.MCO" />
+        
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="Profile"
+            android:theme="@style/Theme.MCO" />
 
         <meta-data
             android:name="preloaded_fonts"
