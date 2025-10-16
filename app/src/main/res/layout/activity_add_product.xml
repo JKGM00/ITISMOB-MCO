@@ -224,7 +224,7 @@
         android:padding="16dp">
 
         <Button
-            android:id="@+id/btnAdd"
+            android:id="@+id/btnEdit"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_gravity="top"

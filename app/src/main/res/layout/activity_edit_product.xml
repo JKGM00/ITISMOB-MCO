@@ -225,7 +225,7 @@
         android:padding="16dp">
 
         <Button
-            android:id="@+id/btnAdd"
+            android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_gravity="top"
@@ -235,7 +235,7 @@
             android:fontFamily="@font/montserrat"
             android:padding="12dp"
             android:paddingVertical="12dp"
-            android:text="Edit Product"
+            android:text="Save Edits"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
