@@ -9,4 +9,13 @@
     <string name="password">Password</string>
     <string name="logo_image">logo image</string>
 
+    <!-- Revenue period options -->
+    <string-array name="revenue_period_options">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Quarterly</item>
+        <item>Yearly</item>
+    </string-array>
+
 </resources>

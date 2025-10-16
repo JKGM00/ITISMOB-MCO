@@ -34,6 +34,9 @@ class InventoryActivity : AppCompatActivity() {
         productAdapter = ProductInventoryAdapter(products, editProductLauncher)
         viewBinding.rvInventory.layoutManager = LinearLayoutManager(this)
         viewBinding.rvInventory.adapter = productAdapter
-
     }
+
+
+
+
 }
