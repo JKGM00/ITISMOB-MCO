@@ -162,7 +162,7 @@ class PosActivity : AppCompatActivity() {
             // For now, simulate a barcode scan when user clicks on camera placeholder
             dialogBinding.tvCameraPlaceholder.setOnClickListener {
                 // Simulate scanning - in real app, this would be camera result
-                val simulatedBarcode = "8901000001003" // Example barcode
+                val simulatedBarcode = "8901000001003" // Example barcode - Instant Noodles
                 dialogBinding.tvScannedBarcode.text = "Scanned: $simulatedBarcode"
                 
                 // Look up product by barcode
