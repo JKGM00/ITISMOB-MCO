@@ -20,6 +20,7 @@
             android:id="@+id/tvBack2Main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
@@ -28,6 +29,19 @@
             android:paddingEnd="10dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/logout"
+            android:drawableTint="#FDF9F9"
+            android:fontFamily="@font/montserrat"
+            android:paddingStart="30dp"
+            android:text="Logout"
+            android:textColor="#F4F0F0"
             android:textSize="24sp" />
     </LinearLayout>
 
