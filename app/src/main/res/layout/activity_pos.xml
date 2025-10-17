@@ -87,8 +87,10 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:background="#007AFF"
+                        android:fontFamily="@font/montserrat"
                         android:text="Add"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/btn_scan"
@@ -97,8 +99,10 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:background="#007AFF"
+                        android:fontFamily="@font/montserrat"
                         android:text="Scan"
-                        android:textColor="#FFFF" />
+                        android:textColor="#FFFF"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <Button
@@ -107,8 +111,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="#14AE5C"
+                    android:fontFamily="@font/montserrat"
                     android:text="₱ 100.0"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
