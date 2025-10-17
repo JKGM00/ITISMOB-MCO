@@ -20,17 +20,18 @@
             android:id="@+id/tv_product"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat"
+            android:maxLines="2"
             android:text="Product Name"
             android:textColor="@color/Dark_Blue"
-            android:textStyle="bold"
             android:textSize="16sp"
-            android:maxLines="2"
-            android:ellipsize="end"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/llPriceSection"
+            app:layout_constraintEnd_toStartOf="@+id/btn_minus"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_minus"
-            app:layout_constraintBottom_toTopOf="@+id/llPriceSection"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0" />
 
         <!-- Quantity Controls Section -->
@@ -39,40 +40,43 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/montserrat"
             android:text="-"
+            android:textColor="@color/Dark_Blue"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/Dark_Blue"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_quantity"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_quantity"
             android:layout_width="40dp"
             android:layout_height="36dp"
+            android:background="#F0F0F0"
+            android:fontFamily="@font/montserrat"
             android:gravity="center"
             android:text="1"
+            android:textColor="@color/Dark_Blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/Dark_Blue"
-            android:background="#F0F0F0"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_add"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_add"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:fontFamily="@font/montserrat"
             android:text="+"
+            android:textColor="@color/Dark_Blue"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/Dark_Blue"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ibtn_delete"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Delete Button -->
         <ImageButton
@@ -106,6 +110,7 @@
                 android:id="@+id/tv_peso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:text="₱"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp"
@@ -115,11 +120,12 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/montserrat"
                 android:text="100.00"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginStart="2dp" />
+                android:textStyle="bold" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

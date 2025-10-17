@@ -6,7 +6,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF">
+    android:background="#FAF4E6">
 
     <LinearLayout
         android:id="@+id/llTopNavBar"
@@ -27,9 +27,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
+            android:fontFamily="@font/montserrat"
             android:gravity="center_horizontal|center_vertical"
             android:text="PoS"
-            android:textColor="#FFFFFFFF" />
+            android:textColor="#FFFFFFFF"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvNavInventory"
@@ -37,9 +39,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
+            android:fontFamily="@font/montserrat"
             android:gravity="center_horizontal|center_vertical"
             android:text="Inventory"
-            android:textColor="#F6F3F3" />
+            android:textColor="#F6F3F3"
+            android:textSize="18sp" />
 
         <Space
             android:layout_width="wrap_content"
@@ -52,9 +56,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
+            android:fontFamily="@font/montserrat"
             android:gravity="center_horizontal|center_vertical"
             android:text="Profile"
-            android:textColor="#F6F3F3" />
+            android:textColor="#F6F3F3"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvNavLogOut"
@@ -62,9 +68,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
+            android:fontFamily="@font/montserrat"
             android:gravity="center_horizontal|center_vertical"
             android:text="Log Out"
-            android:textColor="#F6F3F3" />
+            android:textColor="#F6F3F3"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -84,9 +92,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Period:"
+            android:textColor="@color/Dark_Blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/Dark_Blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,12 +102,12 @@
             android:id="@+id/spinnerRevenuePeriod"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:entries="@array/revenue_period_options"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@+id/tvPeriodLabel"
+            android:entries="@array/revenue_period_options"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPeriodLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvPeriodLabel"
-            app:layout_constraintBottom_toBottomOf="@+id/tvPeriodLabel" />
+            app:layout_constraintStart_toEndOf="@+id/tvPeriodLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvPeriodLabel" />
 
         <!-- Total Revenue Card -->
         <androidx.cardview.widget.CardView
@@ -107,11 +115,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            app:cardBackgroundColor="@color/Dark_Blue"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/Dark_Blue"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPeriodLabel">
 
             <LinearLayout
@@ -124,6 +132,7 @@
                     android:id="@+id/tvRevenueLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
                     android:text="Total Revenue"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
@@ -132,21 +141,23 @@
                     android:id="@+id/tvRevenueAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:layout_marginTop="8dp"
                     android:text="₱15,450.00"
                     android:textColor="@android:color/white"
                     android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTransactionCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:layout_marginTop="4dp"
+                    android:alpha="0.8"
                     android:text="25 transactions"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:alpha="0.8"
-                    android:layout_marginTop="4dp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -157,6 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Top 4 Selling Categories"
+            android:fontFamily="@font/montserrat"
             android:textColor="@color/Dark_Blue"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -168,32 +180,34 @@
             android:id="@+id/llCategoryTop1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp"
+            android:layout_marginTop="12dp"
             android:background="@android:color/white"
             android:elevation="2dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCategoriesTitle">
 
             <TextView
                 android:id="@+id/tvCategoryName1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:layout_weight="1"
                 android:text="Cooking Essentials"
-                android:textSize="16sp"
-                android:textColor="@color/Dark_Blue" />
+                android:textColor="@color/Dark_Blue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvCategoryAmount1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:text="₱0.00"
+                android:textColor="@color/Dark_Blue"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/Dark_Blue" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Category 2: Snacks -->
@@ -201,13 +215,13 @@
             android:id="@+id/llCategoryTop2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp"
+            android:layout_marginTop="8dp"
             android:background="@android:color/white"
             android:elevation="2dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llCategoryTop1">
 
             <TextView
@@ -215,18 +229,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
                 android:text="Snacks"
-                android:textSize="16sp"
-                android:textColor="@color/Dark_Blue" />
+                android:textColor="@color/Dark_Blue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvCategoryAmount2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:text="₱0.00"
+                android:textColor="@color/Dark_Blue"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/Dark_Blue" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Category 3: Drinks -->
@@ -234,32 +250,35 @@
             android:id="@+id/llCategoryTop3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginTop="8dp"
             android:background="@android:color/white"
             android:elevation="2dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llCategoryTop2">
 
             <TextView
                 android:id="@+id/tvCategoryName3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:layout_weight="1"
                 android:text="Drinks"
-                android:textSize="16sp"
-                android:textColor="@color/Dark_Blue" />
+                android:textColor="@color/Dark_Blue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvCategoryAmount3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:text="₱0.00"
+                android:textColor="@color/Dark_Blue"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/Dark_Blue" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Category 4: Canned Goods -->
@@ -267,32 +286,35 @@
             android:id="@+id/llCategoryTop4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginTop="8dp"
             android:background="@android:color/white"
             android:elevation="2dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llCategoryTop3">
 
             <TextView
                 android:id="@+id/tvCategoryName4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:layout_weight="1"
                 android:text="Canned Goods"
-                android:textSize="16sp"
-                android:textColor="@color/Dark_Blue" />
+                android:textColor="@color/Dark_Blue"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvCategoryAmount4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:text="₱0.00"
+                android:textColor="@color/Dark_Blue"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/Dark_Blue" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Divider Line -->
@@ -300,11 +322,11 @@
             android:id="@+id/dividerLowStock"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:background="@color/Dark_Blue"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/Dark_Blue"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llCategoryTop4" />
 
         <!-- Low Stock Items Section -->
@@ -312,11 +334,12 @@
             android:id="@+id/tvLowStockTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginTop="4dp"
             android:text="Low Stock Alert"
+            android:textColor="#D32F2F"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#D32F2F"
-            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dividerLowStock" />
 
@@ -324,10 +347,11 @@
             android:id="@+id/tvLowStockSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Items with 10 or fewer units remaining"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Items with 10 or fewer units remaining"
+            android:textColor="#1A1818"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLowStockTitle" />
 
