@@ -7,7 +7,8 @@ import com.itismob.grpfive.mco.databinding.ItemsPosBinding
 
 class PosAdapter(
     private val itemsTransaction: MutableList<TransactionItem>,
-    private val onDelete: (TransactionItem) -> Unit
+    private val onDelete: (TransactionItem) -> Unit,
+    private val onQuantityChanged: () -> Unit
 ) : RecyclerView.Adapter<PosViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -18,7 +19,7 @@ class PosAdapter(
             parent,
             false
         )
-        return PosViewHolder(itemViewBinding, onDelete)
+        return PosViewHolder(itemViewBinding, onDelete, onQuantityChanged)
     }
 
 

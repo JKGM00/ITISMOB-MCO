@@ -27,12 +27,19 @@ class PosActivity : AppCompatActivity() {
         cartItems.addAll(DataGenerator.sampleCart())
         
         // Set up RecyclerView
-        posAdapter = PosAdapter(cartItems) { item ->
-            // Handle delete
-            cartItems.remove(item)
-            posAdapter.notifyDataSetChanged()
-            updateTotal()
-        }
+        posAdapter = PosAdapter(
+            cartItems,
+            onDelete = { item ->
+                // Handle delete
+                cartItems.remove(item)
+                posAdapter.notifyDataSetChanged()
+                updateTotal()
+            },
+            onQuantityChanged = {
+                // Update total when quantity changes
+                updateTotal()
+            }
+        )
         
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = posAdapter
