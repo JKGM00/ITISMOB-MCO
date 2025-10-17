@@ -86,7 +86,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/etProductPrice"
+            android:id="@+id/etUnitCost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -224,7 +224,7 @@
         android:padding="16dp">
 
         <Button
-            android:id="@+id/btnEdit"
+            android:id="@+id/btnAddProduct"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_gravity="top"

@@ -13,12 +13,18 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
     // Temporary list to simulate a database or existing users
-    private val usersList = DataGenerator.sampleUsers().toMutableList()
+    companion object {
+        private val usersList = DataGenerator.sampleUsers().toMutableList()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         binding.btnRegister.setOnClickListener {
             handleRegistration()
@@ -29,6 +35,32 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.etPassword.setText("")
+
+        val sharedPreferences = getSharedPreferences("RegisterPreferences", MODE_PRIVATE)
+        val savedStoreName = sharedPreferences.getString("storeName", "")
+        val savedEmail = sharedPreferences.getString("email", "")
+
+        binding.tvStoreName.setText(savedStoreName)
+        binding.tvEmail.setText(savedEmail)
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val sharedPreferences = getSharedPreferences("RegisterPreferences", MODE_PRIVATE)
+        sharedPreferences.edit()
+            .putString("storeName", binding.tvStoreName.text.toString())
+            .putString("email", binding.tvEmail.text.toString())
+            .apply()
+    }
+
 
     private fun handleRegistration() {
         val storeName = binding.tvStoreName.text.toString().trim()
@@ -51,7 +83,7 @@ class RegisterActivity : AppCompatActivity() {
         val newUser = User(
             userID = UUID.randomUUID().toString(),
             storeName = storeName,
-            profilePic = 0, // default for now
+            profilePic = R.drawable.profile, // default for now
             userEmail = email,
             userHashedPw = password // we'll hash later once Firebase/DB is integrated
         )

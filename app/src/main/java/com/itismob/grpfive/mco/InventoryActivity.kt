@@ -51,6 +51,21 @@ class InventoryActivity : AppCompatActivity() {
         }
     }
 
+    private val addProductLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        result ->
+        if (result.resultCode == RESULT_OK) {
+            val intent = result.data
+            val newProduct = intent?.getSerializableExtra("newProduct") as? Product
+            if (newProduct != null) {
+                products.add(newProduct)
+                productAdapter.notifyItemInserted(products.size - 1)
+                Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +82,10 @@ class InventoryActivity : AppCompatActivity() {
         viewBinding.tvBack2Main.setOnClickListener {
             finish()
         }
-    }
 
+        viewBinding.btnAddProduct.setOnClickListener {
+            val intent = Intent(this, AddProductActivity::class.java)
+            addProductLauncher.launch(intent)
+        }
+    }
 }

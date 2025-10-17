@@ -47,6 +47,11 @@
             android:label="Point of Sale"
             android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".AddProductActivity"
+            android:exported="false"
+            android:label="Inventory"
+            android:theme="@style/Theme.MCO" />
 
         <activity
             android:name=".EditProductActivity"

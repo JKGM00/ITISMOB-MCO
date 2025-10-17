@@ -1,6 +1,7 @@
 package com.itismob.grpfive.mco
 
 import java.math.BigDecimal
+import java.io.Serializable
 
 data class Product(
     val productID: String = "",
@@ -10,4 +11,4 @@ data class Product(
     val unitCost: BigDecimal = BigDecimal.ZERO,
     val sellingPrice: BigDecimal = BigDecimal.ZERO,
     val stockQuantity: Int = 0
-)
+) : Serializable

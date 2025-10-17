@@ -126,6 +126,7 @@ class DashboardActivity : ComponentActivity() {
             startActivity(intent)
             finish()
         }
+
         // Load initial data
         updateRevenueDisplay("Daily")
         updateLowStockDisplay()
