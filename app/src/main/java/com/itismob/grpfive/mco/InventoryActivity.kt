@@ -68,7 +68,7 @@ class InventoryActivity : AppCompatActivity() {
             val intent = result.data
             val newProduct = intent?.getSerializableExtra("newProduct") as? Product
             if (newProduct != null) {
-                products.add(newProduct) // Add to master list
+                products.add(0, newProduct) // Add to master list
                 applyFilters() // Re-apply filters to show the new product
                 Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
             }
@@ -150,7 +150,7 @@ class InventoryActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         // Initialize products (OG list)
-        products = DataGenerator.sampleProducts() as MutableList<Product>
+        products = DataGenerator.sampleProducts()
         // Initialize filteredProducts for adaptive display
         filteredProducts.addAll(products)
 
