@@ -36,32 +36,6 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        binding.etPassword.setText("")
-
-        val sharedPreferences = getSharedPreferences("RegisterPreferences", MODE_PRIVATE)
-        val savedStoreName = sharedPreferences.getString("storeName", "")
-        val savedEmail = sharedPreferences.getString("email", "")
-
-        binding.tvStoreName.setText(savedStoreName)
-        binding.tvEmail.setText(savedEmail)
-
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        val sharedPreferences = getSharedPreferences("RegisterPreferences", MODE_PRIVATE)
-        sharedPreferences.edit()
-            .putString("storeName", binding.tvStoreName.text.toString())
-            .putString("email", binding.tvEmail.text.toString())
-            .apply()
-    }
-
-
     private fun handleRegistration() {
         val storeName = binding.tvStoreName.text.toString().trim()
         val email = binding.tvEmail.text.toString().trim()
