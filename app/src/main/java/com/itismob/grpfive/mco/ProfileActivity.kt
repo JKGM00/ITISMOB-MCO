@@ -26,7 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         val currUser: User? = intent.getSerializableExtra(USER_KEY) as? User
         if (currUser == null) {
             Toast.makeText(this, "User data not found!", Toast.LENGTH_LONG).show()
-            setResult(RESULT_CANCELED) // Indicate a problem
+            setResult(RESULT_CANCELED)
             finish()
             return
         }

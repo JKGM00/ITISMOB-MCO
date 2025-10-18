@@ -83,7 +83,7 @@ class RegisterActivity : AppCompatActivity() {
         val newUser = User(
             userID = UUID.randomUUID().toString(),
             storeName = storeName,
-            profilePic = R.drawable.person, // default for now
+            profilePic = R.drawable.account_profile, // default for now
             userEmail = email,
             userHashedPw = password // we'll hash later once Firebase/DB is integrated
         )

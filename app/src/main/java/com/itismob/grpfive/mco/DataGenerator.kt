@@ -9,21 +9,21 @@ object DataGenerator {
 		User(
 			userID = "u001",
 			storeName = "Aaron's Store",
-			profilePic = R.drawable.person,
+			profilePic = R.drawable.account_profile,
 			userEmail = "ajc_barcelita@gmail.com",
 			userHashedPw = "DLSU1234!"
 		),
 		User(
 			userID = "u002",
 			storeName = "JK's Store",
-			profilePic = R.drawable.person,
+			profilePic = R.drawable.account_profile,
 			userEmail = "jk_mendoza@gmail.com",
 			userHashedPw = "DLSU1234!"
 		),
 		User(
 			userID = "u003",
 			storeName = "Enrico's Store",
-			profilePic = R.drawable.person,
+			profilePic = R.drawable.account_profile,
 			userEmail = "enrico_cariaga@gmail.com",
 			userHashedPw = "DLSU1234!"
 		)
