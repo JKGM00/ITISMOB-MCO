@@ -1,5 +1,6 @@
 package com.itismob.grpfive.mco
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -57,6 +58,10 @@ class PosActivity : AppCompatActivity() {
         // Set up Scan button to show scan dialog
         binding.btnScan.setOnClickListener {
             showScanBarcodeDialog()
+        }
+
+        binding.btnTotal.setOnClickListener {
+            showConfirmationDialog()
         }
         
         // Update total on initial load
@@ -235,4 +240,27 @@ class PosActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
+    private fun showConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Complete Transaction?")
+            .setMessage("Are you sure you want to finalize this transaction?")
+            .setPositiveButton("Yes") { dialog, which ->
+                // Clear cart items
+                cartItems.clear()
+                posAdapter.notifyDataSetChanged()
+                updateTotal()
+
+                Toast.makeText(this, "Transaction completed!", Toast.LENGTH_SHORT).show()
+
+                // Navigate Back
+                finish()
+            }
+            .setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
+                Toast.makeText(this, "Transaction cancelled.", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+    }
+
 }
