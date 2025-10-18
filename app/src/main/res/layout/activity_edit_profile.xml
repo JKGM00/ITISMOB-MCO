@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FAF4E6">
+    android:background="#FAF4E6"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/topMenuBar"
@@ -36,11 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/logout"
+            android:drawableRight="@drawable/logout"
             android:drawableTint="#FDF9F9"
             android:fontFamily="@font/montserrat"
-            android:paddingStart="30dp"
-            android:text="Logout"
+            android:gravity="end"
+            android:text="Logout "
             android:textColor="#F4F0F0"
             android:textSize="24sp" />
     </LinearLayout>

@@ -53,6 +53,13 @@ class ProfileActivity : AppCompatActivity() {
         viewBinding.btnSave.setOnClickListener {
             saveProfileData()
         }
+
+        // Logout Button
+        viewBinding.tvLogout.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun saveProfileData() {
@@ -63,7 +70,7 @@ class ProfileActivity : AppCompatActivity() {
         val updatedUser = currentUser.copy(
             storeName = newStoreName,
             userHashedPw = newPassword.ifEmpty { currentUser.userHashedPw }
-            // TODO : IMPLEMENT IMAGE SELECTION
+            // TODO : IMPLEMENT IMAGE SELECTION / UPLOAD
         )
 
         // Return updated User to DashboardActivity

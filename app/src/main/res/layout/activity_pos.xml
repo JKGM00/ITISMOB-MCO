@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:background="#14AE5C"
+                    android:background="#5B6F46"
                     android:fontFamily="@font/montserrat"
                     android:text="₱ 100.0"
                     android:textColor="#FFFFFF"

@@ -123,7 +123,7 @@ class EditProductActivity : AppCompatActivity() {
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_CATEGORY_KEY, updatedProduct.productCategory)
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_BARCODE_KEY, updatedProduct.productBarcode)
 
-        // Send result back as String
+        // Send Cost back as string values
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY, updatedProduct.unitCost.toPlainString())
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY, updatedProduct.sellingPrice.toPlainString())
 
