@@ -2,10 +2,13 @@ package com.itismob.grpfive.mco
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.itismob.grpfive.mco.databinding.ActivityAddProductBinding
+import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
 import java.util.UUID
 
 class AddProductActivity : AppCompatActivity() {
@@ -42,6 +45,11 @@ class AddProductActivity : AppCompatActivity() {
 
         binding.btnAddProduct.setOnClickListener {
             saveNewProduct()
+        }
+        
+        // Set up btnScanBarcode to open scan dialog
+        binding.btnScanBarcode.setOnClickListener {
+            showScanBarcodeDialog()
         }
     }
 
@@ -91,5 +99,52 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun showScanBarcodeDialog() {
+        try {
+            val dialogBinding = DialogScanBarcodeBinding.inflate(LayoutInflater.from(this))
+            val dialog = AlertDialog.Builder(this)
+                .setView(dialogBinding.root)
+                .create()
+            
+            // Hide product info and quantity fields (we only need barcode)
+            dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+            dialogBinding.tilQuantity.visibility = android.view.View.GONE
+            dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+            dialogBinding.btnAddToCart.text = "Use Barcode"
+            
+            var scannedBarcode: String? = null
+            
+            // Simulate barcode scan when clicking camera placeholder
+            dialogBinding.tvCameraPlaceholder.setOnClickListener {
+                // Simulate scanning - in real app, this would be camera result
+                val simulatedBarcode = "8901000001008" // Example new barcode
+                scannedBarcode = simulatedBarcode
+                dialogBinding.tvScannedBarcode.text = "Scanned: $simulatedBarcode"
+            }
+            
+            // Close button
+            dialogBinding.btnClose.setOnClickListener {
+                dialog.dismiss()
+            }
+            
+            // Use barcode button
+            dialogBinding.btnAddToCart.setOnClickListener {
+                if (scannedBarcode != null) {
+                    // Set the barcode in the edit text field
+                    binding.etBarcodeEntry.setText(scannedBarcode)
+                    dialog.dismiss()
+                    Toast.makeText(this, "Barcode set to: $scannedBarcode", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Please scan a barcode first", Toast.LENGTH_SHORT).show()
+                }
+            }
+            
+            dialog.show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error creating scan dialog: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
     }
 }
