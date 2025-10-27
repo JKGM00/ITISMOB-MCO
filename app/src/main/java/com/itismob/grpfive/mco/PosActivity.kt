@@ -18,6 +18,7 @@ class PosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPosBinding
     private lateinit var posAdapter: PosAdapter
     private val cartItems = mutableListOf<TransactionItem>()
+    private var currentBarcodeScanner: BarcodeScannerHelper? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +93,7 @@ class PosActivity : AppCompatActivity() {
                         // Show product info card
                         dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
                         dialogBinding.tvProductName.text = selectedProduct!!.productName
-                        dialogBinding.tvProductPrice.text = "₱${selectedProduct!!.sellingPrice.setScale(2).toPlainString()}"
+                        dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice.setScale(2, java.math.RoundingMode.HALF_UP))
                         dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                         dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
                     } else {
@@ -170,28 +171,54 @@ class PosActivity : AppCompatActivity() {
             
             var selectedProduct: Product? = null
             
-            // TODO: Implement actual camera scanning here
-            // For now, simulate a barcode scan when user clicks on camera placeholder
-            dialogBinding.tvCameraPlaceholder.setOnClickListener {
-                // Simulate scanning - in real app, this would be camera result
-                val simulatedBarcode = "8901000001003" // Example barcode - Instant Noodles
-                dialogBinding.tvScannedBarcode.text = "Scanned: $simulatedBarcode"
-                
-                // Look up product by barcode
-                selectedProduct = DataGenerator.findByBarcode(simulatedBarcode)
-                if (selectedProduct != null) {
-                    // Show product info card
-                    dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
-                    dialogBinding.tvProductName.text = selectedProduct!!.productName
-                    dialogBinding.tvProductPrice.text = "₱${selectedProduct!!.sellingPrice.setScale(2).toPlainString()}"
-                    dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
-                    dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
-                } else {
-                    // Show error message
-                    dialogBinding.cvProductInfo.visibility = android.view.View.GONE
-                    dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
-                    dialogBinding.tilQuantity.visibility = android.view.View.GONE
+            // Initialize barcode scanner with camera
+            currentBarcodeScanner = BarcodeScannerHelper(
+                this,
+                dialogBinding.cameraPreview
+            ) { scannedBarcode ->
+                // Handle scanned barcode
+                runOnUiThread {
+                    when {
+                        scannedBarcode == "PERMISSION_DENIED" -> {
+                            Toast.makeText(this, "Camera permission denied. Please grant permission in settings.", Toast.LENGTH_LONG).show()
+                            dialog.dismiss()
+                        }
+                        scannedBarcode.startsWith("CAMERA_ERROR") -> {
+                            Toast.makeText(this, "Camera error: $scannedBarcode", Toast.LENGTH_LONG).show()
+                        }
+                        else -> {
+                            // Valid barcode scanned
+                            dialogBinding.tvScannedBarcode.text = "Scanned: $scannedBarcode"
+                            
+                            // Look up product by barcode
+                            selectedProduct = DataGenerator.findByBarcode(scannedBarcode)
+                            if (selectedProduct != null) {
+                                // Show product info card
+                                dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                                dialogBinding.tvProductName.text = selectedProduct!!.productName
+                                dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice.setScale(2, java.math.RoundingMode.HALF_UP))
+                                dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                                dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                            } else {
+                                // Show error message
+                                dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                                dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
+                                dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                            }
+                        }
+                    }
                 }
+            }
+            
+            // Start camera when dialog is shown
+            dialog.setOnShowListener {
+                currentBarcodeScanner?.checkCameraPermissionAndStart()
+            }
+            
+            // Clean up camera when dialog is dismissed
+            dialog.setOnDismissListener {
+                currentBarcodeScanner?.shutdown()
+                currentBarcodeScanner = null
             }
             
             // Close button
@@ -261,6 +288,19 @@ class PosActivity : AppCompatActivity() {
                 Toast.makeText(this, "Transaction cancelled.", Toast.LENGTH_SHORT).show()
             }
             .show()
+    }
+    
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == BarcodeScannerHelper.CAMERA_PERMISSION_REQUEST_CODE) {
+            val granted = grantResults.isNotEmpty() && 
+                         grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+            currentBarcodeScanner?.handlePermissionResult(granted)
+        }
     }
 
 }

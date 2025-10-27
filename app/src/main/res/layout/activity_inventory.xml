@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/tvBack2Main"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
@@ -34,7 +34,7 @@
             android:fontFamily="@font/montserrat"
             android:text="＋ Add Product"
             android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 

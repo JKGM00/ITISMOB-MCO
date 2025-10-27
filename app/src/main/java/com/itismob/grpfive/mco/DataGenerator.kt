@@ -50,6 +50,15 @@ object DataGenerator {
 			stockQuantity = 120
 		),
 		Product(
+			productID = "p130",
+			productName = "Green Cross Alcohol",
+			productCategory = "Hygiene",
+			productBarcode = "4800047820304",
+			unitCost = BigDecimal("100.00"),
+			sellingPrice = BigDecimal("150.00"),
+			stockQuantity = 10
+		),
+		Product(
 			productID = "p102",
 			productName = "Canned Sardines",
 			productCategory = "Canned Goods",

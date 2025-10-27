@@ -4,128 +4,141 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp"
     android:background="@android:color/white">
 
-    <!-- Dialog Title -->
-    <TextView
-        android:id="@+id/tvScanTitle"
+    <!-- Scrollable Content Area -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Scan Barcode"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#0D3B66"
-        android:gravity="center"
-        android:layout_marginBottom="24dp" />
-
-    <!-- Camera Placeholder -->
-    <TextView
-        android:id="@+id/tvCameraPlaceholder"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:text="Camera Here"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#666666"
-        android:gravity="center"
-        android:background="#E0E0E0"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Scanned Barcode Display -->
-    <TextView
-        android:id="@+id/tvScannedBarcode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No barcode scanned"
-        android:textSize="16sp"
-        android:textColor="#666666"
-        android:gravity="center"
-        android:padding="12dp"
-        android:background="#F5F5F5"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Product Info Card (Initially Hidden) -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvProductInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:cardBackgroundColor="#E8F5E9"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:maxHeight="500dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="24dp">
 
+            <!-- Dialog Title -->
             <TextView
-                android:id="@+id/tvProductName"
+                android:id="@+id/tvScanTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Product Name"
+                android:text="Scan Barcode"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 android:textColor="#0D3B66"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:gravity="center"
+                android:layout_marginBottom="24dp" />
 
+            <!-- Camera Preview -->
+            <androidx.camera.view.PreviewView
+                android:id="@+id/cameraPreview"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Scanned Barcode Display -->
             <TextView
-                android:id="@+id/tvProductPrice"
+                android:id="@+id/tvScannedBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="₱100.00"
-                android:textColor="#2E7D32"
+                android:text="No barcode scanned"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="#666666"
+                android:gravity="center"
+                android:padding="12dp"
+                android:background="#F5F5F5"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Product Info Card (Initially Hidden) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvProductInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="#E8F5E9"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvProductName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Product Name"
+                        android:textColor="#0D3B66"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvProductPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="₱100.00"
+                        android:textColor="#2E7D32"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Error Message (Initially Hidden) -->
+            <TextView
+                android:id="@+id/tvErrorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#FFEBEE"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="⚠ Product not found"
+                android:textColor="#C62828"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <!-- Quantity Input (Initially Hidden) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Quantity"
+                android:visibility="gone"
+                app:boxStrokeColor="#0D3B66"
+                app:hintTextColor="#0D3B66">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="1"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 
-    <!-- Error Message (Initially Hidden) -->
-    <TextView
-        android:id="@+id/tvErrorMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="#FFEBEE"
-        android:gravity="center"
-        android:padding="12dp"
-        android:text="⚠ Product not found"
-        android:textColor="#C62828"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
-
-    <!-- Quantity Input (Initially Hidden) -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Quantity"
-        android:visibility="gone"
-        app:boxStrokeColor="#0D3B66"
-        app:hintTextColor="#0D3B66">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etQuantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLines="1"
-            android:text="1"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Action Buttons -->
+    <!-- Action Buttons - Fixed at Bottom -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="24dp"
-        android:gravity="end">
+        android:padding="16dp"
+        android:paddingTop="8dp"
+        android:gravity="end"
+        android:background="@android:color/white"
+        android:elevation="4dp">
 
         <Button
             android:id="@+id/btnAddToCart"

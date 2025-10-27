@@ -13,6 +13,7 @@ import java.util.UUID
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddProductBinding
+    private var currentBarcodeScanner: BarcodeScannerHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,12 +117,37 @@ class AddProductActivity : AppCompatActivity() {
             
             var scannedBarcode: String? = null
             
-            // Simulate barcode scan when clicking camera placeholder
-            dialogBinding.tvCameraPlaceholder.setOnClickListener {
-                // Simulate scanning - in real app, this would be camera result
-                val simulatedBarcode = "8901000001008" // Example new barcode
-                scannedBarcode = simulatedBarcode
-                dialogBinding.tvScannedBarcode.text = "Scanned: $simulatedBarcode"
+            // Initialize barcode scanner with camera
+            currentBarcodeScanner = BarcodeScannerHelper(
+                this,
+                dialogBinding.cameraPreview
+            ) { barcode ->
+                runOnUiThread {
+                    when {
+                        barcode == "PERMISSION_DENIED" -> {
+                            Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show()
+                            dialog.dismiss()
+                        }
+                        barcode.startsWith("CAMERA_ERROR") -> {
+                            Toast.makeText(this, "Camera error: $barcode", Toast.LENGTH_LONG).show()
+                        }
+                        else -> {
+                            scannedBarcode = barcode
+                            dialogBinding.tvScannedBarcode.text = "Scanned: $barcode"
+                        }
+                    }
+                }
+            }
+            
+            // Start camera when dialog is shown
+            dialog.setOnShowListener {
+                currentBarcodeScanner?.checkCameraPermissionAndStart()
+            }
+            
+            // Clean up camera when dialog is dismissed
+            dialog.setOnDismissListener {
+                currentBarcodeScanner?.shutdown()
+                currentBarcodeScanner = null
             }
             
             // Close button
@@ -145,6 +171,19 @@ class AddProductActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "Error creating scan dialog: ${e.message}", Toast.LENGTH_LONG).show()
             e.printStackTrace()
+        }
+    }
+    
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == BarcodeScannerHelper.CAMERA_PERMISSION_REQUEST_CODE) {
+            val granted = grantResults.isNotEmpty() && 
+                         grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+            currentBarcodeScanner?.handlePermissionResult(granted)
         }
     }
 }
