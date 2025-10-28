@@ -6,21 +6,23 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityRegisterBinding
-import java.util.UUID
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-
-    // Temporary list to simulate a database or existing users
-    companion object {
-        private val usersList = DataGenerator.sampleUsers().toMutableList()
-    }
+    private lateinit var auth: FirebaseAuth // Firebase Authentication
+    private lateinit var db: FirebaseFirestore // Firebase DB for user data
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize Firebase Authentication and Firestore
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
     }
 
     override fun onStart() {
@@ -47,31 +49,56 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        // Check if user already exists
-        if (usersList.any { it.userEmail == email }) {
-            Toast.makeText(this, "An account with this email already exists.", Toast.LENGTH_SHORT).show()
+        // Firebase Auth req for min password length
+        if (password.length < 6) {
+            Toast.makeText(this, "Password must be at least 6 characters long.", Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
-        // Create a new user (simulated)
-        val newUser = User(
-            userID = UUID.randomUUID().toString(),
-            storeName = storeName,
-            profilePic = R.drawable.account_profile, // default for now
-            userEmail = email,
-            userHashedPw = password // we'll hash later once Firebase/DB is integrated
-        )
+        // Create a new user with Firebase Auth
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // User Registered successfully
+                    val user = auth.currentUser
 
-        usersList.add(newUser)
+                    if (user != null) {
+                        // Save user data in User object
+                        val currentTime = System.currentTimeMillis()
 
-        Toast.makeText(this, "Registration successful! Please log in.", Toast.LENGTH_LONG).show()
+                        val newUser = User(
+                            userID = user.uid,
+                            storeName = storeName,
+                            userEmail = email,
+                            createdAt = currentTime,
+                            updatedAt = currentTime,
+                            isActive = true
+                        )
 
-        // Delays the move to login screen by a bit to show successful registration (this bit is AI-generated)
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("newUser", newUser)
-            startActivity(intent)
-            finish()
-        }, 1500) // delay by 1.5s
+                        // Save User in 'users' table
+                        db.collection("users").document(newUser.userID)
+                            .set(newUser)
+                            .addOnSuccessListener {
+                                // Registration successful
+                                Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    val intent = Intent(this, LoginActivity::class.java)
+                                    // intent.putExtra("newUser", newUser)
+                                    startActivity(intent)
+                                    finish()
+                                }, 1500) // delay by 1.5s
+                            }
+                            .addOnFailureListener { e ->
+                                // Registration failed -- Delete user from Firebase Auth
+                                user.delete()
+                                // Can add logging here and Toast ikaw na bahala
+                            }
+                    } else {
+                        Toast.makeText(this, "User creation failed.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
     }
 }

@@ -6,61 +6,61 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val usersList = DataGenerator.sampleUsers() // Mock user data (simulates a database for now)
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize Firebase Auth and Firestore
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
         setupLogin()
     }
 
-    // Called every time the Activity becomes visible (even after RegisterActivity)
+    // onStart: Check if a user is already logged in (optional auto-login)
     override fun onStart() {
         super.onStart()
-
-        // Check if a new user was passed from RegisterActivity
-        val newUser = intent.getSerializableExtra("newUser") as? User
-        if (newUser != null) {
-            // Add the new user temporarily to the mock list (for demo purposes)
-            usersList.add(newUser)
-            showToast("Registration successful! You can now log in as ${newUser.storeName}.")
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            // User is already logged in
+            fetchUserData(currentUser.uid)
         }
     }
 
-    // Called when user leaves the Activity (e.g., opens Register screen or switches app)
+    // Called when user leaves the Activity
     override fun onPause() {
         super.onPause()
-
-        // Save current email input to SharedPreferences
-        // so that the user doesn’t have to retype it later
         val email = binding.etEmail.text.toString().trim()
+
+        // Save the email in SharedPreferences when leaving activity
         val sharedPreferences = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
         sharedPreferences.edit().putString("lastEmail", email).apply()
     }
 
-    // Called when user returns to the Activity (e.g., back from Register)
+    // Called when user returns to the Activity
     override fun onResume() {
         super.onResume()
-
-        // Always clear password for security reasons
         binding.etPassword.setText("")
 
-        // Retrieve and restore last typed email (if any)
+        // Retrieve the email from SharedPreferences when returning
         val sharedPreferences = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
         val savedEmail = sharedPreferences.getString("lastEmail", "")
         binding.etEmail.setText(savedEmail)
     }
 
-    // Called when the Activity is destroyed (e.g., app closed, screen finished)
     override fun onDestroy() {
         super.onDestroy()
-        // Nothing special here for now, but this is where you’d clean up resources (like listeners or threads)
     }
 
     private fun setupLogin() {
@@ -76,42 +76,73 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // Validates login credentials against mock user list
     private fun checkLogin(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
             showToast("Please fill in both fields.")
             return
         }
 
-        // Try to find a user with matching email and password
-        val matchedUser = usersList.firstOrNull {
-            it.userEmail == email && it.userHashedPw == password
-        }
-
-        if (matchedUser != null) {
-            // Login successful
-            showToast("Welcome, ${matchedUser.storeName}!")
-
-            // Delay slightly for UI feedback before redirecting to Dashboard
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, DashboardActivity::class.java)
-                intent.putExtra("user", matchedUser)
-                startActivity(intent)
-
-                // Clear saved email since login succeeded
-                val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
-                sharedPrefs.edit().remove("lastEmail").apply()
-
-                // Close LoginActivity so user can’t go “back” to it
-                finish()
-            }, 1500)
-        } else {
-            // Login failed — wrong credentials
-            showToast("Invalid email or password.")
-        }
+        // Use Firebase Authentication to sign in user
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign-in success -> Fetch user from db
+                    val firebaseUser = auth.currentUser
+                    if (firebaseUser != null) {
+                        fetchUserData(firebaseUser.uid)
+                    } else {
+                        showToast("Authentication error.")
+                    }
+                } else {
+                    // If Sign-in fails
+                    showToast("Invalid email or password.")
+                }
+            }
     }
 
-    // Helper function to display short Toast messages
+    private fun fetchUserData(userId: String) {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val user = document.toObject(User::class.java)
+                    if (user != null) {
+                        // Set the userID property from the document ID -- Important to
+                        user.userID = document.id
+
+                        // Check if user is active
+                        if (!user.isActive) {
+                            showToast("This account is currently inactive.")
+                            auth.signOut() // Log out the inactive user from Firebase Auth
+                            return@addOnSuccessListener
+                        }
+
+                        showToast("Welcome, ${user.storeName}!")
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, DashboardActivity::class.java)
+                            intent.putExtra("user", user) // Pass the full User object
+                            startActivity(intent)
+
+                            val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
+                            sharedPrefs.edit().remove("lastEmail").apply() // Clear saved email
+
+                            finish() // Close LoginActivity
+                        }, 1500)
+                    } else {
+                        showToast("User data parsing failed.")
+                        auth.signOut() // Sign out if Firestore data is corrupted
+                    }
+                } else {
+                    showToast("User profile not found in database. Please register.")
+                    auth.signOut() // Sign out if Auth user exists but no Firestore profile
+                }
+            }
+            .addOnFailureListener { e ->
+                showToast("Failed to fetch user data: ${e.message}")
+                auth.signOut() // Sign out on network/db error
+            }
+    }
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
