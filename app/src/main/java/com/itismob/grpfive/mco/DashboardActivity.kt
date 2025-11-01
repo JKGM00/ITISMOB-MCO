@@ -50,7 +50,6 @@ class DashboardActivity : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

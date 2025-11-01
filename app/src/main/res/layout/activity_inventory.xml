@@ -24,7 +24,7 @@
             android:paddingStart="5dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnAddProduct"

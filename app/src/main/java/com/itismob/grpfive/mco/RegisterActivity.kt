@@ -93,7 +93,7 @@ class RegisterActivity : AppCompatActivity() {
                             .addOnFailureListener { e ->
                                 // Registration failed -- Delete user from Firebase Auth
                                 user.delete()
-                                // Can add logging here and Toast ikaw na bahala
+                                Toast.makeText(this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show()
                             }
                     } else {
                         Toast.makeText(this, "User creation failed.", Toast.LENGTH_SHORT).show()

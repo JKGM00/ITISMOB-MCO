@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/ivProductImage"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
             android:contentDescription="To be preset"
             android:scaleType="centerCrop"
             android:src="@drawable/logo"
@@ -34,9 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/montserrat"
+            android:singleLine="true"
             android:text="Aaron's Pizza"
             android:textColor="#0D3B66"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/llActionButtons"
             app:layout_constraintStart_toEndOf="@+id/ivProductImage"
