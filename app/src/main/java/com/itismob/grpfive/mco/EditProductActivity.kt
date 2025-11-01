@@ -10,7 +10,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.itismob.grpfive.mco.databinding.ActivityEditProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
-import java.math.BigDecimal
 
 class EditProductActivity : AppCompatActivity() {
 
@@ -55,8 +54,9 @@ class EditProductActivity : AppCompatActivity() {
             "Hygiene",
             "Miscellaneous"
         )
+
         val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, categories)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         viewBinding.spProductCategory.adapter = adapter
 
         // Set the selected category in the spinner
@@ -94,17 +94,10 @@ class EditProductActivity : AppCompatActivity() {
         }
 
         // Number Validation
-        val unitCostNumber : BigDecimal
-        val sellingPriceNumber : BigDecimal
-        val stockQtyNumber : Int
-        try {
-            unitCostNumber = BigDecimal(unitCost)
-            sellingPriceNumber = BigDecimal(sellingPrice)
-            stockQtyNumber = stockQty.toInt()
-        } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Invalid number format", Toast.LENGTH_SHORT).show()
-            return
-        }
+        val unitCostNumber : Double = unitCost.toDouble()
+        val sellingPriceNumber : Double = sellingPrice.toDouble()
+        val stockQtyNumber : Int = stockQty.toInt()
+
 
         // Create Updated Object
         val updatedProduct = Product(
@@ -125,8 +118,8 @@ class EditProductActivity : AppCompatActivity() {
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_BARCODE_KEY, updatedProduct.productBarcode)
 
         // Send Cost back as string values
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY, updatedProduct.unitCost.toPlainString())
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY, updatedProduct.sellingPrice.toPlainString())
+        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY, updatedProduct.unitCost.toString())
+        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY, updatedProduct.sellingPrice.toString())
 
         resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_STOCK_KEY, updatedProduct.stockQuantity)
         resultIntent.putExtra(ProductInventoryAdapter.POSITION, position)

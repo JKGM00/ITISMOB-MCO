@@ -13,7 +13,7 @@ class PosViewHolder(
     fun bindData(itemsTransaction: TransactionItem) {
         itemViewBinding.tvProduct.text = itemsTransaction.productName
         // Display subtotal (price * quantity) instead of unit price
-        itemViewBinding.tvPrice.text = itemsTransaction.subtotal.setScale(2).toPlainString()
+        itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
         itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
 
         // Delete button
@@ -25,7 +25,7 @@ class PosViewHolder(
         itemViewBinding.btnAdd.setOnClickListener {
             itemsTransaction.quantity++
             itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
-            itemViewBinding.tvPrice.text = itemsTransaction.subtotal.setScale(2).toPlainString()
+            itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
             onQuantityChanged()
         }
         
@@ -34,7 +34,7 @@ class PosViewHolder(
             if (itemsTransaction.quantity > 1) {
                 itemsTransaction.quantity--
                 itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
-                itemViewBinding.tvPrice.text = itemsTransaction.subtotal.setScale(2).toPlainString()
+                itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
                 onQuantityChanged()
             }
         }

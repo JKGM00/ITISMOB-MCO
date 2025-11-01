@@ -6,10 +6,10 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityLoginBinding
+import androidx.core.content.edit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Save the email in SharedPreferences when leaving activity
         val sharedPreferences = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
-        sharedPreferences.edit().putString("lastEmail", email).apply()
+        sharedPreferences.edit { putString("lastEmail", email) }
     }
 
     // Called when user returns to the Activity
@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(intent)
 
                             val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
-                            sharedPrefs.edit().remove("lastEmail").apply() // Clear saved email
+                            sharedPrefs.edit { remove("lastEmail") } // Clear saved email
 
                             finish() // Close LoginActivity
                         }, 1500)
@@ -133,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
                         auth.signOut() // Sign out if Firestore data is corrupted
                     }
                 } else {
-                    showToast("User profile not found in database. Please register.")
+                    showToast("Email not found. Please register.")
                     auth.signOut() // Sign out if Auth user exists but no Firestore profile
                 }
             }

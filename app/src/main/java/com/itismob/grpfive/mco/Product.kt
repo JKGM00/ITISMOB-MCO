@@ -1,14 +1,17 @@
 package com.itismob.grpfive.mco
 
-import java.math.BigDecimal
+import com.google.firebase.firestore.Exclude
 import java.io.Serializable
 
 data class Product(
-    val productID: String = "",
+    // Document ID
+    @get:Exclude @set:Exclude var productID: String = "",
     val productName: String = "",
     val productCategory: String = "",
     val productBarcode: String = "",
-    val unitCost: BigDecimal = BigDecimal.ZERO,
-    val sellingPrice: BigDecimal = BigDecimal.ZERO,
-    val stockQuantity: Int = 0
+    val unitCost: Double = 0.0,
+    val sellingPrice: Double = 0.0,
+    val stockQuantity: Int = 0,
+    var createdAt: Long = System.currentTimeMillis(),
+    var updatedAt: Long = System.currentTimeMillis(),
 ) : Serializable

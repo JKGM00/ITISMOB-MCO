@@ -1,6 +1,5 @@
 package com.itismob.grpfive.mco
 
-import java.math.BigDecimal
 import java.util.UUID
 
 object DataGenerator {
@@ -36,8 +35,8 @@ object DataGenerator {
 			productName = "Toyo Cooking Oil 1L",
 			productCategory = "Cooking Essentials",
 			productBarcode = "8901000001000",
-			unitCost = BigDecimal("120.00"),          // store buys at ₱120
-			sellingPrice = BigDecimal("160.00"),      // sells at ₱160 (33% markup)
+			unitCost = 120.00,          // store buys at ₱120
+			sellingPrice = 160.00,      // sells at ₱160 (33% markup)
 			stockQuantity = 7  // LOW STOCK!
 		),
 		Product(
@@ -45,8 +44,8 @@ object DataGenerator {
 			productName = "Biscuit Pack",
 			productCategory = "Snacks",
 			productBarcode = "8901000001001",
-			unitCost = BigDecimal("10.00"),
-			sellingPrice = BigDecimal("15.00"),
+			unitCost = 10.00,
+			sellingPrice = 15.00,
 			stockQuantity = 120
 		),
 		Product(
@@ -54,8 +53,8 @@ object DataGenerator {
 			productName = "Green Cross Alcohol",
 			productCategory = "Hygiene",
 			productBarcode = "4800047820304",
-			unitCost = BigDecimal("100.00"),
-			sellingPrice = BigDecimal("150.00"),
+			unitCost = 100.00,
+			sellingPrice = 150.00,
 			stockQuantity = 10
 		),
 		Product(
@@ -63,8 +62,8 @@ object DataGenerator {
 			productName = "Canned Sardines",
 			productCategory = "Canned Goods",
 			productBarcode = "8901000001002",
-			unitCost = BigDecimal("18.00"),
-			sellingPrice = BigDecimal("25.00"),
+			unitCost = 18.00,
+			sellingPrice = 25.00,
 			stockQuantity = 7  // LOW STOCK!
 		),
 		Product(
@@ -72,8 +71,8 @@ object DataGenerator {
 			productName = "Instant Noodles",
 			productCategory = "Instant Food",
 			productBarcode = "8901000001003",
-			unitCost = BigDecimal("10.00"),
-			sellingPrice = BigDecimal("15.00"),
+			unitCost = 10.00,
+			sellingPrice = 15.00,
 			stockQuantity = 200
 		),
 		Product(
@@ -81,8 +80,8 @@ object DataGenerator {
 			productName = "Soap Bar",
 			productCategory = "Hygiene",
 			productBarcode = "8901000001004",
-			unitCost = BigDecimal("30.00"),
-			sellingPrice = BigDecimal("45.00"),
+			unitCost = 30.00,
+			sellingPrice = 45.00,
 			stockQuantity = 10  // LOW STOCK! (at threshold)
 		),
 		Product(
@@ -90,8 +89,8 @@ object DataGenerator {
 			productName = "Cigarettes (Pack)",
 			productCategory = "Miscellaneous",
 			productBarcode = "8901000001005",
-			unitCost = BigDecimal("150.00"),
-			sellingPrice = BigDecimal("200.00"),
+			unitCost = 150.00,
+			sellingPrice = 200.00,
 			stockQuantity = 40
 		),
 		Product(
@@ -99,8 +98,8 @@ object DataGenerator {
 			productName = "Bottled Water 500ml",
 			productCategory = "Drinks",
 			productBarcode = "8901000001006",
-			unitCost = BigDecimal("10.00"),
-			sellingPrice = BigDecimal("20.00"),
+			unitCost = 10.00,
+			sellingPrice = 20.00,
 			stockQuantity = 300
 		),
 		Product(
@@ -108,13 +107,13 @@ object DataGenerator {
 			productName = "Soft Drink 330ml",
 			productCategory = "Drinks",
 			productBarcode = "8901000001007",
-			unitCost = BigDecimal("25.00"),
-			sellingPrice = BigDecimal("40.00"),
+			unitCost = 25.00,
+			sellingPrice = 40.00,
 			stockQuantity = 180
 		)
 	)
 
-	// 🧺 2️⃣ Helper: make a TransactionItem (cart item)
+	 // 2️⃣ Helper: make a TransactionItem (cart item)
 	fun makeTransactionItem(productID: String, quantity: Int): TransactionItem {
 		val product = sampleProducts().first { it.productID == productID }
 		return TransactionItem(

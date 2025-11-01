@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.itismob.grpfive.mco.databinding.ActivityDashboardBinding
-import java.math.BigDecimal
 import java.util.Calendar
 
 class DashboardActivity : ComponentActivity() {
@@ -22,20 +21,20 @@ class DashboardActivity : ComponentActivity() {
     private lateinit var currentUser : User
     
     // Category image mapping
-    private val categoryImageMap = mapOf(
-        "Cooking Essentials" to R.drawable.cooking_essentials,
-        "Snacks" to R.drawable.snack,
-        "Drinks" to R.drawable.drinks,
-        "Canned Goods" to R.drawable.canned_goods,
-        "Instant Food" to R.drawable.instant_food,
-        "Hygiene" to R.drawable.hygiene,
-        "Miscellaneous" to R.drawable.miscellaneous
-    )
+//    private val categoryImageMap = mapOf(
+//        "Cooking Essentials" to R.drawable.cooking_essentials,
+//        "Snacks" to R.drawable.snack,
+//        "Drinks" to R.drawable.drinks,
+//        "Canned Goods" to R.drawable.canned_goods,
+//        "Instant Food" to R.drawable.instant_food,
+//        "Hygiene" to R.drawable.hygiene,
+//        "Miscellaneous" to R.drawable.miscellaneous
+//    )
 
     private val profileActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val data = result.data
             if (data != null) {
                 val updatedUser: User? = data.getSerializableExtra(ProfileActivity.USER_KEY) as? User
@@ -44,7 +43,7 @@ class DashboardActivity : ComponentActivity() {
                     Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
                 }
             }
-        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+        } else if (result.resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Profile edit cancelled.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -150,7 +149,7 @@ class DashboardActivity : ComponentActivity() {
         val transactionCount = filteredTransactions.size
         
         // Update the TextViews with formatted revenue using ViewBinding
-        binding.tvRevenueAmount.text = "₱${totalRevenue.setScale(2).toPlainString()}"
+        binding.tvRevenueAmount.text = "₱${String.format("%.2f", totalRevenue)}"
         binding.tvTransactionCount.text = "$transactionCount transaction${if (transactionCount != 1) "s" else ""}"
         
         // Update category sales
@@ -159,7 +158,7 @@ class DashboardActivity : ComponentActivity() {
     
     private fun updateCategorySales(transactions: List<Transaction>) {
         // Group sales by product category
-        val categoryTotals = mutableMapOf<String, BigDecimal>()
+        val categoryTotals = mutableMapOf<String, Double>()
         
         transactions.forEach { transaction ->
             transaction.items.forEach { item ->
@@ -169,8 +168,7 @@ class DashboardActivity : ComponentActivity() {
                 }
                 val category = product?.productCategory ?: "Other"
                 
-                categoryTotals[category] = categoryTotals.getOrDefault(category, BigDecimal.ZERO)
-                    .add(item.subtotal)
+                categoryTotals[category] = (categoryTotals[category] ?: 0.0) + item.subtotal
             }
         }
         
@@ -180,22 +178,22 @@ class DashboardActivity : ComponentActivity() {
         // Update category displays (show top 4 categories)
         if (sortedCategories.isNotEmpty()) {
             binding.tvCategoryName1.text = sortedCategories[0].key
-            binding.tvCategoryAmount1.text = "₱${sortedCategories[0].value.setScale(2).toPlainString()}"
+            binding.tvCategoryAmount1.text = "₱${String.format("%.2f", sortedCategories[0].value)}"
         }
         
         if (sortedCategories.size > 1) {
             binding.tvCategoryName2.text = sortedCategories[1].key
-            binding.tvCategoryAmount2.text = "₱${sortedCategories[1].value.setScale(2).toPlainString()}"
+            binding.tvCategoryAmount2.text = "₱${String.format("%.2f", sortedCategories[1].value)}"
         }
         
         if (sortedCategories.size > 2) {
             binding.tvCategoryName3.text = sortedCategories[2].key
-            binding.tvCategoryAmount3.text = "₱${sortedCategories[2].value.setScale(2).toPlainString()}"
+            binding.tvCategoryAmount3.text = "₱${String.format("%.2f", sortedCategories[2].value)}"
         }
         
         if (sortedCategories.size > 3) {
             binding.tvCategoryName4.text = sortedCategories[3].key
-            binding.tvCategoryAmount4.text = "₱${sortedCategories[3].value.setScale(2).toPlainString()}"
+            binding.tvCategoryAmount4.text = "₱${String.format("%.2f", sortedCategories[3].value)}"
         }
     }
     

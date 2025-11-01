@@ -38,6 +38,7 @@ class ProductInventoryAdapter(
             return categoryImageMap[category] ?: R.drawable.logo
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val itemViewBinding =
             ItemInventoryProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -55,8 +56,8 @@ class ProductInventoryAdapter(
                 putExtra(PRODUCT_NAME_KEY, product.productName)
                 putExtra(PRODUCT_CATEGORY_KEY, product.productCategory)
                 putExtra(PRODUCT_BARCODE_KEY, product.productBarcode)
-                putExtra(PRODUCT_UNIT_COST_KEY, product.unitCost.toPlainString())
-                putExtra(PRODUCT_SELLING_PRICE_KEY, product.sellingPrice.toPlainString())
+                putExtra(PRODUCT_UNIT_COST_KEY, product.unitCost.toString())
+                putExtra(PRODUCT_SELLING_PRICE_KEY, product.sellingPrice.toString())
                 putExtra(PRODUCT_STOCK_KEY, product.stockQuantity)
 
                 putExtra(POSITION, position)

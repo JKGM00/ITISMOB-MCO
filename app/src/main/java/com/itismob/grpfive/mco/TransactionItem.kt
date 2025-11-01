@@ -1,14 +1,14 @@
 package com.itismob.grpfive.mco
 
-import java.math.BigDecimal
+
 
 data class TransactionItem(
     val productID: String = "",
     val productName: String = "",
-    val productPrice: BigDecimal = BigDecimal.ZERO,
+    val productPrice: Double = 0.0,
     var quantity: Int = 0
 ) {
-    val subtotal: BigDecimal
-        get() = productPrice.multiply(BigDecimal(quantity))
+    val subtotal: Double
+        get() = productPrice * quantity
 }
 

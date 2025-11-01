@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "43744102809",
+    "project_id": "itismob---mco---grp5",
+    "storage_bucket": "itismob---mco---grp5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43744102809:android:a1a1ebed33a0cae8612b08",
+        "android_client_info": {
+          "package_name": "com.itismob.grpfive.mco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpuno1O0zV4VoeqUBGF4WwTkCsLxL5ulI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

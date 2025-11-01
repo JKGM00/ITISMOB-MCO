@@ -30,6 +30,7 @@ class AddProductActivity : AppCompatActivity() {
             "Hygiene",
             "Miscellaneous"
         )
+
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spnProductCategory.adapter = spinnerAdapter
@@ -68,8 +69,8 @@ class AddProductActivity : AppCompatActivity() {
             return
         }
 
-        val productUnitCost = productUnitCostString.toBigDecimalOrNull()
-        val productSellingPrice = productSellingPriceString.toBigDecimalOrNull()
+        val productUnitCost = productUnitCostString.toDoubleOrNull()
+        val productSellingPrice = productSellingPriceString.toDoubleOrNull()
 
         if (productUnitCost == null || productSellingPrice == null) {
             showToast("Please enter valid numeric values for cost and price.")

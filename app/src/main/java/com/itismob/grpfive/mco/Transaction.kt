@@ -1,20 +1,16 @@
 package com.itismob.grpfive.mco
 
-import java.math.BigDecimal
+import com.google.firebase.firestore.Exclude
 
 data class Transaction(
-    val transactionID: String = "",
+    @get:Exclude @set:Exclude var transactionID: String = "",
     val items: List<TransactionItem> = emptyList(),
+    // change to createdat ...
     val timestampMillis: Long = System.currentTimeMillis() // Timestamp when transaction was created
 ) {
     // this computed field will help with displaying onscreen
-    val totalAmount: BigDecimal
+    val totalAmount: Double
         get() {
-            var total = BigDecimal.ZERO
-            for (item in items) {
-                total = total.add(item.subtotal)
-            }
-
-            return total
+            return items.sumOf { it.subtotal }
         }
 }

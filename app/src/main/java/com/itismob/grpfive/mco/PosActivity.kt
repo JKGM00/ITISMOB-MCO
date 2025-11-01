@@ -1,6 +1,5 @@
 package com.itismob.grpfive.mco
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -8,11 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.textfield.TextInputEditText
 import com.itismob.grpfive.mco.databinding.ActivityPosBinding
 import com.itismob.grpfive.mco.databinding.DialogAddProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
-import java.math.BigDecimal
 
 class PosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPosBinding
@@ -93,7 +90,7 @@ class PosActivity : AppCompatActivity() {
                         // Show product info card
                         dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
                         dialogBinding.tvProductName.text = selectedProduct!!.productName
-                        dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice.setScale(2, java.math.RoundingMode.HALF_UP))
+                        dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
                         dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                         dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
                     } else {
@@ -159,7 +156,7 @@ class PosActivity : AppCompatActivity() {
     
     private fun updateTotal() {
         val total = cartItems.sumOf { it.subtotal }
-        binding.btnTotal.text = "₱${total.setScale(2).toPlainString()}"
+        binding.btnTotal.text = "₱${String.format("%.2f", total)}"
     }
     
     private fun showScanBarcodeDialog() {
@@ -196,7 +193,7 @@ class PosActivity : AppCompatActivity() {
                                 // Show product info card
                                 dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
                                 dialogBinding.tvProductName.text = selectedProduct!!.productName
-                                dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice.setScale(2, java.math.RoundingMode.HALF_UP))
+                                dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
                                 dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                                 dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
                             } else {
@@ -272,7 +269,7 @@ class PosActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Complete Transaction?")
             .setMessage("Are you sure you want to finalize this transaction?")
-            .setPositiveButton("Yes") { dialog, which ->
+            .setPositiveButton("Yes") { _, _ ->
                 // Clear cart items
                 cartItems.clear()
                 posAdapter.notifyDataSetChanged()
@@ -283,7 +280,7 @@ class PosActivity : AppCompatActivity() {
                 // Navigate Back
                 finish()
             }
-            .setNegativeButton("No") { dialog, which ->
+            .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
                 Toast.makeText(this, "Transaction cancelled.", Toast.LENGTH_SHORT).show()
             }

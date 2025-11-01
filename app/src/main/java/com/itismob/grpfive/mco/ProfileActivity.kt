@@ -63,7 +63,6 @@ class ProfileActivity : AppCompatActivity() {
         viewBinding.tvLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut() // Sign out from Firebase Auth
             val intent = Intent(this, LoginActivity::class.java)
-            // intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
         }
@@ -81,7 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         val updatedUser = currentUser.copy(
             storeName = newStoreName,
             updatedAt = System.currentTimeMillis() // Update timestamp
-            // Profile kung itutuloy ko pa
+
         )
 
         // Save updated data to Firestore
