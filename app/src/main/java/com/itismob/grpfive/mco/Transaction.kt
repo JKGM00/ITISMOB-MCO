@@ -5,8 +5,7 @@ import com.google.firebase.firestore.Exclude
 data class Transaction(
     @get:Exclude @set:Exclude var transactionID: String = "",
     val items: List<TransactionItem> = emptyList(),
-    // change to createdat ...
-    val timestampMillis: Long = System.currentTimeMillis() // Timestamp when transaction was created
+    val createdAt: Long = System.currentTimeMillis()
 ) {
     // this computed field will help with displaying onscreen
     val totalAmount: Double

@@ -1,15 +1,21 @@
 package com.itismob.grpfive.mco
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ktx.toObject
 import com.itismob.grpfive.mco.databinding.ActivityPosBinding
 import com.itismob.grpfive.mco.databinding.DialogAddProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
+import java.util.UUID
 
 class PosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPosBinding
@@ -17,25 +23,26 @@ class PosActivity : AppCompatActivity() {
     private val cartItems = mutableListOf<TransactionItem>()
     private var currentBarcodeScanner: BarcodeScannerHelper? = null
     
+    // Firebase Tables
+    private val db = FirebaseFirestore.getInstance()
+    private val products = db.collection("products")
+    private val transactions = db.collection("transactions")
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPosBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
-        // Load sample cart data from DataGenerator
-        cartItems.addAll(DataGenerator.sampleCart())
-        
+
         // Set up RecyclerView
         posAdapter = PosAdapter(
             cartItems,
             onDelete = { item ->
-                // Handle delete
                 cartItems.remove(item)
                 posAdapter.notifyDataSetChanged()
                 updateTotal()
             },
             onQuantityChanged = {
-                // Update total when quantity changes
                 updateTotal()
             }
         )
@@ -43,261 +50,272 @@ class PosActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = posAdapter
         
-        // Set up back button click listener
         binding.tvBack2Main.setOnClickListener {
-            finish() // Close this activity and return to previous screen
+            finish()
         }
         
-        // Set up Add button to show dialog
         binding.btnAddToCart.setOnClickListener {
             showAddProductDialog()
         }
         
-        // Set up Scan button to show scan dialog
         binding.btnScan.setOnClickListener {
             showScanBarcodeDialog()
         }
 
         binding.btnTotal.setOnClickListener {
-            showConfirmationDialog()
+            if (cartItems.isNotEmpty()) {
+                showConfirmationDialog()
+            } else {
+                showToast("Cart is empty.")
+            }
         }
         
-        // Update total on initial load
         updateTotal()
     }
     
+    private fun findProductByBarcode(barcode: String, onResult: (Product?) -> Unit) {
+        products.whereEqualTo("productBarcode", barcode).limit(1).get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    onResult(null)
+                } else {
+                    val product = documents.first().toObject<Product>()
+                    product.productID = documents.first().id // Set document ID
+                    onResult(product)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("PosActivity", "Error getting product by barcode", exception)
+                showToast("Error finding product.")
+                onResult(null)
+            }
+    }
+
     private fun showAddProductDialog() {
         try {
-            Toast.makeText(this, "Opening Add Product Dialog", Toast.LENGTH_SHORT).show()
-            
             val dialogBinding = DialogAddProductBinding.inflate(LayoutInflater.from(this))
-            val dialog = AlertDialog.Builder(this)
-                .setView(dialogBinding.root)
-                .create()
-            
-            // Don't set transparent background - this might be causing visibility issues
-            // dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            val dialog = AlertDialog.Builder(this).setView(dialogBinding.root).create()
             
             var selectedProduct: Product? = null
             
-            // Listen for barcode input changes
             dialogBinding.etBarcode.doAfterTextChanged { text ->
-                val barcode = text.toString()
+                val barcode = text.toString().trim()
                 if (barcode.isNotEmpty()) {
-                    // Look up product by barcode
-                    selectedProduct = DataGenerator.findByBarcode(barcode)
-                    if (selectedProduct != null) {
-                        // Show product info card
-                        dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
-                        dialogBinding.tvProductName.text = selectedProduct!!.productName
-                        dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
-                        dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
-                        dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
-                    } else {
-                        // Show error message
-                        dialogBinding.cvProductInfo.visibility = android.view.View.GONE
-                        dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
-                        dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                    findProductByBarcode(barcode) { product ->
+                        selectedProduct = product
+                        if (selectedProduct != null) {
+                            dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                            dialogBinding.tvProductName.text = selectedProduct!!.productName
+                            dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
+                            dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                            dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                        } else {
+                            dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                            dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
+                            dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                        }
                     }
                 } else {
-                    // Hide all info when barcode is empty
                     dialogBinding.cvProductInfo.visibility = android.view.View.GONE
                     dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                     dialogBinding.tilQuantity.visibility = android.view.View.GONE
                 }
             }
             
-            // Cancel button
-            dialogBinding.btnCancelItem.setOnClickListener {
-                dialog.dismiss()
-            }
+            dialogBinding.btnCancelItem.setOnClickListener { dialog.dismiss() }
             
-            // Add to Cart button
             dialogBinding.btnAddtoTransc.setOnClickListener {
                 if (selectedProduct != null) {
-                    val quantityText = dialogBinding.etQuantity.text.toString()
-                    val quantity = quantityText.toIntOrNull() ?: 1
-                    
+                    val quantity = dialogBinding.etQuantity.text.toString().toIntOrNull() ?: 1
                     if (quantity > 0) {
-                        // Check if product already in cart
-                        val existingItem = cartItems.find { it.productID == selectedProduct!!.productID }
-                        if (existingItem != null) {
-                            // Update quantity
-                            existingItem.quantity += quantity
-                        } else {
-                            // Add new item
-                            val newItem = TransactionItem(
-                                productID = selectedProduct!!.productID,
-                                productName = selectedProduct!!.productName,
-                                productPrice = selectedProduct!!.sellingPrice,
-                                quantity = quantity
-                            )
-                            cartItems.add(newItem)
-                        }
-                        
-                        posAdapter.notifyDataSetChanged()
-                        updateTotal()
+                        addProductToCart(selectedProduct!!, quantity)
                         dialog.dismiss()
-                        Toast.makeText(this, "Added ${selectedProduct!!.productName} to cart", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Please enter a valid quantity", Toast.LENGTH_SHORT).show()
+                        showToast("Please enter a valid quantity.")
                     }
                 } else {
-                    Toast.makeText(this, "Please enter a valid barcode", Toast.LENGTH_SHORT).show()
+                    showToast("Please enter a valid barcode.")
                 }
             }
-            
             dialog.show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Error creating dialog: ${e.message}", Toast.LENGTH_LONG).show()
+            showToast("Error creating dialog: ${e.message}")
             e.printStackTrace()
         }
     }
-    
-    private fun updateTotal() {
-        val total = cartItems.sumOf { it.subtotal }
-        binding.btnTotal.text = "₱${String.format("%.2f", total)}"
-    }
-    
+
     private fun showScanBarcodeDialog() {
         try {
             val dialogBinding = DialogScanBarcodeBinding.inflate(LayoutInflater.from(this))
-            val dialog = AlertDialog.Builder(this)
-                .setView(dialogBinding.root)
-                .create()
+            val dialog = AlertDialog.Builder(this).setView(dialogBinding.root).create()
             
             var selectedProduct: Product? = null
             
-            // Initialize barcode scanner with camera
-            currentBarcodeScanner = BarcodeScannerHelper(
-                this,
-                dialogBinding.cameraPreview
-            ) { scannedBarcode ->
-                // Handle scanned barcode
+            currentBarcodeScanner = BarcodeScannerHelper(this, dialogBinding.cameraPreview) { scannedBarcode ->
                 runOnUiThread {
                     when {
                         scannedBarcode == "PERMISSION_DENIED" -> {
-                            Toast.makeText(this, "Camera permission denied. Please grant permission in settings.", Toast.LENGTH_LONG).show()
+                            showToast("Camera permission denied.")
                             dialog.dismiss()
                         }
                         scannedBarcode.startsWith("CAMERA_ERROR") -> {
-                            Toast.makeText(this, "Camera error: $scannedBarcode", Toast.LENGTH_LONG).show()
+                            showToast("Camera error: $scannedBarcode")
                         }
                         else -> {
-                            // Valid barcode scanned
                             dialogBinding.tvScannedBarcode.text = "Scanned: $scannedBarcode"
-                            
-                            // Look up product by barcode
-                            selectedProduct = DataGenerator.findByBarcode(scannedBarcode)
-                            if (selectedProduct != null) {
-                                // Show product info card
-                                dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
-                                dialogBinding.tvProductName.text = selectedProduct!!.productName
-                                dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
-                                dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
-                                dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
-                            } else {
-                                // Show error message
-                                dialogBinding.cvProductInfo.visibility = android.view.View.GONE
-                                dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
-                                dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                            findProductByBarcode(scannedBarcode) { product ->
+                                selectedProduct = product
+                                if (selectedProduct != null) {
+                                    dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                                    dialogBinding.tvProductName.text = selectedProduct!!.productName
+                                    dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
+                                    dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                                    dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                                } else {
+                                    dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                                    dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
+                                    dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                                }
                             }
                         }
                     }
                 }
             }
             
-            // Start camera when dialog is shown
-            dialog.setOnShowListener {
-                currentBarcodeScanner?.checkCameraPermissionAndStart()
-            }
-            
-            // Clean up camera when dialog is dismissed
+            dialog.setOnShowListener { currentBarcodeScanner?.checkCameraPermissionAndStart() }
             dialog.setOnDismissListener {
                 currentBarcodeScanner?.shutdown()
                 currentBarcodeScanner = null
             }
             
-            // Close button
-            dialogBinding.btnClose.setOnClickListener {
-                dialog.dismiss()
-            }
+            dialogBinding.btnClose.setOnClickListener { dialog.dismiss() }
             
-            // Add to Cart button
             dialogBinding.btnAddToCart.setOnClickListener {
                 if (selectedProduct != null) {
-                    val quantityText = dialogBinding.etQuantity.text.toString()
-                    val quantity = quantityText.toIntOrNull() ?: 1
-                    
+                    val quantity = dialogBinding.etQuantity.text.toString().toIntOrNull() ?: 1
                     if (quantity > 0) {
-                        // Check if product already in cart
-                        val existingItem = cartItems.find { it.productID == selectedProduct!!.productID }
-                        if (existingItem != null) {
-                            // Update quantity
-                            existingItem.quantity += quantity
-                        } else {
-                            // Add new item
-                            val newItem = TransactionItem(
-                                productID = selectedProduct!!.productID,
-                                productName = selectedProduct!!.productName,
-                                productPrice = selectedProduct!!.sellingPrice,
-                                quantity = quantity
-                            )
-                            cartItems.add(newItem)
-                        }
-                        
-                        posAdapter.notifyDataSetChanged()
-                        updateTotal()
-                        dialog.dismiss()
-                        Toast.makeText(this, "Added ${selectedProduct!!.productName} to cart", Toast.LENGTH_SHORT).show()
+                         addProductToCart(selectedProduct!!, quantity)
+                         dialog.dismiss()
                     } else {
-                        Toast.makeText(this, "Please enter a valid quantity", Toast.LENGTH_SHORT).show()
+                        showToast("Please enter a valid quantity.")
                     }
                 } else {
-                    Toast.makeText(this, "Please scan a barcode first", Toast.LENGTH_SHORT).show()
+                    showToast("Please scan a valid barcode.")
                 }
             }
             
             dialog.show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Error creating scan dialog: ${e.message}", Toast.LENGTH_LONG).show()
+            showToast("Error creating scan dialog: ${e.message}")
             e.printStackTrace()
         }
     }
-
+    
+    private fun addProductToCart(product: Product, quantity: Int) {
+        val cartItem = cartItems.find { it.productID == product.productID }
+        if (cartItem != null) {
+            if (cartItem.quantity + quantity <= product.stockQuantity) {
+                cartItem.quantity += quantity
+                showToast("Updated ${product.productName} quantity.")
+            } else {
+                showToast("Not enough stock for ${product.productName}.")
+                return
+            }
+        } else {
+            if (quantity <= product.stockQuantity) {
+                val newItem = TransactionItem(
+                    productID = product.productID,
+                    productName = product.productName,
+                    productPrice = product.sellingPrice,
+                    quantity = quantity,
+                    stockQuantity = product.stockQuantity // Stock Quantity for addBtn to validate
+                )
+                cartItems.add(newItem)
+                showToast("Added ${product.productName} to cart.")
+            } else {
+                showToast("Not enough stock for ${product.productName}.")
+                return
+            }
+        }
+        posAdapter.notifyDataSetChanged()
+        updateTotal()
+    }
+    
     private fun showConfirmationDialog() {
         AlertDialog.Builder(this)
             .setTitle("Complete Transaction?")
-            .setMessage("Are you sure you want to finalize this transaction?")
+            .setMessage("Finalize this transaction? This will deduct from inventory.")
             .setPositiveButton("Yes") { _, _ ->
-                // Clear cart items
-                cartItems.clear()
-                posAdapter.notifyDataSetChanged()
-                updateTotal()
-
-                Toast.makeText(this, "Transaction completed!", Toast.LENGTH_SHORT).show()
-
-                // Navigate Back
-                finish()
+                processTransaction()
             }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-                Toast.makeText(this, "Transaction cancelled.", Toast.LENGTH_SHORT).show()
-            }
+            .setNegativeButton("No", null)
             .show()
     }
-    
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == BarcodeScannerHelper.CAMERA_PERMISSION_REQUEST_CODE) {
-            val granted = grantResults.isNotEmpty() && 
-                         grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
-            currentBarcodeScanner?.handlePermissionResult(granted)
+
+    private fun processTransaction() {
+        val newTransaction = Transaction(
+            transactionID = UUID.randomUUID().toString(),
+            items = cartItems,
+            createdAt = System.currentTimeMillis()
+        )
+
+        db.runTransaction { firestoreTransaction ->
+            // 1. Must Read first according to DOCU before write
+            val productDetails = cartItems.map { item ->
+                val ref = products.document(item.productID)
+                val snapshot = firestoreTransaction.get(ref)
+                Triple(item, ref, snapshot)
+            }
+
+            // 2. If all checks pass, perform all writes.
+            val newTimestamp = System.currentTimeMillis()
+
+            for ((item, ref, snapshot) in productDetails) {
+                val currentStock = snapshot.getLong("stockQuantity") ?: 0
+                if (currentStock < item.quantity) {
+                    throw FirebaseFirestoreException(
+                        "Not enough stock for ${item.productName}. Only $currentStock left.",
+                        FirebaseFirestoreException.Code.ABORTED
+                    )
+                }
+                
+                // Calculate new stock level -- update products table
+                val newStock = currentStock - item.quantity
+                firestoreTransaction.update(ref, "stockQuantity", newStock, "updatedAt", newTimestamp)
+            }
+
+            // Record the transaction
+            val transactionRef = transactions.document(newTransaction.transactionID)
+            // Put / Write 'transaction' into the database
+            firestoreTransaction.set(transactionRef, newTransaction)
+
+            null // Return null to indicate success
+        }.addOnSuccessListener {
+            showToast("Transaction completed successfully!")
+            cartItems.clear()
+            posAdapter.notifyDataSetChanged()
+            updateTotal()
+            finish()
+        }.addOnFailureListener { e ->
+            showToast("Transaction failed: ${e.message}")
+            Log.e("PosActivity", "Transaction failed", e)
         }
     }
 
+    private fun updateTotal() {
+        val total = cartItems.sumOf { it.subtotal }
+        binding.btnTotal.text = "₱${String.format("%.2f", total)}"
+    }
+    
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == BarcodeScannerHelper.CAMERA_PERMISSION_REQUEST_CODE) {
+            val granted = grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+            currentBarcodeScanner?.handlePermissionResult(granted)
+        }
+    }
 }

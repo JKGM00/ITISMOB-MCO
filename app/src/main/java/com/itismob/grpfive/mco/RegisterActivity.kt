@@ -64,9 +64,9 @@ class RegisterActivity : AppCompatActivity() {
                     val user = auth.currentUser
 
                     if (user != null) {
-                        // Save user data in User object
                         val currentTime = System.currentTimeMillis()
 
+                        // Save user data in User object
                         val newUser = User(
                             userID = user.uid,
                             storeName = storeName,
@@ -85,10 +85,9 @@ class RegisterActivity : AppCompatActivity() {
 
                                 Handler(Looper.getMainLooper()).postDelayed({
                                     val intent = Intent(this, LoginActivity::class.java)
-                                    // intent.putExtra("newUser", newUser)
                                     startActivity(intent)
                                     finish()
-                                }, 1500) // delay by 1.5s
+                                }, 1500) // Delay by 1.5s
                             }
                             .addOnFailureListener { e ->
                                 // Registration failed -- Delete user from Firebase Auth

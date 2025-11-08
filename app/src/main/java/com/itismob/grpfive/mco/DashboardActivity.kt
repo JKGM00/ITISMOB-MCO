@@ -19,17 +19,6 @@ class DashboardActivity : ComponentActivity() {
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var lowStockAdapter: LowStockAdapter
     private lateinit var currentUser : User
-    
-    // Category image mapping
-//    private val categoryImageMap = mapOf(
-//        "Cooking Essentials" to R.drawable.cooking_essentials,
-//        "Snacks" to R.drawable.snack,
-//        "Drinks" to R.drawable.drinks,
-//        "Canned Goods" to R.drawable.canned_goods,
-//        "Instant Food" to R.drawable.instant_food,
-//        "Hygiene" to R.drawable.hygiene,
-//        "Miscellaneous" to R.drawable.miscellaneous
-//    )
 
     private val profileActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -214,7 +203,7 @@ class DashboardActivity : ComponentActivity() {
         val currentYear = calendar.get(Calendar.YEAR)
         
         return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.timestampMillis
+            calendar.timeInMillis = transaction.createdAt
             calendar.get(Calendar.DAY_OF_YEAR) == currentDay && 
             calendar.get(Calendar.YEAR) == currentYear
         }
@@ -227,7 +216,7 @@ class DashboardActivity : ComponentActivity() {
         val currentYear = calendar.get(Calendar.YEAR)
         
         return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.timestampMillis
+            calendar.timeInMillis = transaction.createdAt
             calendar.get(Calendar.WEEK_OF_YEAR) == currentWeek && 
             calendar.get(Calendar.YEAR) == currentYear
         }
@@ -240,7 +229,7 @@ class DashboardActivity : ComponentActivity() {
         val currentYear = calendar.get(Calendar.YEAR)
         
         return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.timestampMillis
+            calendar.timeInMillis = transaction.createdAt
             calendar.get(Calendar.MONTH) == currentMonth && 
             calendar.get(Calendar.YEAR) == currentYear
         }
@@ -254,7 +243,7 @@ class DashboardActivity : ComponentActivity() {
         val currentYear = calendar.get(Calendar.YEAR)
         
         return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.timestampMillis
+            calendar.timeInMillis = transaction.createdAt
             val transactionQuarter = calendar.get(Calendar.MONTH) / 3
             transactionQuarter == currentQuarter && 
             calendar.get(Calendar.YEAR) == currentYear
@@ -267,7 +256,7 @@ class DashboardActivity : ComponentActivity() {
         val currentYear = calendar.get(Calendar.YEAR)
         
         return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.timestampMillis
+            calendar.timeInMillis = transaction.createdAt
             calendar.get(Calendar.YEAR) == currentYear
         }
     }

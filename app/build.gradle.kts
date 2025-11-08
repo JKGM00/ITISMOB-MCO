@@ -69,7 +69,7 @@ dependencies {
 
 
     // Firebase Implementations
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0")) // Separate ktx modules in this version compared sa 35.4.0
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
 

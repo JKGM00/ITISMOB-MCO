@@ -1,5 +1,6 @@
 package com.itismob.grpfive.mco
 
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.grpfive.mco.databinding.ItemsPosBinding
 
@@ -23,10 +24,15 @@ class PosViewHolder(
         
         // Increment quantity button
         itemViewBinding.btnAdd.setOnClickListener {
-            itemsTransaction.quantity++
-            itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
-            itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
-            onQuantityChanged()
+            // Stock Quantity field of itemTransaction is now used here to validate the quantity
+            if (itemsTransaction.quantity < itemsTransaction.stockQuantity) {
+                itemsTransaction.quantity++
+                itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
+                itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
+                onQuantityChanged()
+            } else {
+                Toast.makeText(itemView.context, "Can't add more. Not enough stock.", Toast.LENGTH_SHORT).show()
+            }
         }
         
         // Decrement quantity button

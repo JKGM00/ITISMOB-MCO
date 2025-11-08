@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
                 if (document != null && document.exists()) {
                     val user = document.toObject(User::class.java)
                     if (user != null) {
-                        // Set the userID property from the document ID -- Important to
+                        // Set the userID property from the document ID -- Important ito unique ID
                         user.userID = document.id
 
                         // Check if user is active
@@ -118,6 +118,7 @@ class LoginActivity : AppCompatActivity() {
 
                         showToast("Welcome, ${user.storeName}!")
 
+                        // AI-generated delay
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent = Intent(this, DashboardActivity::class.java)
                             intent.putExtra("user", user) // Pass the full User object

@@ -170,30 +170,30 @@ object DataGenerator {
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
 				items = items1,
-				timestampMillis = now
+				createdAt = now
 			),
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
 				items = items2,
-				timestampMillis = oneHourAgo
+				createdAt = oneHourAgo
 			),
 			// Yesterday's transaction
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
 				items = items3,
-				timestampMillis = oneDayAgo
+				createdAt = oneDayAgo
 			),
 			// Last week's transaction
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
 				items = items4,
-				timestampMillis = oneWeekAgo
+				createdAt = oneWeekAgo
 			),
 			// Last month's transaction
 			Transaction(
 				transactionID = "tx-${UUID.randomUUID()}",
 				items = items5,
-				timestampMillis = oneMonthAgo
+				createdAt = oneMonthAgo
 			)
 		)
 	}
