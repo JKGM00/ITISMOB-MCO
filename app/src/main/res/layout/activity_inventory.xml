@@ -22,13 +22,13 @@
             android:id="@+id/tvBack2Main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:clickable="true"
             android:fontFamily="@font/montserrat"
             android:paddingStart="5dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/btnAddProduct"
@@ -38,7 +38,7 @@
             android:fontFamily="@font/montserrat"
             android:text="＋ Add Product"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 

@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <!-- Filter and Sort Section (Minimalist) -->
+    <!-- Filter and Sort Section -->
     <LinearLayout
         android:id="@+id/filterSortSection"
         android:layout_width="0dp"
@@ -77,8 +77,8 @@
                 android:padding="6dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/calendar"
-                android:tint="@color/Dark_Blue"
-                android:tooltipText="Filter by Date" />
+                android:tooltipText="Filter by Date"
+                app:tint="@color/Dark_Blue" />
 
         </LinearLayout>
 
@@ -100,12 +100,12 @@
                 android:textSize="12sp" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:contentDescription="Sort by time icon"
                 android:scaleType="centerInside"
                 android:src="@drawable/sort_by_time"
-                android:tint="@color/Dark_Blue" />
+                app:tint="@color/Dark_Blue" />
 
             <Spinner
                 android:id="@+id/spinnerSort"
@@ -115,13 +115,13 @@
                 android:contentDescription="Sort by date options" />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="8dp"
                 android:contentDescription="Sort by total amount icon"
                 android:scaleType="centerInside"
                 android:src="@drawable/sort_by_total_amount"
-                android:tint="@color/Dark_Blue" />
+                app:tint="@color/Dark_Blue" />
 
             <Spinner
                 android:id="@+id/spinnerPriceSort"
@@ -163,7 +163,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filterSortSection" />
 
-    <!-- Empty State Message (ConstraintLayout - Centered) -->
+    <!-- Empty State Message -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llEmptyState"
         android:layout_width="0dp"

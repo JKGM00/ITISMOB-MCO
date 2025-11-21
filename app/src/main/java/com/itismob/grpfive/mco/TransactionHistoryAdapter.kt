@@ -7,9 +7,7 @@ import com.itismob.grpfive.mco.databinding.ItemTransactionHistoryBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TransactionHistoryAdapter(
-    private val transactions: List<Transaction>
-) : RecyclerView.Adapter<TransactionHistoryAdapter.TransactionViewHolder>() {
+class TransactionHistoryAdapter(private val transactions: List<Transaction>) : RecyclerView.Adapter<TransactionHistoryAdapter.TransactionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val binding = ItemTransactionHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)

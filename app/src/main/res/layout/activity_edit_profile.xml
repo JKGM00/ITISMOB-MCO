@@ -28,7 +28,7 @@
             android:paddingEnd="10dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tvLogout"
@@ -41,7 +41,7 @@
             android:gravity="end"
             android:text="Logout "
             android:textColor="#F4F0F0"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
     <LinearLayout

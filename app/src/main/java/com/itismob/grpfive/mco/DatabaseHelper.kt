@@ -1,5 +1,6 @@
 package com.itismob.grpfive.mco
 
+import android.annotation.SuppressLint
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -71,6 +72,7 @@ object DatabaseHelper {
             .addOnFailureListener { onFailure(it) }
     }
 
+    // Creates connection to app and DB and keeps watch for any changes
     fun listenToProducts(onUpdate: (List<Product>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration? {
         val uid = currentUserId
         if (uid == null) {
@@ -78,6 +80,7 @@ object DatabaseHelper {
             return null
         }
 
+        // Ensures that users -> uid -> view their products only
         return db.collection("users").document(uid).collection("products")
             .addSnapshotListener { snapshots, err ->
                 if (err != null) {
@@ -87,7 +90,7 @@ object DatabaseHelper {
 
                 if (snapshots != null) {
                     val productList = snapshots.documents.mapNotNull { doc ->
-                        // We manually set the ID to ensure it matches the document ID
+                        // Set the productID to ensure it matches the document ID
                         doc.toObject(Product::class.java)?.apply {
                             productID = doc.id
                         }
@@ -113,55 +116,6 @@ object DatabaseHelper {
             .addOnSuccessListener {
                 updateStock(transaction)
                 onSuccess()
-            }
-            .addOnFailureListener { onFailure(it) }
-    }
-
-    fun getTransactions(onSuccess: (List<Transaction>) -> Unit, onFailure: (Exception) -> Unit) {
-        val uid = currentUserId
-        if (uid == null) {
-            onFailure(Exception("User not logged in"))
-            return
-        }
-
-        db.collection("users").document(uid).collection("transactions")
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { snapshots ->
-                val transactionList = snapshots.documents.mapNotNull { doc ->
-                    doc.toObject(Transaction::class.java)?.apply {
-                        transactionID = doc.id
-                    }
-                }
-                onSuccess(transactionList)
-            }
-            .addOnFailureListener { onFailure(it) }
-    }
-
-    fun getTransactionsByDateRange(
-        startDate: Long,
-        endDate: Long,
-        onSuccess: (List<Transaction>) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val uid = currentUserId
-        if (uid == null) {
-            onFailure(Exception("User not logged in"))
-            return
-        }
-
-        db.collection("users").document(uid).collection("transactions")
-            .whereGreaterThanOrEqualTo("createdAt", startDate)
-            .whereLessThanOrEqualTo("createdAt", endDate)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { snapshots ->
-                val transactionList = snapshots.documents.mapNotNull { doc ->
-                    doc.toObject(Transaction::class.java)?.apply {
-                        transactionID = doc.id
-                    }
-                }
-                onSuccess(transactionList)
             }
             .addOnFailureListener { onFailure(it) }
     }
