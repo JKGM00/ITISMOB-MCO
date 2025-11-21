@@ -69,6 +69,12 @@
             android:label="Profile"
             android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".TransactionHistoryActivity"
+            android:exported="false"
+            android:label="Transaction History"
+            android:theme="@style/Theme.MCO" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

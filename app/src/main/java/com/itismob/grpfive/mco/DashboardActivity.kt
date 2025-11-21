@@ -100,6 +100,11 @@ class DashboardActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        binding.tvNavHistory.setOnClickListener {
+            val intent = Intent(this, TransactionHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.tvNavProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java).apply {
                 putExtra(ProfileActivity.USER_KEY, currentUser)
