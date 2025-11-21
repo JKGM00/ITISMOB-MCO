@@ -27,6 +27,7 @@ class TransactionHistoryActivity : AppCompatActivity() {
     private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     private var tempStartDateMillis: Long? = null
     private var tempEndDateMillis: Long? = null
+    private var listenerRegistration: com.google.firebase.firestore.ListenerRegistration? = null
     
     private enum class SortOrder {
         NEWEST, OLDEST, HIGHEST_AMOUNT, LOWEST_AMOUNT
@@ -37,8 +38,8 @@ class TransactionHistoryActivity : AppCompatActivity() {
         binding = ActivityTransactionHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        // Load sample transactions from DataGenerator
-        transactions.addAll(DataGenerator.sampleTransactions())
+        // Load transactions from Firebase
+        loadTransactionsFromFirebase()
         
         // Set up RecyclerView
         transactionAdapter = TransactionHistoryAdapter(filteredTransactions)
@@ -212,6 +213,26 @@ class TransactionHistoryActivity : AppCompatActivity() {
         binding.spinnerPriceSort.setSelection(0)
         applyFiltersAndSort()
         Toast.makeText(this, "Filters reset", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun loadTransactionsFromFirebase() {
+        DatabaseHelper.listenToTransactions(
+            onUpdate = { fetchedTransactions ->
+                transactions.clear()
+                transactions.addAll(fetchedTransactions)
+                applyFiltersAndSort()
+            },
+            onError = { error ->
+                Toast.makeText(this, "Error loading transactions: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        ).let { registration ->
+            listenerRegistration = registration
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listenerRegistration?.remove()
     }
 
     
