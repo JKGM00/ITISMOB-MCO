@@ -92,6 +92,17 @@ class PosActivity : AppCompatActivity() {
     private fun updateTotal() {
         val total = cartItems.sumOf { it.subtotal }
         binding.btnTotal.text = String.format("Total: ₱%.2f", total)
+        updateEmptyState()
+    }
+
+    private fun updateEmptyState() {
+        if (cartItems.isEmpty()) {
+            binding.recyclerView.visibility = android.view.View.GONE
+            binding.emptyStateContainer.visibility = android.view.View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = android.view.View.VISIBLE
+            binding.emptyStateContainer.visibility = android.view.View.GONE
+        }
     }
 
     // Find product within current user's inventory

@@ -113,6 +113,17 @@ class InventoryActivity : AppCompatActivity() {
         filteredProducts.clear()
         filteredProducts.addAll(tempFilteredList)
         productAdapter.notifyDataSetChanged()
+        updateEmptyState()
+    }
+
+    private fun updateEmptyState() {
+        if (filteredProducts.isEmpty()) {
+            viewBinding.rvInventory.visibility = android.view.View.GONE
+            viewBinding.emptyStateContainer.visibility = android.view.View.VISIBLE
+        } else {
+            viewBinding.rvInventory.visibility = android.view.View.VISIBLE
+            viewBinding.emptyStateContainer.visibility = android.view.View.GONE
+        }
     }
 
     private fun showCategoryFilterDialog() {
