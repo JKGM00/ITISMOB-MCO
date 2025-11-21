@@ -116,28 +116,6 @@ object DatabaseHelper {
             }
             .addOnFailureListener { onFailure(it) }
     }
-
-    fun getTransactions(onSuccess: (List<Transaction>) -> Unit, onFailure: (Exception) -> Unit) {
-        val uid = currentUserId
-        if (uid == null) {
-            onFailure(Exception("User not logged in"))
-            return
-        }
-
-        db.collection("users").document(uid).collection("transactions")
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { snapshots ->
-                val transactionList = snapshots.documents.mapNotNull { doc ->
-                    doc.toObject(Transaction::class.java)?.apply {
-                        transactionID = doc.id
-                    }
-                }
-                onSuccess(transactionList)
-            }
-            .addOnFailureListener { onFailure(it) }
-    }
-    
     fun listenToTransactions(onUpdate: (List<Transaction>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration? {
         val uid = currentUserId
         if (uid == null) {
