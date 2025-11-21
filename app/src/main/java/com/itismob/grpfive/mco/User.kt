@@ -12,5 +12,5 @@ data class User(
     var createdAt: Long = System.currentTimeMillis(),
     var updatedAt: Long = System.currentTimeMillis(),
     var isActive: Boolean = true
-    // Password is removed as Firebase Auth would handle it already
+    // Password is removed as Firebase Auth would handle it already gng
 ) : Serializable

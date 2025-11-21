@@ -71,7 +71,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/text_border"
                 android:fontFamily="@font/montserrat"
-                android:hint="e.g., Delicious Pizza"
+                android:hint="e.g., Mega Sardinas"
                 android:inputType="textCapWords"
                 android:padding="12dp"
                 android:textColor="#333333"

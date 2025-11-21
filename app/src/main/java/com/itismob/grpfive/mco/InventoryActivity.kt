@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import com.itismob.grpfive.mco.databinding.ActivityInventoryBinding
 import java.util.Locale
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 class InventoryActivity : AppCompatActivity() {
 
@@ -19,8 +20,12 @@ class InventoryActivity : AppCompatActivity() {
     private lateinit var viewBinding : ActivityInventoryBinding
     private lateinit var productAdapter: ProductInventoryAdapter
 
+
     // Firebase DB Instance
     private lateinit var db: FirebaseFirestore
+
+    // Database Listener
+    private var productListener: ListenerRegistration? = null
 
 
     // Product Lists
@@ -43,35 +48,23 @@ class InventoryActivity : AppCompatActivity() {
                     return@registerForActivityResult
                 }
 
-                val productName = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_NAME_KEY)
-                val productCategory = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_CATEGORY_KEY)
-                val productBarcode = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_BARCODE_KEY)
-                val unitCostString = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY)
-                val sellingPriceString = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY)
-                val stockQuantity = intent.getIntExtra(ProductInventoryAdapter.PRODUCT_STOCK_KEY, 0)
-
+                // Reconstruct Product Object
                 val updatedProduct = Product(
                     productID = productID,
-                    productName = productName ?: "",
-                    productCategory = productCategory ?: "",
-                    productBarcode = productBarcode ?: "",
-                    unitCost = unitCostString?.toDoubleOrNull() ?: 0.0,
-                    sellingPrice = sellingPriceString?.toDoubleOrNull() ?: 0.0,
-                    stockQuantity = stockQuantity
+                    productName = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_NAME_KEY) ?: "",
+                    productCategory = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_CATEGORY_KEY) ?: "",
+                    productBarcode = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_BARCODE_KEY) ?: "",
+                    unitCost = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY)?.toDoubleOrNull() ?: 0.0,
+                    sellingPrice = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY)?.toDoubleOrNull() ?: 0.0,
+                    stockQuantity = intent.getIntExtra(ProductInventoryAdapter.PRODUCT_STOCK_KEY, 0)
                 )
 
-                // Update the product in Firestore
-                db.collection("products").document(productID)
-                    .set(updatedProduct)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Product updated successfully!", Toast.LENGTH_SHORT).show()
-                        // The snapshot listener in fetchProducts() auto refresh UI
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error updating product: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                // USE DATABASE HELPER
+                DatabaseHelper.updateProduct(updatedProduct,
+                    onSuccess = { Toast.makeText(this, "Product updated successfully!", Toast.LENGTH_SHORT).show() },
+                    onFailure = { e -> Toast.makeText(this, "Error updating product: ${e.message}", Toast.LENGTH_SHORT).show() })
             } else {
-                Toast.makeText(this, "No changes made / Edit Cancelled.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No changes made.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -82,17 +75,17 @@ class InventoryActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val intent = result.data
             val newProduct = intent?.getSerializableExtra("newProduct") as? Product
+
             if (newProduct != null) {
-                // Add the new product to Firestore. The productID is already generated in AddProductActivity.
-                db.collection("products").document(newProduct.productID)
-                    .set(newProduct)
-                    .addOnSuccessListener {
+                // USE DATABASE HELPER
+                DatabaseHelper.addProduct(newProduct,
+                    onSuccess = {
                         Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
-                        // The snapshot listener in fetchProducts() auto refresh UI
-                    }
-                    .addOnFailureListener { e ->
+                    },
+                    onFailure = { e ->
                         Toast.makeText(this, "Error adding product: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
+                )
             }
         }
     }
@@ -104,8 +97,8 @@ class InventoryActivity : AppCompatActivity() {
         val currentSearchQuery = searchQuery.lowercase(Locale.ROOT)
         if (currentSearchQuery.isNotBlank()) {
             tempFilteredList = tempFilteredList.filter {
-                // Filter by name or Category
-                it.productName.lowercase(Locale.ROOT).contains(currentSearchQuery) || it.productCategory.lowercase(Locale.ROOT).contains(currentSearchQuery)
+                it.productName.lowercase(Locale.ROOT).contains(currentSearchQuery) ||
+                        it.productCategory.lowercase(Locale.ROOT).contains(currentSearchQuery)
             }
         }
 
@@ -119,11 +112,10 @@ class InventoryActivity : AppCompatActivity() {
         // Update Adapter List
         filteredProducts.clear()
         filteredProducts.addAll(tempFilteredList)
-        productAdapter.notifyDataSetChanged() // Notify adapter that its data has changed
+        productAdapter.notifyDataSetChanged()
     }
 
     private fun showCategoryFilterDialog() {
-        // Ensure categories are based on the master 'products' list
         val categories = products.map { it.productCategory }.distinct().sorted().toMutableList()
         categories.add(0, "All Categories")
 
@@ -133,12 +125,10 @@ class InventoryActivity : AppCompatActivity() {
             .setTitle("Filter by Category")
             .setSingleChoiceItems(categories.toTypedArray(), checkedItem) { dialog, which ->
                 filterCategory = categories[which]
-                applyFilters() // Apply filters after category selection
+                applyFilters()
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
@@ -151,19 +141,18 @@ class InventoryActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error: Product ID is missing.", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
-                // Delete the document from Firestore
-                db.collection("products").document(productToDelete.productID)
-                    .delete()
-                    .addOnSuccessListener {
+
+                // USE DATABASE HELPER
+                DatabaseHelper.deleteProduct(productToDelete.productID,
+                    onSuccess = {
                         Toast.makeText(this, "'${productToDelete.productName}' deleted successfully!", Toast.LENGTH_SHORT).show()
+                    },
+                    onFailure = { e ->
+                        Toast.makeText(this, "Error deleting: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error deleting product: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                )
             }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
@@ -173,8 +162,6 @@ class InventoryActivity : AppCompatActivity() {
         viewBinding = ActivityInventoryBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        db = FirebaseFirestore.getInstance()
-
         // Initialize products list
         products = mutableListOf()
 
@@ -183,15 +170,10 @@ class InventoryActivity : AppCompatActivity() {
         viewBinding.rvInventory.layoutManager = LinearLayoutManager(this)
         viewBinding.rvInventory.adapter = productAdapter
 
-        // Fetch products from DB after binding
-        fetchProducts()
-
         // Back to Main Button
-        viewBinding.tvBack2Main.setOnClickListener {
-            finish()
-        }
+        viewBinding.tvBack2Main.setOnClickListener { finish() }
 
-        // Add Product Button (AddProductActivity)
+        // Add Product Button
         viewBinding.btnAddProduct.setOnClickListener {
             val intent = Intent(this, AddProductActivity::class.java)
             addProductLauncher.launch(intent)
@@ -201,43 +183,33 @@ class InventoryActivity : AppCompatActivity() {
         viewBinding.etSearchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchQuery = s.toString() // Update current search query
-                applyFilters() // Re-apply filters whenever text changes
+                searchQuery = s.toString()
+                applyFilters()
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        viewBinding.btnFilter.setOnClickListener {
-            showCategoryFilterDialog()
-        }
+        viewBinding.btnFilter.setOnClickListener { showCategoryFilterDialog() }
     }
 
-    private fun fetchProducts() {
-        // Get all 'products' from Firestore
-        db.collection("products")
-            // Attach listener to collection
-            .addSnapshotListener { snapshots, err ->
-                if (err != null) {
-                    Toast.makeText(this, "Error fetching products: ${err.message}", Toast.LENGTH_LONG).show()
-                    return@addSnapshotListener
-                }
+    override fun onStart() {
+        super.onStart()
+        listenProducts()
+    }
 
-                if (snapshots != null) {
-                    // Temp list for new data
-                    val updatedProducts = mutableListOf<Product>()
-                    for (document in snapshots.documents) {
-                        val product = document.toObject(Product::class.java)
-                        // If object is created, set productID and add to list
-                        if (product != null) {
-                            product.productID = document.id // Set the Firestore document ID to productID
-                            updatedProducts.add(product)
-                        }
-                    }
-                    products.clear()
-                    products.addAll(updatedProducts)
-                    applyFilters() // Re-apply filters and notify adapter with the new data
-                }
-            }
+    override fun onStop() {
+        super.onStop()
+        productListener?.remove()
+    }
+
+    private fun listenProducts() {
+        productListener = DatabaseHelper.listenToProducts(
+            onUpdate = { updatedList ->
+                products.clear()
+                products.addAll(updatedList)
+                applyFilters() // Refresh UI
+            },
+            onError = { e -> Toast.makeText(this, "Error fetching products: ${e.message}", Toast.LENGTH_LONG).show() })
     }
 
 }

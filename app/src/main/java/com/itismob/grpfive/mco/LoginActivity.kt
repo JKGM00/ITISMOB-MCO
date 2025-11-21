@@ -14,21 +14,20 @@ import androidx.core.content.edit
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase Auth and Firestore
+        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
 
         setupLogin()
     }
 
-    // onStart: Check if a user is already logged in (optional auto-login)
+    // onStart: Check if a user is already logged in (auto-login)
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
@@ -101,47 +100,34 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun fetchUserData(userId: String) {
-        db.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val user = document.toObject(User::class.java)
-                    if (user != null) {
-                        // Set the userID property from the document ID -- Important ito unique ID
-                        user.userID = document.id
-
-                        // Check if user is active
-                        if (!user.isActive) {
-                            showToast("This account is currently inactive.")
-                            auth.signOut() // Log out the inactive user from Firebase Auth
-                            return@addOnSuccessListener
-                        }
-
-                        showToast("Welcome, ${user.storeName}!")
-
-                        // AI-generated delay
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            val intent = Intent(this, DashboardActivity::class.java)
-                            intent.putExtra("user", user) // Pass the full User object
-                            startActivity(intent)
-
-                            val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
-                            sharedPrefs.edit { remove("lastEmail") } // Clear saved email
-
-                            finish() // Close LoginActivity
-                        }, 1500)
-                    } else {
-                        showToast("User data parsing failed.")
-                        auth.signOut() // Sign out if Firestore data is corrupted
-                    }
-                } else {
-                    showToast("Email not found. Please register.")
-                    auth.signOut() // Sign out if Auth user exists but no Firestore profile
+        DatabaseHelper.getUser(userId,
+            onSuccess = { user ->
+                // Check if user is active
+                if (!user.isActive) {
+                    showToast("This account is currently inactive.")
+                    auth.signOut() // Log out the inactive user from Firebase Auth
+                    return@getUser
                 }
-            }
-            .addOnFailureListener { e ->
+
+                showToast("Welcome, ${user.storeName}!")
+
+                // Delay the transition to DashboardActivity
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val intent = Intent(this, DashboardActivity::class.java)
+                    intent.putExtra("user", user) // Pass the full User object
+                    startActivity(intent)
+
+                    val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
+                    sharedPrefs.edit { remove("lastEmail") } // Clear saved email
+
+                    finish() // Close LoginActivity
+                }, 1500)
+            },
+            onFailure = { e ->
                 showToast("Failed to fetch user data: ${e.message}")
-                auth.signOut() // Sign out on network/db error
+                auth.signOut()
             }
+        )
     }
 
     private fun showToast(message: String) {

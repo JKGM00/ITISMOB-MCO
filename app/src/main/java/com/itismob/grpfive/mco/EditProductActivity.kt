@@ -22,11 +22,10 @@ class EditProductActivity : AppCompatActivity() {
         viewBinding = ActivityEditProductBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        viewBinding.tvBack2Main.setOnClickListener {
-            finish()
-        }
+        // Back button
+        viewBinding.tvBack2Main.setOnClickListener { finish() }
 
-        // Retrieve Intent / Information
+        // Retrieve Intent / Info
         val intent = intent
         val productID = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_ID_KEY)
         val productName = intent.getStringExtra(ProductInventoryAdapter.PRODUCT_NAME_KEY) ?: ""
@@ -55,6 +54,7 @@ class EditProductActivity : AppCompatActivity() {
             "Miscellaneous"
         )
 
+        // Dropdown Adapter
         val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, categories)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         viewBinding.spProductCategory.adapter = adapter
@@ -63,9 +63,7 @@ class EditProductActivity : AppCompatActivity() {
         viewBinding.spProductCategory.setSelection(adapter.getPosition(productCategory))
 
         // Save
-        viewBinding.btnSave.setOnClickListener {
-            saveEditedProduct(productID)
-        }
+        viewBinding.btnSave.setOnClickListener { saveEditedProduct(productID) }
 
         // Cancel
         viewBinding.btnCancel.setOnClickListener {
@@ -74,10 +72,7 @@ class EditProductActivity : AppCompatActivity() {
         }
 
         // Barcode Scanning
-        viewBinding.btnScanBarcode.setOnClickListener {
-            showScanBarcodeDialog()
-        }
-
+        viewBinding.btnScanBarcode.setOnClickListener { showScanBarcodeDialog() }
     }
 
     private fun saveEditedProduct(productID: String?) {
@@ -134,15 +129,15 @@ class EditProductActivity : AppCompatActivity() {
             val dialog = AlertDialog.Builder(this)
                 .setView(dialogBinding.root)
                 .create()
-            
+
             // Hide product info and quantity fields (we only need barcode)
             dialogBinding.cvProductInfo.visibility = android.view.View.GONE
             dialogBinding.tilQuantity.visibility = android.view.View.GONE
             dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
             dialogBinding.btnAddToCart.text = "Use Barcode"
-            
+
             var scannedBarcode: String? = null
-            
+
             // Initialize barcode scanner with camera
             currentBarcodeScanner = BarcodeScannerHelper(
                 this,
@@ -164,23 +159,23 @@ class EditProductActivity : AppCompatActivity() {
                     }
                 }
             }
-            
+
             // Start camera when dialog is shown
             dialog.setOnShowListener {
                 currentBarcodeScanner?.checkCameraPermissionAndStart()
             }
-            
+
             // Clean up camera when dialog is dismissed
             dialog.setOnDismissListener {
                 currentBarcodeScanner?.shutdown()
                 currentBarcodeScanner = null
             }
-            
+
             // Close button
             dialogBinding.btnClose.setOnClickListener {
                 dialog.dismiss()
             }
-            
+
             // Use barcode button
             dialogBinding.btnAddToCart.setOnClickListener {
                 if (scannedBarcode != null) {
@@ -192,14 +187,14 @@ class EditProductActivity : AppCompatActivity() {
                     Toast.makeText(this, "Please scan a barcode first", Toast.LENGTH_SHORT).show()
                 }
             }
-            
+
             dialog.show()
         } catch (e: Exception) {
             Toast.makeText(this, "Error creating scan dialog: ${e.message}", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
     }
-    
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -207,7 +202,7 @@ class EditProductActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == BarcodeScannerHelper.CAMERA_PERMISSION_REQUEST_CODE) {
-            val granted = grantResults.isNotEmpty() && 
+            val granted = grantResults.isNotEmpty() &&
                          grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
             currentBarcodeScanner?.handlePermissionResult(granted)
         }

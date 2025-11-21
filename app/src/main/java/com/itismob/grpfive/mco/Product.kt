@@ -4,7 +4,7 @@ import com.google.firebase.firestore.Exclude
 import java.io.Serializable
 
 data class Product(
-    // Document ID
+    // Document ID in Firestore
     @get:Exclude @set:Exclude var productID: String = "",
     val productName: String = "",
     val productCategory: String = "",

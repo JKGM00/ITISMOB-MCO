@@ -13,16 +13,15 @@ import com.itismob.grpfive.mco.databinding.ActivityRegisterBinding
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth // Firebase Authentication
-    private lateinit var db: FirebaseFirestore // Firebase DB for user data
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase Authentication and Firestore
+        // Initialize Firebase Authentication
         auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
     }
 
     override fun onStart() {
@@ -37,6 +36,7 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 
     private fun handleRegistration() {
         val storeName = binding.tvStoreName.text.toString().trim()
@@ -60,13 +60,13 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // User Registered successfully
+                    // User Registered successfully in Auth
                     val user = auth.currentUser
 
                     if (user != null) {
                         val currentTime = System.currentTimeMillis()
 
-                        // Save user data in User object
+                        // Create User Object
                         val newUser = User(
                             userID = user.uid,
                             storeName = storeName,
@@ -76,27 +76,27 @@ class RegisterActivity : AppCompatActivity() {
                             isActive = true
                         )
 
-                        // Save User in 'users' table
-                        db.collection("users").document(newUser.userID)
-                            .set(newUser)
-                            .addOnSuccessListener {
+                        DatabaseHelper.createUser(newUser,
+                            onSuccess = {
                                 // Registration successful
                                 Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
 
+                                // Delay setup
                                 Handler(Looper.getMainLooper()).postDelayed({
                                     val intent = Intent(this, LoginActivity::class.java)
                                     startActivity(intent)
                                     finish()
                                 }, 1500) // Delay by 1.5s
-                            }
-                            .addOnFailureListener { e ->
-                                // Registration failed -- Delete user from Firebase Auth
+                            },
+                            onFailure = { e ->
+                                // Database save failed -- Delete user from Firebase Auth to keep clean state
                                 user.delete()
-                                Toast.makeText(this, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show()
-                            }
-                    } else {
-                        Toast.makeText(this, "User creation failed.", Toast.LENGTH_SHORT).show()
-                    }
+                                Toast.makeText(this, "Registration failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                            })
+                    } else { Toast.makeText(this, "User creation failed.", Toast.LENGTH_SHORT).show() }
+                } else {
+                    // Auth failure
+                    Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
