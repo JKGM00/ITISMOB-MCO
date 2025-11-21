@@ -8,7 +8,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.view.MotionEvent
+import android.widget.EditText
 import com.itismob.grpfive.mco.databinding.ActivityRegisterBinding
+import com.itismob.grpfive.mco.utils.Validator
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -35,6 +38,9 @@ class RegisterActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+
+        setupPasswordToggle(binding.etPassword)
+        setupPasswordToggle(binding.etConfirmPassword)
     }
 
 
@@ -44,22 +50,27 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.etPassword.text.toString().trim()
         val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
-        // Basic input validation
-        if (storeName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+        // Validate store name length
+        Validator.validateLength(storeName, min = 1, max = 50)?.let {
+            Toast.makeText(this, "Store name: $it", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Firebase Auth req for min password length
-        if (password.length < 6) {
-            Toast.makeText(this, "Password must be at least 6 characters long.", Toast.LENGTH_SHORT)
-                .show()
+        // Validate email
+        Validator.validateEmail(email)?.let {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Check if passwords match
-        if (password != confirmPassword) {
-            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show()
+        // Validate password strength
+        Validator.validatePassword(password)?.let {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Lastly, validate password match
+        Validator.validatePasswordMatch(password, confirmPassword)?.let {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -99,5 +110,29 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun setupPasswordToggle(editText: EditText) {
+        editText.setOnTouchListener { _, event ->
+            if (event.action != MotionEvent.ACTION_UP) return@setOnTouchListener false
+
+            val drawableEnd = editText.compoundDrawables[2] ?: return@setOnTouchListener false
+            if (event.rawX < editText.right - drawableEnd.bounds.width()) return@setOnTouchListener false
+
+            // Toggle password visibility
+            val isPasswordHidden = editText.transformationMethod is android.text.method.PasswordTransformationMethod
+            editText.transformationMethod = if (isPasswordHidden)
+                android.text.method.HideReturnsTransformationMethod.getInstance()
+            else
+                android.text.method.PasswordTransformationMethod.getInstance()
+
+            editText.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0,
+                if (isPasswordHidden) R.drawable.ic_visibility_on else R.drawable.ic_visibility_off,
+                0
+            )
+            editText.setSelection(editText.text.length) // keep cursor at end
+            true
+        }
     }
 }
