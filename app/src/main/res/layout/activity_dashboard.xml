@@ -51,6 +51,21 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tvNavHistory"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableStart="@drawable/history"
+            android:drawablePadding="10dp"
+            android:drawableTint="#F8EFEF"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingStart="50dp"
+            android:textColor="#F6F3F3"
+            android:textSize="18sp" />
+
+        <TextView
             android:id="@+id/tvNavProfile"
             android:layout_width="36dp"
             android:layout_height="match_parent"
@@ -63,7 +78,7 @@
             android:paddingStart="10dp"
             android:text="Profile"
             android:textColor="#F6F3F3"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

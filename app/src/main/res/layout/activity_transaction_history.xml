@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transacHistory"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/IvoryWhite">
+
+    <!-- Fixed Top Menu Bar -->
+    <LinearLayout
+        android:id="@+id/topMenuBar"
+        android:layout_width="0dp"
+        android:layout_height="67dp"
+        android:background="@color/Dark_Blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/Dark_Blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/montserrat"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"
+            android:text="← Back to Main"
+            android:textColor="@color/IvoryWhite"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <!-- Filter and Sort Section (Minimalist) -->
+    <LinearLayout
+        android:id="@+id/filterSortSection"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/BG_White"
+        android:elevation="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topMenuBar">
+
+        <!-- Calendar Icon for Date Filter with Label -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Filter:"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+            <ImageButton
+                android:id="@+id/btnCalendarFilt"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Select date range"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/calendar"
+                android:tint="@color/Dark_Blue" />
+
+        </LinearLayout>
+
+        <!-- Sort Icon + Dropdown Container with Label -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Sort:"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Sort by time icon"
+                android:scaleType="centerInside"
+                android:src="@drawable/sort_by_time"
+                android:tint="@color/Dark_Blue" />
+
+            <Spinner
+                android:id="@+id/spinnerSort"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
+                android:contentDescription="Sort by date options" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="Sort by total amount icon"
+                android:scaleType="centerInside"
+                android:src="@drawable/sort_by_total_amount"
+                android:tint="@color/Dark_Blue" />
+
+            <Spinner
+                android:id="@+id/spinnerPriceSort"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
+                android:contentDescription="Sort by total amount options" />
+
+        </LinearLayout>
+
+        <!-- Reset Button (Text) -->
+        <Button
+            android:id="@+id/btnResetFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/montserrat"
+            android:text="Reset"
+            android:textAllCaps="false"
+            android:textColor="@color/Dark_Blue"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- RecyclerView for Transaction History -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTransactions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterSortSection" />
+
+    <!-- Empty State Message (ConstraintLayout - Centered) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llEmptyState"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterSortSection">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.401">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/montserrat"
+                android:text="📋"
+                android:textSize="64sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/montserrat"
+                android:text="No Transactions Found"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="Try adjusting your date filter"
+                android:textColor="#999999"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

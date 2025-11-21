@@ -7,6 +7,7 @@
     <string name="email">Email</string>
     <string name="phone_no">Phone No.</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="logo_image">logo image</string>
 
     <!-- Revenue period options -->
