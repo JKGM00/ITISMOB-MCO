@@ -7,6 +7,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityPosBinding
@@ -45,6 +47,8 @@ class PosActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = posAdapter
 
+        loadCartState()
+
         binding.tvBack2Main.setOnClickListener { finish() }
         binding.btnAddToCart.setOnClickListener { showAddProductDialog() }
         binding.btnScan.setOnClickListener { showScanBarcodeDialog() }
@@ -53,11 +57,36 @@ class PosActivity : AppCompatActivity() {
             if (cartItems.isNotEmpty()) {
                 showConfirmationDialog()
             } else {
-                showToast("Cart is empty.")
+                showToast("Cart is empty. Please add something.")
             }
         }
 
         updateTotal()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveCartState()
+    }
+
+    private fun saveCartState() {
+        val sharedPreferences = getSharedPreferences("CartPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val json = Gson().toJson(cartItems)
+        editor.putString("cartItems", json)
+        editor.apply()
+    }
+
+    private fun loadCartState() {
+        val sharedPreferences = getSharedPreferences("CartPrefs", MODE_PRIVATE)
+        val json = sharedPreferences.getString("cartItems", null)
+
+        if (json != null) {
+            val type = object : TypeToken<List<TransactionItem>>() {}.type
+            cartItems.addAll(Gson().fromJson(json, type))
+            posAdapter.notifyDataSetChanged()
+            updateTotal()
+        }
     }
 
     private fun updateTotal() {
@@ -254,17 +283,16 @@ class PosActivity : AppCompatActivity() {
     }
 
     private fun processTransaction() {
-        val newTransaction = Transaction(
-            items = cartItems,
-            createdAt = System.currentTimeMillis()
-        )
+        val newTransaction = Transaction(items = cartItems, createdAt = System.currentTimeMillis())
 
-        // USE DATABASE HELPER
-        // This handles saving the transaction AND decrementing stock in a batch
         DatabaseHelper.addTransaction(newTransaction,
             onSuccess = {
                 showToast("Transaction Completed Successfully!")
                 cartItems.clear()
+
+                // Clear save state of prefs
+                getSharedPreferences("CartPrefs", MODE_PRIVATE).edit().remove("cartItems").apply()
+
                 posAdapter.notifyDataSetChanged()
                 updateTotal()
             },

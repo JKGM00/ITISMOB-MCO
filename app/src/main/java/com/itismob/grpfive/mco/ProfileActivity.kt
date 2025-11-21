@@ -46,12 +46,6 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         }
 
-        // Store Image / Profile Picture
-        viewBinding.ivStoreImage.setOnClickListener {
-            // TODO: DIALOG BOX PROFILE PICTURE (Integrate Firebase Storage for this)
-            // Baka di na
-        }
-
         // Save Button
         viewBinding.btnSave.setOnClickListener {
             saveProfileData()
@@ -78,7 +72,6 @@ class ProfileActivity : AppCompatActivity() {
         val updatedUser = currentUser.copy(
             storeName = newStoreName,
             updatedAt = System.currentTimeMillis() // Update timestamp
-            // TODO: Change password future stuff
         )
 
         // Save updated data to Firestore

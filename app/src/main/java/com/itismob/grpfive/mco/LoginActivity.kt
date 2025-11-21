@@ -111,17 +111,14 @@ class LoginActivity : AppCompatActivity() {
 
                 showToast("Welcome, ${user.storeName}!")
 
-                // Delay the transition to DashboardActivity
-                Handler(Looper.getMainLooper()).postDelayed({
-                    val intent = Intent(this, DashboardActivity::class.java)
-                    intent.putExtra("user", user) // Pass the full User object
-                    startActivity(intent)
 
-                    val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
-                    sharedPrefs.edit { remove("lastEmail") } // Clear saved email
+                val intent = Intent(this, DashboardActivity::class.java)
+                intent.putExtra("user", user) // Pass the full User object
+                startActivity(intent)
 
-                    finish() // Close LoginActivity
-                }, 1500)
+                val sharedPrefs = getSharedPreferences("LoginPreferences", MODE_PRIVATE)
+                sharedPrefs.edit { remove("lastEmail") } // Clear saved email
+                finish() // Close LoginActivity
             },
             onFailure = { e ->
                 showToast("Failed to fetch user data: ${e.message}")

@@ -42,9 +42,10 @@ class RegisterActivity : AppCompatActivity() {
         val storeName = binding.tvStoreName.text.toString().trim()
         val email = binding.tvEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
+        val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
         // Basic input validation
-        if (storeName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (storeName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -53,6 +54,12 @@ class RegisterActivity : AppCompatActivity() {
         if (password.length < 6) {
             Toast.makeText(this, "Password must be at least 6 characters long.", Toast.LENGTH_SHORT)
                 .show()
+            return
+        }
+
+        // Check if passwords match
+        if (password != confirmPassword) {
+            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -80,13 +87,6 @@ class RegisterActivity : AppCompatActivity() {
                             onSuccess = {
                                 // Registration successful
                                 Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
-
-                                // Delay setup
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    val intent = Intent(this, LoginActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }, 1500) // Delay by 1.5s
                             },
                             onFailure = { e ->
                                 // Database save failed -- Delete user from Firebase Auth to keep clean state
