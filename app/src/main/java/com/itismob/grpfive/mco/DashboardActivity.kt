@@ -94,15 +94,27 @@ class DashboardActivity : ComponentActivity() {
             val intent = Intent(this, PosActivity::class.java)
             startActivity(intent)
         }
+        binding.tvNavPos.setOnLongClickListener {
+            Toast.makeText(this, "Point of sale", Toast.LENGTH_SHORT).show()
+            true
+        }
         
         binding.tvNavInventory.setOnClickListener {
             val intent = Intent(this, InventoryActivity::class.java)
             startActivity(intent)
         }
+        binding.tvNavInventory.setOnLongClickListener {
+            Toast.makeText(this, "Inventory", Toast.LENGTH_SHORT).show()
+            true
+        }
 
         binding.tvNavHistory.setOnClickListener {
             val intent = Intent(this, TransactionHistoryActivity::class.java)
             startActivity(intent)
+        }
+        binding.tvNavHistory.setOnLongClickListener {
+            Toast.makeText(this, "History", Toast.LENGTH_SHORT).show()
+            true
         }
 
         binding.tvNavProfile.setOnClickListener {
@@ -110,6 +122,10 @@ class DashboardActivity : ComponentActivity() {
                 putExtra(ProfileActivity.USER_KEY, currentUser)
             }
             profileActivityLauncher.launch(intent)
+        }
+        binding.tvNavProfile.setOnLongClickListener {
+            Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
+            true
         }
 
 

@@ -201,6 +201,10 @@ class InventoryActivity : AppCompatActivity() {
         })
 
         viewBinding.btnFilter.setOnClickListener { showCategoryFilterDialog() }
+        viewBinding.btnFilter.setOnLongClickListener {
+            Toast.makeText(this, "Filter by Category", Toast.LENGTH_SHORT).show()
+            true
+        }
     }
 
     override fun onStart() {

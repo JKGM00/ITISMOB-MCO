@@ -81,10 +81,29 @@ class TransactionHistoryActivity : AppCompatActivity() {
         binding.btnCalendarFilt.setOnClickListener {
             showDateRangePicker()
         }
+        binding.btnCalendarFilt.setOnLongClickListener {
+            Toast.makeText(this, "Filter by Date", Toast.LENGTH_SHORT).show()
+            true
+        }
         
         // Reset button listener
         binding.btnResetFilter.setOnClickListener {
             resetFilters()
+        }
+        binding.btnResetFilter.setOnLongClickListener {
+            Toast.makeText(this, "Clear all filters", Toast.LENGTH_SHORT).show()
+            true
+        }
+        
+        // Spinners long-press listeners
+        binding.spinnerSort.setOnLongClickListener {
+            Toast.makeText(this, "Sort by Date", Toast.LENGTH_SHORT).show()
+            true
+        }
+        
+        binding.spinnerPriceSort.setOnLongClickListener {
+            Toast.makeText(this, "Sort by Amount", Toast.LENGTH_SHORT).show()
+            true
         }
         
         // Initial load
