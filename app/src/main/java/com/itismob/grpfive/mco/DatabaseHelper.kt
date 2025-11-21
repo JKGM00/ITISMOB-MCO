@@ -137,35 +137,7 @@ object DatabaseHelper {
             }
             .addOnFailureListener { onFailure(it) }
     }
-
-    fun getTransactionsByDateRange(
-        startDate: Long,
-        endDate: Long,
-        onSuccess: (List<Transaction>) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val uid = currentUserId
-        if (uid == null) {
-            onFailure(Exception("User not logged in"))
-            return
-        }
-
-        db.collection("users").document(uid).collection("transactions")
-            .whereGreaterThanOrEqualTo("createdAt", startDate)
-            .whereLessThanOrEqualTo("createdAt", endDate)
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { snapshots ->
-                val transactionList = snapshots.documents.mapNotNull { doc ->
-                    doc.toObject(Transaction::class.java)?.apply {
-                        transactionID = doc.id
-                    }
-                }
-                onSuccess(transactionList)
-            }
-            .addOnFailureListener { onFailure(it) }
-    }
-
+    
     fun listenToTransactions(onUpdate: (List<Transaction>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration? {
         val uid = currentUserId
         if (uid == null) {
