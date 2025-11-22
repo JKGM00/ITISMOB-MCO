@@ -24,7 +24,7 @@ class PosViewHolder(private val itemViewBinding: ItemsPosBinding, private val on
             if (itemsTransaction.quantity < itemsTransaction.stockQuantity) {
                 itemsTransaction.quantity++
                 itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
-                itemViewBinding.tvPrice.text = String.format("₱%.2f", itemsTransaction.subtotal)
+                itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
                 onQuantityChanged()
             } else {
                 Toast.makeText(itemView.context, "Max stock reached.", Toast.LENGTH_SHORT).show()
@@ -36,7 +36,7 @@ class PosViewHolder(private val itemViewBinding: ItemsPosBinding, private val on
             if (itemsTransaction.quantity > 1) {
                 itemsTransaction.quantity--
                 itemViewBinding.tvQuantity.text = itemsTransaction.quantity.toString()
-                itemViewBinding.tvPrice.text = String.format("₱%.2f", itemsTransaction.subtotal)
+                itemViewBinding.tvPrice.text = String.format("%.2f", itemsTransaction.subtotal)
                 onQuantityChanged()
             }
         }
