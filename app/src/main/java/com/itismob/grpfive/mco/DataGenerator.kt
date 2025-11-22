@@ -1,5 +1,9 @@
 package com.itismob.grpfive.mco
 
+import com.itismob.grpfive.mco.models.User
+import com.itismob.grpfive.mco.models.Product
+import com.itismob.grpfive.mco.models.TransactionItem
+import com.itismob.grpfive.mco.models.Transaction
 import java.util.UUID
 
 object DataGenerator {

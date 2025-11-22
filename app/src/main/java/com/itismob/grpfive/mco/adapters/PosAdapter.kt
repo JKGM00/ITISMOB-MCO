@@ -1,9 +1,11 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.grpfive.mco.databinding.ItemsPosBinding
+import com.itismob.grpfive.mco.models.TransactionItem
+import com.itismob.grpfive.mco.viewholders.PosViewHolder
 
 class PosAdapter(private val itemsTransaction: MutableList<TransactionItem>, private val onDelete: (TransactionItem) -> Unit, private val onQuantityChanged: () -> Unit) : RecyclerView.Adapter<PosViewHolder>() {
 

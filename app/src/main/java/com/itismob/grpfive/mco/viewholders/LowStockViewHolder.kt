@@ -1,7 +1,8 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.viewholders
 
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.grpfive.mco.databinding.ItemLowStockBinding
+import com.itismob.grpfive.mco.models.Product
 
 class LowStockViewHolder(private val binding: ItemLowStockBinding) :
     RecyclerView.ViewHolder(binding.root) {

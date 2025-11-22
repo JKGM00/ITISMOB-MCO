@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.view.MotionEvent
 import android.widget.EditText
 import com.itismob.grpfive.mco.databinding.ActivityRegisterBinding
+import com.itismob.grpfive.mco.models.User
 import com.itismob.grpfive.mco.utils.Validator
 
 class RegisterActivity : AppCompatActivity() {

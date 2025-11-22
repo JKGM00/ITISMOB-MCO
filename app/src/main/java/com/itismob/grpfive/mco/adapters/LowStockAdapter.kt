@@ -1,9 +1,11 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.grpfive.mco.databinding.ItemLowStockBinding
+import com.itismob.grpfive.mco.models.Product
+import com.itismob.grpfive.mco.viewholders.LowStockViewHolder
 
 class LowStockAdapter(private var products: List<Product>) :
     RecyclerView.Adapter<LowStockViewHolder>() {

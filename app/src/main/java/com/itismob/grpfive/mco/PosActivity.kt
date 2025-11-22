@@ -11,9 +11,13 @@ import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.itismob.grpfive.mco.adapters.PosAdapter
 import com.itismob.grpfive.mco.databinding.ActivityPosBinding
 import com.itismob.grpfive.mco.databinding.DialogAddProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
+import com.itismob.grpfive.mco.models.TransactionItem
+import com.itismob.grpfive.mco.models.Transaction
+import com.itismob.grpfive.mco.models.Product
 
 
 class PosActivity : AppCompatActivity() {

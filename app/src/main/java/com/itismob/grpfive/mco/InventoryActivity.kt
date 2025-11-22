@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextWatcher
 import androidx.appcompat.app.AlertDialog
+import com.itismob.grpfive.mco.adapters.ProductInventoryAdapter
 import com.itismob.grpfive.mco.databinding.ActivityInventoryBinding
+import com.itismob.grpfive.mco.models.Product
 import java.util.Locale
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration

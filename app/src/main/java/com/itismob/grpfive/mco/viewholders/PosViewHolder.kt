@@ -1,8 +1,9 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.viewholders
 
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.grpfive.mco.databinding.ItemsPosBinding
+import com.itismob.grpfive.mco.models.TransactionItem
 
 class PosViewHolder(private val itemViewBinding: ItemsPosBinding, private val onDelete: (TransactionItem) -> Unit, private val onQuantityChanged: () -> Unit) : RecyclerView.ViewHolder(itemViewBinding.root) {
 

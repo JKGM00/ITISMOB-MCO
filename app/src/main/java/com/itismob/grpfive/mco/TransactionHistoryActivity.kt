@@ -11,7 +11,9 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.itismob.grpfive.mco.adapters.TransactionHistoryAdapter
 import com.itismob.grpfive.mco.databinding.ActivityTransactionHistoryBinding
+import com.itismob.grpfive.mco.models.Transaction
 import java.text.SimpleDateFormat
 import java.util.*
 

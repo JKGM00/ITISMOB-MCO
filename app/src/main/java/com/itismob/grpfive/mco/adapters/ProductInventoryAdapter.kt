@@ -1,11 +1,15 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
+import com.itismob.grpfive.mco.R
 import com.itismob.grpfive.mco.databinding.ItemInventoryProductBinding
+import com.itismob.grpfive.mco.models.Product
+import com.itismob.grpfive.mco.viewholders.ProductViewHolder
+import com.itismob.grpfive.mco.EditProductActivity
 
 class ProductInventoryAdapter(
     private val currentProducts: MutableList<Product>,

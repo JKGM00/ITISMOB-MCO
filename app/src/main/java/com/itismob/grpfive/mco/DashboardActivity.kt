@@ -12,7 +12,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.itismob.grpfive.mco.adapters.LowStockAdapter
 import com.itismob.grpfive.mco.databinding.ActivityDashboardBinding
+import com.itismob.grpfive.mco.models.Transaction
+import com.itismob.grpfive.mco.models.User
 import java.util.Calendar
 
 class DashboardActivity : ComponentActivity() {

@@ -5,6 +5,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
+import com.itismob.grpfive.mco.models.User
+import com.itismob.grpfive.mco.models.Product
+import com.itismob.grpfive.mco.models.Transaction
+import com.itismob.grpfive.mco.models.TransactionItem
 
 object DatabaseHelper {
 
