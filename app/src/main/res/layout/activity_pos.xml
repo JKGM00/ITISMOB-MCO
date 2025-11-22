@@ -5,13 +5,13 @@
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF4E6">
+    android:background="@color/IvoryWhite">
 
     <LinearLayout
         android:id="@+id/topMenuBar"
         android:layout_width="0dp"
         android:layout_height="67dp"
-        android:background="#0D3B66"
+        android:background="@color/Dark_Blue"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp"
