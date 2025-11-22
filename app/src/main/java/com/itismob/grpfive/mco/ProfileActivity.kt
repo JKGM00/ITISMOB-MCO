@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityEditProfileBinding
+import com.itismob.grpfive.mco.models.User
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityEditProfileBinding

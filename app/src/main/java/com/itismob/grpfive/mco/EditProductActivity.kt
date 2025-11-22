@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.itismob.grpfive.mco.adapters.ProductInventoryAdapter
 import com.itismob.grpfive.mco.databinding.ActivityEditProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
+import com.itismob.grpfive.mco.models.Product
 
 class EditProductActivity : AppCompatActivity() {
 

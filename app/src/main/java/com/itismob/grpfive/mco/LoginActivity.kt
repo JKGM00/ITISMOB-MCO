@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.MotionEvent
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityLoginBinding
 import androidx.core.content.edit
+import com.itismob.grpfive.mco.utils.Validator
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -24,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        setupPasswordToggle(binding.etPassword)
         setupLogin()
     }
 
@@ -76,8 +80,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkLogin(email: String, password: String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            showToast("Please fill in both fields.")
+        Validator.validateLogin(email, password)?.let {
+            showToast(it)
             return
         }
 
@@ -129,5 +133,29 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setupPasswordToggle(editText: EditText) {
+        editText.setOnTouchListener { _, event ->
+            if (event.action != MotionEvent.ACTION_UP) return@setOnTouchListener false
+
+            val drawableEnd = editText.compoundDrawables[2] ?: return@setOnTouchListener false
+            if (event.rawX < editText.right - drawableEnd.bounds.width()) return@setOnTouchListener false
+
+            // Toggle password visibility
+            val isPasswordHidden = editText.transformationMethod is android.text.method.PasswordTransformationMethod
+            editText.transformationMethod = if (isPasswordHidden)
+                android.text.method.HideReturnsTransformationMethod.getInstance()
+            else
+                android.text.method.PasswordTransformationMethod.getInstance()
+
+            editText.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0,
+                if (isPasswordHidden) R.drawable.ic_visibility_on else R.drawable.ic_visibility_off,
+                0
+            )
+            editText.setSelection(editText.text.length) // keep cursor at end
+            true
+        }
     }
 }

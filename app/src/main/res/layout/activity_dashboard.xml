@@ -6,7 +6,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF4E6">
+    android:background="@color/IvoryWhite">
 
     <LinearLayout
         android:id="@+id/llTopNavBar"

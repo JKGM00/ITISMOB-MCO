@@ -1,6 +1,7 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.models
 
 import com.google.firebase.firestore.Exclude
+import com.itismob.grpfive.mco.R
 import java.io.Serializable
 
 data class User(

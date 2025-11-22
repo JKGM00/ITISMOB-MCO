@@ -1,4 +1,4 @@
-package com.itismob.grpfive.mco
+package com.itismob.grpfive.mco.models
 
 import com.google.firebase.firestore.Exclude
 import java.io.Serializable
