@@ -1,6 +1,5 @@
 package com.itismob.grpfive.mco
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,7 +7,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +14,7 @@ import com.itismob.grpfive.mco.adapters.LowStockAdapter
 import com.itismob.grpfive.mco.databinding.ActivityDashboardBinding
 import com.itismob.grpfive.mco.models.Transaction
 import com.itismob.grpfive.mco.models.User
-import java.util.Calendar
+import com.itismob.grpfive.mco.utils.TimeUtils
 
 class DashboardActivity : ComponentActivity() {
     private lateinit var binding: ActivityDashboardBinding
@@ -136,152 +134,78 @@ class DashboardActivity : ComponentActivity() {
         updateRevenueDisplay("Daily")
         updateLowStockDisplay()
     }
-    
-    private fun updateRevenueDisplay(period: String) {
-        // Get all transactions (from DataGenerator or database)
-        val transactions = DataGenerator.sampleTransactions()
-        val now = System.currentTimeMillis()
-        
-        // Filter transactions based on selected period
-        val filteredTransactions = when (period) {
-            "Daily" -> filterByDay(transactions, now)
-            "Weekly" -> filterByWeek(transactions, now)
-            "Monthly" -> filterByMonth(transactions, now)
-            "Quarterly" -> filterByQuarter(transactions, now)
-            "Yearly" -> filterByYear(transactions, now)
-            else -> transactions
-        }
-        
-        // Calculate total revenue
-        val totalRevenue = filteredTransactions.sumOf { transaction ->
-            transaction.items.sumOf { it.subtotal }
-        }
-        
-        // Calculate transaction count
-        val transactionCount = filteredTransactions.size
-        
-        // Update the TextViews with formatted revenue using ViewBinding
-        binding.tvRevenueAmount.text = "₱${String.format("%.2f", totalRevenue)}"
-        binding.tvTransactionCount.text = "$transactionCount transaction${if (transactionCount != 1) "s" else ""}"
-        
-        // Update category sales
-        updateCategorySales(filteredTransactions)
+
+    override fun onResume() {
+        super.onResume()
+        val selectedPeriod = binding.spinnerRevenuePeriod.selectedItem.toString()
+        updateRevenueDisplay(selectedPeriod)
+        updateLowStockDisplay()
     }
+
     
     private fun updateCategorySales(transactions: List<Transaction>) {
         // Group sales by product category
-        val categoryTotals = mutableMapOf<String, Double>()
-        
-        transactions.forEach { transaction ->
-            transaction.items.forEach { item ->
-                // Get product category from DataGenerator
-                val product = DataGenerator.sampleProducts().find { 
-                    it.productName == item.productName 
-                }
-                val category = product?.productCategory ?: "Other"
-                
-                categoryTotals[category] = (categoryTotals[category] ?: 0.0) + item.subtotal
+        val topCategories = DatabaseHelper.getTopCategories(transactions, 4)
+
+        val nameViews = listOf(binding.tvCategoryName1, binding.tvCategoryName2, binding.tvCategoryName3, binding.tvCategoryName4)
+        val amountViews = listOf(binding.tvCategoryAmount1, binding.tvCategoryAmount2, binding.tvCategoryAmount3, binding.tvCategoryAmount4)
+
+        for (i in nameViews.indices) {
+            if (i < topCategories.size) {
+                val (category, total) = topCategories[i]
+                nameViews[i].text = category
+                amountViews[i].text = "₱${String.format("%.2f", total)}"
+            } else {
+                nameViews[i].text = "-"
+                amountViews[i].text = "₱0.00"
             }
-        }
-        
-        // Sort categories by revenue (highest first)
-        val sortedCategories = categoryTotals.entries.sortedByDescending { it.value }
-        
-        // Update category displays (show top 4 categories)
-        if (sortedCategories.isNotEmpty()) {
-            binding.tvCategoryName1.text = sortedCategories[0].key
-            binding.tvCategoryAmount1.text = "₱${String.format("%.2f", sortedCategories[0].value)}"
-        }
-        
-        if (sortedCategories.size > 1) {
-            binding.tvCategoryName2.text = sortedCategories[1].key
-            binding.tvCategoryAmount2.text = "₱${String.format("%.2f", sortedCategories[1].value)}"
-        }
-        
-        if (sortedCategories.size > 2) {
-            binding.tvCategoryName3.text = sortedCategories[2].key
-            binding.tvCategoryAmount3.text = "₱${String.format("%.2f", sortedCategories[2].value)}"
-        }
-        
-        if (sortedCategories.size > 3) {
-            binding.tvCategoryName4.text = sortedCategories[3].key
-            binding.tvCategoryAmount4.text = "₱${String.format("%.2f", sortedCategories[3].value)}"
         }
     }
     
     private fun updateLowStockDisplay() {
         // Get all products and filter for low stock (10 or fewer units)
-        val lowStockThreshold = 10
-        val lowStockProducts = DataGenerator.sampleProducts()
-            .filter { it.stockQuantity <= lowStockThreshold }
-            .sortedBy { it.stockQuantity } // Sort by quantity ascending (lowest first)
-        
-        // Update RecyclerView with low stock products
-        lowStockAdapter.updateProducts(lowStockProducts)
+        val lowStockThreshold = 5
+        DatabaseHelper.getAllProducts({ products ->
+            val lowStockProducts = products
+                .filter { it.stockQuantity <= lowStockThreshold }
+                .sortedBy { it.stockQuantity }
+            lowStockAdapter.updateProducts(lowStockProducts)
+        }, { error ->
+            Toast.makeText(this, "Failed to load products: ${error.message}", Toast.LENGTH_SHORT).show()
+        })
     }
-    
-    private fun filterByDay(transactions: List<Transaction>, currentTime: Long): List<Transaction> {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = currentTime
-        val currentDay = calendar.get(Calendar.DAY_OF_YEAR)
-        val currentYear = calendar.get(Calendar.YEAR)
-        
-        return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.createdAt
-            calendar.get(Calendar.DAY_OF_YEAR) == currentDay && 
-            calendar.get(Calendar.YEAR) == currentYear
+
+    private fun updateRevenueDisplay(period: String) {
+        // Get the timestamp range based on the selected period
+        val (start, end) = when (period) {
+            "Daily" -> TimeUtils.dayRange()
+            "Weekly" -> TimeUtils.weekRange()
+            "Monthly" -> TimeUtils.monthRange()
+            "Quarterly" -> TimeUtils.quarterRange()
+            "Yearly" -> TimeUtils.yearRange()
+            else -> TimeUtils.dayRange()
         }
+
+        // Fetch transactions from Firestore for the given period
+        DatabaseHelper.getTransactionsForPeriod(start, end,
+            onSuccess = { transactions ->
+                // 1️⃣ Calculate total revenue
+                val totalRevenue = DatabaseHelper.calculateTotalRevenue(transactions)
+                binding.tvRevenueAmount.text = "₱${String.format("%.2f", totalRevenue)}"
+
+                // 2️⃣ Count transactions
+                val transactionCount = transactions.size
+                binding.tvTransactionCount.text =
+                    "$transactionCount transaction${if (transactionCount != 1) "s" else ""}"
+
+                // 3️⃣ Calculate top 4 categories
+                updateCategorySales(transactions)
+            },
+            onFailure = { error ->
+                Toast.makeText(this, "Failed to load transactions: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
-    
-    private fun filterByWeek(transactions: List<Transaction>, currentTime: Long): List<Transaction> {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = currentTime
-        val currentWeek = calendar.get(Calendar.WEEK_OF_YEAR)
-        val currentYear = calendar.get(Calendar.YEAR)
-        
-        return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.createdAt
-            calendar.get(Calendar.WEEK_OF_YEAR) == currentWeek && 
-            calendar.get(Calendar.YEAR) == currentYear
-        }
-    }
-    
-    private fun filterByMonth(transactions: List<Transaction>, currentTime: Long): List<Transaction> {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = currentTime
-        val currentMonth = calendar.get(Calendar.MONTH)
-        val currentYear = calendar.get(Calendar.YEAR)
-        
-        return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.createdAt
-            calendar.get(Calendar.MONTH) == currentMonth && 
-            calendar.get(Calendar.YEAR) == currentYear
-        }
-    }
-    
-    private fun filterByQuarter(transactions: List<Transaction>, currentTime: Long): List<Transaction> {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = currentTime
-        val currentMonth = calendar.get(Calendar.MONTH)
-        val currentQuarter = currentMonth / 3 // 0-2=Q1, 3-5=Q2, 6-8=Q3, 9-11=Q4
-        val currentYear = calendar.get(Calendar.YEAR)
-        
-        return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.createdAt
-            val transactionQuarter = calendar.get(Calendar.MONTH) / 3
-            transactionQuarter == currentQuarter && 
-            calendar.get(Calendar.YEAR) == currentYear
-        }
-    }
-    
-    private fun filterByYear(transactions: List<Transaction>, currentTime: Long): List<Transaction> {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = currentTime
-        val currentYear = calendar.get(Calendar.YEAR)
-        
-        return transactions.filter { transaction ->
-            calendar.timeInMillis = transaction.createdAt
-            calendar.get(Calendar.YEAR) == currentYear
-        }
-    }
+
+
 }

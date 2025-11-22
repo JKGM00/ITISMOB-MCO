@@ -1,6 +1,5 @@
 package com.itismob.grpfive.mco
 
-import android.annotation.SuppressLint
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -8,7 +7,6 @@ import com.google.firebase.firestore.Query
 import com.itismob.grpfive.mco.models.User
 import com.itismob.grpfive.mco.models.Product
 import com.itismob.grpfive.mco.models.Transaction
-import com.itismob.grpfive.mco.models.TransactionItem
 
 object DatabaseHelper {
 
@@ -165,5 +163,66 @@ object DatabaseHelper {
             )
         }
         batch.commit()
+    }
+
+    fun getTransactionsForPeriod(start: Long, end: Long, onSuccess: (List<Transaction>) -> Unit, onFailure: (Exception) -> Unit) {
+        val uid = currentUserId ?: return onFailure(Exception("User is not logged in."))
+
+        db.collection("users").document(uid).collection("transactions")
+            .whereGreaterThanOrEqualTo("createdAt", start)
+            .whereLessThanOrEqualTo("createdAt", end)
+            .orderBy("createdAt", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val list = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Transaction::class.java)?.apply {
+                        transactionID = doc.id
+                    }
+                }
+                onSuccess(list)
+            }
+            .addOnFailureListener(onFailure)
+    }
+
+    fun calculateTotalRevenue(transactions: List<Transaction>): Double {
+        return transactions.sumOf { it.totalAmount }
+    }
+
+    fun getAllProducts(onSuccess: (List<Product>) -> Unit, onFailure: (Exception) -> Unit) {
+        val uid = currentUserId
+        if (uid == null) {
+            onFailure(Exception("User not logged in"))
+            return
+        }
+
+        db.collection("users").document(uid).collection("products")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val products = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Product::class.java)?.apply {
+                        productID = doc.id
+                    }
+                }
+                onSuccess(products)
+            }
+            .addOnFailureListener(onFailure)
+    }
+
+    fun getTopCategories(transactions: List<Transaction>, topX: Int = 4): List<Pair<String, Double>> {
+        // Map to hold total sales per category
+        val categoryTotals = mutableMapOf<String, Double>()
+
+        transactions.forEach { transaction ->
+            transaction.items.forEach { item ->
+                val category = item.productCategory
+                categoryTotals[category] = (categoryTotals[category] ?: 0.0) + item.subtotal
+            }
+        }
+
+        // Sort descending by total and take top N
+        return categoryTotals.entries
+            .sortedByDescending { it.value }
+            .take(topX)
+            .map { it.key to it.value }  // Convert to Pair<String, Double>
     }
 }
