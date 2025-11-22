@@ -257,7 +257,7 @@ class PosActivity : AppCompatActivity() {
     private fun addProductToCart(product: Product, quantity: Int) {
         val cartItem = cartItems.find { it.productID == product.productID }
 
-        // Check total stock needed (existing in cart + new addition)
+        // Check total stock needed
         val totalRequested = (cartItem?.quantity ?: 0) + quantity
 
         if (totalRequested <= product.stockQuantity) {
@@ -268,6 +268,7 @@ class PosActivity : AppCompatActivity() {
                 val newItem = TransactionItem(
                     productID = product.productID,
                     productName = product.productName,
+                    productCategory = product.productCategory,
                     productPrice = product.sellingPrice,
                     quantity = quantity,
                     stockQuantity = product.stockQuantity
@@ -281,6 +282,7 @@ class PosActivity : AppCompatActivity() {
             showToast("Not enough stock. Only ${product.stockQuantity} available.")
         }
     }
+
 
     private fun showConfirmationDialog() {
         AlertDialog.Builder(this)

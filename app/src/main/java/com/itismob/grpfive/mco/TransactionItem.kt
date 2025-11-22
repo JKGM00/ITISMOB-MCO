@@ -6,6 +6,7 @@ import java.io.Serializable
 data class TransactionItem(
     val productID: String = "",
     val productName: String = "",
+    val productCategory: String = "",
     val productPrice: Double = 0.0,
     var quantity: Int = 0,
     val createdAt: Long = System.currentTimeMillis(),
