@@ -2,85 +2,124 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/IvoryWhite"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/IvoryWhite">
 
-
+    <!-- Top Menu Bar -->
     <LinearLayout
         android:id="@+id/topMenuBar"
         android:layout_width="0dp"
         android:layout_height="67dp"
         android:background="@color/Dark_Blue"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:paddingHorizontal="12dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvBack2Main"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:fontFamily="@font/montserrat"
-            android:paddingStart="5dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
             android:text="← Back to Main"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="20sp"
+            android:textStyle="normal" />
 
         <Button
             android:id="@+id/btnAddProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#007AFF"
+            android:backgroundTint="#5B6F46"
             android:fontFamily="@font/montserrat"
             android:text="＋ Add Product"
             android:textColor="#FFFFFF"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:cornerRadius="8dp" />
     </LinearLayout>
 
 
+    <!-- Modern Search Section -->
     <LinearLayout
         android:id="@+id/searchSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:padding="16dp"
         android:gravity="center_vertical"
+        android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topMenuBar">
 
-        <EditText
-            android:id="@+id/etSearchBar"
+        <!-- Search Bar Card -->
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/text_border"
-            android:fontFamily="@font/montserrat"
-            android:hint="🔍︎ Search products..."
-            android:padding="8dp" />
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF">
 
-        <ImageView
-            android:id="@+id/btnFilter"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            android:contentDescription="Filter"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            android:tooltipText="Filter by Category" />
+            <EditText
+                android:id="@+id/etSearchBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/montserrat"
+                android:hint="🔍  Search products..."
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="16sp"
+                android:inputType="text"
+                android:maxLines="1" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Filter Button Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <ImageView
+                android:id="@+id/btnFilter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                app:tint="#555555"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Filter"
+                android:tooltipText="Filter by Category"/>
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 
+    <!-- Inventory List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventory"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="12dp"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
         android:scrollbars="vertical"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,6 +133,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="invisible"
+        android:background="@color/IvoryWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,15 +147,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:fontFamily="@font/montserrat"
                 android:text="📦"
-                android:textSize="64sp" />
+                android:textSize="80sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -124,7 +164,7 @@
                 android:fontFamily="@font/montserrat"
                 android:text="No Products Found"
                 android:textColor="#333333"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -133,7 +173,8 @@
                 android:fontFamily="@font/montserrat"
                 android:text="Add your first product to get started"
                 android:textColor="#999999"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

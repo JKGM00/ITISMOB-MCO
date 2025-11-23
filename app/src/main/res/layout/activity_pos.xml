@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/IvoryWhite">
 
+    <!-- Top Menu Bar -->
     <LinearLayout
         android:id="@+id/topMenuBar"
         android:layout_width="0dp"
@@ -37,6 +38,7 @@
 
     </LinearLayout>
 
+    <!-- Main POS Area -->
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
@@ -47,24 +49,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topMenuBar" >
+        app:layout_constraintTop_toBottomOf="@+id/topMenuBar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="379dp"
-                android:layout_height="671dp"
-                android:layout_marginBottom="15dp"
-                android:visibility="visible"
+            <!-- List Card Container -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/listContainerCard"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clipToPadding="false"
+                    android:visibility="visible" />
+
+            </androidx.cardview.widget.CardView>
 
             <!-- Empty State -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,16 +128,33 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Bottom Controls -->
             <LinearLayout
                 android:id="@+id/linearLayout6"
                 android:layout_width="0dp"
-                android:layout_height="115dp"
+                android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
+                <!-- Total Display -->
+                <Button
+                    android:id="@+id/btn_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:backgroundTint="#5B6F46"
+                    android:fontFamily="@font/montserrat"
+                    android:paddingVertical="14dp"
+                    android:text="Total: ₱ 100.0"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Action Buttons Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -132,39 +162,31 @@
 
                     <Button
                         android:id="@+id/btn_AddToCart"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:background="#007AFF"
+                        android:backgroundTint="@color/Dark_Blue"
                         android:fontFamily="@font/montserrat"
-                        android:text="Add"
+                        android:paddingVertical="12dp"
+                        android:text="Add Item"
                         android:textColor="#FFFFFF"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/btn_scan"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:background="#007AFF"
+                        android:backgroundTint="@color/Dark_Blue"
                         android:fontFamily="@font/montserrat"
-                        android:text="Scan"
+                        android:paddingVertical="12dp"
+                        android:text="Scan Item"
                         android:textColor="#FFFF"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btn_total"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#5B6F46"
-                    android:fontFamily="@font/montserrat"
-                    android:text="₱ 100.0"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,156 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/IvoryWhite"
-    android:orientation="vertical">
+    android:background="@color/IvoryWhite">
 
+    <!-- Top Bar -->
     <LinearLayout
         android:id="@+id/topMenuBar"
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/Dark_Blue"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingHorizontal="16dp"
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/tvBack2Main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/montserrat"
-            android:paddingStart="5dp"
-            android:paddingEnd="10dp"
-            android:text="← Back to Main"
+            android:gravity="center_vertical"
+            android:text="← Back To Main"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="22sp"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/tvLogout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableRight="@drawable/logout"
-            android:drawableTint="#FDF9F9"
-            android:fontFamily="@font/montserrat"
-            android:gravity="end"
-            android:text="Logout "
-            android:textColor="#F4F0F0"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/tvEditProfileLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="32dp"
-            android:drawableStart="@android:drawable/ic_menu_info_details"
-            android:drawableTint="#23347A"
-            android:fontFamily="@font/montserrat"
-            android:paddingTop="10dp"
-            android:text="Edit Profile"
-            android:textColor="#0D3B66"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/ivStoreImage"
-            android:layout_width="144dp"
-            android:layout_height="144dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="32dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:contentDescription="Store Image"
+            android:drawableEnd="@drawable/logout"
+            android:drawablePadding="8dp"
+            android:drawableTint="#FFFFFF"
             android:focusable="true"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_camera"
-            app:tint="#0D3B66" />
-
-        <TextView
-            android:id="@+id/tvStoreName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:fontFamily="@font/montserrat"
-            android:text="Store Name"
-            android:textColor="#333333"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/etStoreName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/text_border"
-            android:fontFamily="@font/montserrat"
-            android:hint="Sari Ni Lola"
-            android:inputType="textCapWords"
-            android:padding="12dp"
-            android:textColor="#333333"
-            android:textColorHint="#999999"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tvEmailLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/montserrat"
-            android:text="E-mail"
-            android:textColor="#333333"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/text_border"
-            android:editable="false"
-            android:fontFamily="@font/montserrat"
-            android:padding="12dp"
-            android:text="your.email@example.com"
-            android:textColor="#757575"
-            android:textSize="20sp" />
-
+            android:gravity="center_vertical"
+            android:text="Logout"
+            android:textColor="#FBFBFB"
+            android:textSize="22sp"
+            android:textStyle="normal" />
     </LinearLayout>
 
-    <LinearLayout
+    <!-- Main Content ScrollView -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/IvoryWhite"
-        android:elevation="4dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_below="@id/topMenuBar"
+        android:fillViewport="true">
 
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_weight="1"
-            android:backgroundTint="#007AFF"
-            android:fontFamily="@font/montserrat"
-            android:padding="20dp"
-            android:paddingVertical="12dp"
-            android:text="Save Changes"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:clipToPadding="false">
 
+            <!-- Header Title -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
 
-</LinearLayout>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_info_details"
+                    app:tint="#0D3B66"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvEditProfileLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Edit Profile"
+                    android:textColor="#0D3B66"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Profile Image Container (Circular) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="32dp"
+                app:cardCornerRadius="70dp"
+                app:cardElevation="6dp">
+
+                <ImageView
+                    android:id="@+id/ivStoreImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Store Image"
+                    android:scaleType="centerCrop"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:background="#E0E0E0"
+                    app:tint="#0D3B66"
+                    android:padding="30dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Input Fields Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Store Name Field -->
+                    <TextView
+                        android:id="@+id/tvStoreName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Store Name"
+                        android:textColor="#0D3B66"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etStoreName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/text_border"
+                        android:fontFamily="@font/montserrat"
+                        android:hint="Sari Ni Lola"
+                        android:inputType="textCapWords"
+                        android:padding="16dp"
+                        android:textColor="#333333"
+                        android:textColorHint="#999999"
+                        android:textSize="16sp" />
+
+                    <!-- Email Field -->
+                    <TextView
+                        android:id="@+id/tvEmailLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="E-mail Address"
+                        android:textColor="#0D3B66"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_border"
+                        android:backgroundTint="#F5F5F5"
+                        android:fontFamily="@font/montserrat"
+                        android:padding="16dp"
+                        android:text="your.email@example.com"
+                        android:textColor="#757575"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email cannot be changed"
+                        android:textSize="12sp"
+                        android:textColor="#9E9E9E"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_gravity="end"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/Dark_Blue"
+                android:fontFamily="@font/montserrat"
+                android:text="Save Changes"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                android:elevation="4dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

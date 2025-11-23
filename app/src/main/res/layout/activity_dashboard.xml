@@ -1,109 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/IvoryWhite">
 
-    <LinearLayout
-        android:id="@+id/llTopNavBar"
+    <!-- TOP HEADER -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topHeader"
         android:layout_width="0dp"
         android:layout_height="66dp"
         android:background="@color/Dark_Blue"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="4"
+        android:paddingHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 1. POS -->
-        <TextView
-            android:id="@+id/tvNavPos"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center"
-            android:text="PoS"
-            android:textColor="#FFFFFFFF"
-            android:textSize="18sp" />
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginVertical="12dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Logo"
+            android:src="@drawable/topbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:background="#80FFFFFF" />
-
-        <!-- 2. INVENTORY -->
-        <TextView
-            android:id="@+id/tvNavInventory"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center"
-            android:text="Inventory"
-            android:textColor="#F6F3F3"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:background="#80FFFFFF" />
-
-        <!-- 3. TRANSACTIONS -->
-        <TextView
-            android:id="@+id/tvNavHistory"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.3"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center"
-            android:text="Transactions"
-            android:textColor="#F6F3F3"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:background="#80FFFFFF" />
-
-        <!-- 4. PROFILE -->
+        <!-- PROFILE -->
         <TextView
             android:id="@+id/tvNavProfile"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:contentDescription="Profile"
             android:drawableEnd="@drawable/profile"
             android:drawableTint="#FDFBFB"
-            android:padding="20dp" />
+            android:gravity="center_vertical"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- MAIN CONTENT -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="1dp"
         android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/llTopNavBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llTopNavBar">
+        app:layout_constraintTop_toBottomOf="@+id/topHeader">
 
         <!-- Period Selector Row -->
         <TextView
@@ -374,20 +332,87 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLowStockTitle" />
 
-        <!-- Low Stock Items RecyclerView -->
+        <!-- RecyclerView for Low Stock Items -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvLowStock"
-            android:layout_width="361dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLowStockSubtitle"
-            app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/item_low_stock" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- BOTTOM NAV BAR -->
+    <LinearLayout
+        android:id="@+id/llTopNavBar"
+        android:layout_width="0dp"
+        android:layout_height="66dp"
+        android:background="@color/Dark_Blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- 1. POS -->
+        <TextView
+            android:id="@+id/tvNavPos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="PoS"
+            android:textColor="#FFFFFFFF"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="#80FFFFFF" />
+
+        <!-- 2. INVENTORY -->
+        <TextView
+            android:id="@+id/tvNavInventory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="Inventory"
+            android:textColor="#F6F3F3"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="#80FFFFFF" />
+
+        <!-- 3. TRANSACTIONS -->
+        <TextView
+            android:id="@+id/tvNavHistory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="Transactions"
+            android:textColor="#F6F3F3"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
