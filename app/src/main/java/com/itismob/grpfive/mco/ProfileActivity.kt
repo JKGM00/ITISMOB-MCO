@@ -11,8 +11,9 @@ import com.itismob.grpfive.mco.models.User
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityEditProfileBinding
-    private lateinit var currentUser: User
+    private var currentUser: User? = null
     private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     companion object {
         const val USER_KEY = "USER_KEY"
@@ -23,27 +24,39 @@ class ProfileActivity : AppCompatActivity() {
         viewBinding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        // Initialize Firestore db
+        // Initialize Firebase
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
-        // Retrieve CurrentUser from DashboardActivity
-        val currUser: User? = intent.getSerializableExtra(USER_KEY) as? User
-        if (currUser == null) {
-            Toast.makeText(this, "User data not found!", Toast.LENGTH_LONG).show()
-            setResult(RESULT_CANCELED)
-            finish()
+        // Check if user is logged in via Auth
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            Toast.makeText(this, "User session expired. Please log in.", Toast.LENGTH_LONG).show()
+            goToLogin()
             return
         }
-        currentUser = currUser
 
-        // Populate Edit Text Fields
-        viewBinding.etStoreName.setText(currentUser.storeName)
-        viewBinding.tvEmail.text = currentUser.userEmail
-        viewBinding.ivStoreImage.setImageResource(currentUser.profilePic)
+        // Fetch User Data
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    currentUser = document.toObject(User::class.java)
+                    // If successfully fetched, populate UI
+                    currentUser?.let { user ->
+                        viewBinding.etStoreName.setText(user.storeName)
+                        viewBinding.tvEmail.text = user.userEmail
+                    }
+                } else {
+                    Toast.makeText(this, "User profile not found in database.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error loading profile: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
 
         // Back Button
         viewBinding.tvBack2Main.setOnClickListener {
-            setResult(RESULT_CANCELED)
+            // Just finish, no need to pass result back unless you want immediate UI updates on prev screen
             finish()
         }
 
@@ -54,14 +67,22 @@ class ProfileActivity : AppCompatActivity() {
 
         // Logout Button
         viewBinding.tvLogout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut() // Sign out from Firebase Auth
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            auth.signOut()
+            goToLogin()
         }
     }
 
+    private fun goToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        // Clear stack so user can't go back
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
     private fun saveProfileData() {
+        val user = currentUser ?: return // Guard clause if user data hasn't loaded yet
+
         val newStoreName = viewBinding.etStoreName.text.toString().trim()
 
         if (newStoreName.isEmpty()) {
@@ -69,18 +90,22 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        // Create updated User object with new store name and updated timestamp
-        val updatedUser = currentUser.copy(
+        // Create updated User object
+        val updatedUser = user.copy(
             storeName = newStoreName,
-            updatedAt = System.currentTimeMillis() // Update timestamp
+            updatedAt = System.currentTimeMillis()
         )
 
-        // Save updated data to Firestore
+        // Save to Firestore
         db.collection("users").document(updatedUser.userID)
             .set(updatedUser)
             .addOnSuccessListener {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-                // Return updated user to DashboardActivity
+                // Update local reference
+                currentUser = updatedUser
+
+                // Optional: If Dashboard needs this data immediately, you can still set result,
+                // but Dashboard should ideally reload from DB or Auth too.
                 val resultIntent = Intent().apply {
                     putExtra(USER_KEY, updatedUser)
                 }

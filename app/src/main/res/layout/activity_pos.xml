@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/IvoryWhite">
 
-    <!-- Top Menu Bar -->
-    <LinearLayout
-        android:id="@+id/topMenuBar"
+    <!-- TOP HEADER  -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topHeader"
         android:layout_width="0dp"
-        android:layout_height="67dp"
+        android:layout_height="66dp"
         android:background="@color/Dark_Blue"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvBack2Main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center_horizontal|center_vertical"
-            android:paddingStart="5dp"
-            android:paddingEnd="10dp"
-            android:text="← Back to Main"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="70dp"
+            android:layout_height="56dp"
+            android:layout_marginVertical="12dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Logo"
+            android:src="@drawable/topbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <!-- PROFILE -->
+        <TextView
+            android:id="@+id/tvNavProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="Profile"
+            android:drawableEnd="@drawable/profile"
+            android:drawableTint="#FDFBFB"
+            android:gravity="center_vertical"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Main POS Area -->
     <LinearLayout
@@ -45,11 +60,11 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/llTopNavBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topMenuBar">
+        app:layout_constraintTop_toBottomOf="@+id/topHeader">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -128,7 +143,7 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Bottom Controls -->
+            <!-- Bottom Controls (Total & Buttons) -->
             <LinearLayout
                 android:id="@+id/linearLayout6"
                 android:layout_width="0dp"
@@ -190,6 +205,113 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <!-- BOTTOM NAV BAR -->
+    <LinearLayout
+        android:id="@+id/llTopNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="@color/Dark_Blue"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Dashboard -->
+        <TextView
+            android:id="@+id/tvNavDashboard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/dashboard"
+            android:drawableTint="#FFFFFFFF"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Dashboard"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- POS -->
+        <TextView
+            android:id="@+id/tvNavPos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1AFFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:clickable="true"
+            android:drawableTop="@drawable/pos"
+            android:drawableTint="#FFFFFFFF"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="PoS"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- INVENTORY -->
+        <TextView
+            android:id="@+id/tvNavInventory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/inventory"
+            android:drawableTint="#F6F3F3"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Inventory"
+            android:textColor="#F6F3F3"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- ADD PRODUCT -->
+        <TextView
+            android:id="@+id/btnAddProductPage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/add"
+            android:drawableTint="#F6F3F3"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Add Product"
+            android:textColor="#F6F3F3"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- TRANSACTIONS -->
+        <TextView
+            android:id="@+id/tvNavHistory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/history"
+            android:drawableTint="#F6F3F3"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Transactions"
+            android:textColor="#F6F3F3"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

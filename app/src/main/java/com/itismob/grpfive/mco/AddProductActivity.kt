@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.itismob.grpfive.mco.databinding.ActivityAddProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
 import com.itismob.grpfive.mco.models.Product
@@ -21,6 +22,16 @@ class AddProductActivity : AppCompatActivity() {
         binding = ActivityAddProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            Toast.makeText(this, "User session expired. Please log in again.", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            return
+        }
+
         val categories = listOf("Cooking Essentials", "Snacks", "Drinks", "Canned Goods", "Instant Food", "Hygiene", "Miscellaneous")
 
         // DROPDOWN SETUP
@@ -28,14 +39,30 @@ class AddProductActivity : AppCompatActivity() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spnProductCategory.adapter = spinnerAdapter
 
-        // Back to Main
-        binding.tvBack2Main.setOnClickListener { finish() }
         // Cancel Add Product
         binding.btnCancel.setOnClickListener { finish() }
         // Save / Add New Product
         binding.btnAddProduct.setOnClickListener { saveNewProduct() }
         // Scan Barcode
         binding.btnScanBarcode.setOnClickListener { showScanBarcodeDialog() }
+
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
+        binding.tvNavProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardActivity::class.java) }
+        binding.tvNavInventory.setOnClickListener { navigateTo(InventoryActivity::class.java) }
+        binding.tvNavHistory.setOnClickListener { navigateTo(TransactionHistoryActivity::class.java) }
+        binding.tvNavPos.setOnClickListener { navigateTo(PosActivity::class.java) }
+    }
+
+    private fun navigateTo(destination: Class<*>) {
+        val intent = Intent(this, destination)
+        // Clear back stack so the user returns to a clean state
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun saveNewProduct() {
@@ -66,10 +93,18 @@ class AddProductActivity : AppCompatActivity() {
             stockQuantity = productStock
         )
 
-        // Return to InventoryActivity then save to DB
-        val newProductIntent = Intent().apply { putExtra("newProduct", newProduct) }
-        setResult(RESULT_OK, newProductIntent)
-        finish()
+        DatabaseHelper.addProduct(newProduct,
+            onSuccess = {
+                showToast("Product added successfully!")
+
+                val newProductIntent = Intent().apply { putExtra("newProduct", newProduct) }
+                setResult(RESULT_OK, newProductIntent)
+                finish()
+            },
+            onFailure = { e ->
+                showToast("Error adding product: ${e.message}")
+            }
+        )
     }
 
     private fun showToast(message: String) {

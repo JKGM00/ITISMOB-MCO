@@ -1,61 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/transacHistory"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/IvoryWhite">
 
-    <!-- Fixed Top Menu Bar -->
-    <LinearLayout
-        android:id="@+id/topMenuBar"
+    <!-- TOP HEADER -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topHeader"
         android:layout_width="0dp"
-        android:layout_height="67dp"
+        android:layout_height="66dp"
         android:background="@color/Dark_Blue"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="70dp"
+            android:layout_height="56dp"
+            android:layout_marginVertical="12dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Logo"
+            android:src="@drawable/topbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- PROFILE -->
         <TextView
-            android:id="@+id/tvBack"
+            android:id="@+id/tvNavProfile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/Dark_Blue"
+            android:layout_height="0dp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/montserrat"
-            android:paddingStart="5dp"
-            android:paddingEnd="10dp"
-            android:text="← Back to Main"
-            android:textColor="@color/IvoryWhite"
-            android:textSize="24sp" />
+            android:contentDescription="Profile"
+            android:drawableEnd="@drawable/profile"
+            android:drawableTint="#FDFBFB"
+            android:gravity="center_vertical"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Filter and Sort Section -->
     <LinearLayout
         android:id="@+id/filterSortSection"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:background="@color/BG_White"
         android:elevation="1dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingStart="12dp"
+        android:paddingTop="8dp"
         android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topMenuBar">
+        app:layout_constraintTop_toBottomOf="@id/topHeader">
 
-        <!-- Calendar Icon for Date Filter with Label -->
+        <!-- ROW 1: Filter and Reset -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -64,9 +81,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/montserrat"
-                android:text="Filter:"
+                android:text="Filter by Date (Petsa):"
                 android:textColor="#333333"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <ImageButton
                 android:id="@+id/btnCalendarFilt"
@@ -80,24 +97,43 @@
                 android:tooltipText="Filter by Date"
                 app:tint="@color/Dark_Blue" />
 
+            <!-- Spacer to push reset to the right (optional, remove if you want it left) -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Reset Button -->
+            <Button
+                android:id="@+id/btnResetFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/montserrat"
+                android:text="Reset"
+                android:textAllCaps="false"
+                android:textColor="@color/Dark_Blue"
+                android:textSize="12sp"
+                android:tooltipText="Clear all filters" />
         </LinearLayout>
 
-        <!-- Sort Icon + Dropdown Container with Label -->
-
+        <!-- ROW 2: Sort Controls -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Sort:"
                 android:textColor="#333333"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:layout_width="25dp"
@@ -109,9 +145,10 @@
 
             <Spinner
                 android:id="@+id/spinnerSort"
-                android:layout_width="110dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="4dp"
+                android:layout_weight="1"
                 android:contentDescription="Sort by date options" />
 
             <ImageView
@@ -125,30 +162,18 @@
 
             <Spinner
                 android:id="@+id/spinnerPriceSort"
-                android:layout_width="110dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="4dp"
+                android:layout_weight="1"
                 android:contentDescription="Sort by total amount options" />
 
         </LinearLayout>
 
-        <!-- Reset Button (Text) -->
-        <Button
-            android:id="@+id/btnResetFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:fontFamily="@font/montserrat"
-            android:text="Reset"
-            android:textAllCaps="false"
-            android:textColor="@color/Dark_Blue"
-            android:textSize="12sp"
-            android:tooltipText="Clear all filters" />
-
     </LinearLayout>
 
     <!-- RecyclerView for Transaction History -->
+    <!-- Updated to constraint above the new NavBar -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTransactions"
         android:layout_width="0dp"
@@ -158,7 +183,7 @@
         android:padding="8dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/llTopNavBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filterSortSection" />
@@ -169,7 +194,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/llTopNavBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filterSortSection">
@@ -213,5 +238,112 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- BOTTOM NAV BAR -->
+    <LinearLayout
+        android:id="@+id/llTopNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="@color/Dark_Blue"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Dashboard -->
+        <TextView
+            android:id="@+id/tvNavDashboard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/dashboard"
+            android:drawableTint="#FFFFFFFF"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Dashboard"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- POS -->
+        <TextView
+            android:id="@+id/tvNavPos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:backgroundTint="#FFFFFF"
+            android:clickable="true"
+            android:drawableTop="@drawable/pos"
+            android:drawableTint="#FFFFFFFF"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="PoS"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- INVENTORY -->
+        <TextView
+            android:id="@+id/tvNavInventory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/inventory"
+            android:drawableTint="#F6F3F3"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Inventory"
+            android:textColor="#F6F3F3"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- ADD PRODUCT -->
+        <TextView
+            android:id="@+id/btnAddProductPage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableTop="@drawable/add"
+            android:drawableTint="#F6F3F3"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Add Product"
+            android:textColor="#F6F3F3"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- TRANSACTIONS -->
+        <TextView
+            android:id="@+id/tvNavHistory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1AFFFFFF"
+            android:clickable="true"
+            android:drawableTop="@drawable/history"
+            android:drawableTint="#F6F3F3"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="Transactions"
+            android:textColor="#F6F3F3"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

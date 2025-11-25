@@ -9,22 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextWatcher
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.itismob.grpfive.mco.adapters.ProductInventoryAdapter
 import com.itismob.grpfive.mco.databinding.ActivityInventoryBinding
 import com.itismob.grpfive.mco.models.Product
 import java.util.Locale
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
 class InventoryActivity : AppCompatActivity() {
 
     // View Binding & Adapter
-    private lateinit var viewBinding : ActivityInventoryBinding
+    private lateinit var binding : ActivityInventoryBinding
     private lateinit var productAdapter: ProductInventoryAdapter
-
-
-    // Firebase DB Instance
-    private lateinit var db: FirebaseFirestore
 
     // Database Listener
     private var productListener: ListenerRegistration? = null
@@ -71,27 +67,6 @@ class InventoryActivity : AppCompatActivity() {
         }
     }
 
-    private val addProductLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val intent = result.data
-            val newProduct = intent?.getSerializableExtra("newProduct") as? Product
-
-            if (newProduct != null) {
-                // USE DATABASE HELPER
-                DatabaseHelper.addProduct(newProduct,
-                    onSuccess = {
-                        Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
-                    },
-                    onFailure = { e ->
-                        Toast.makeText(this, "Error adding product: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-                )
-            }
-        }
-    }
-
     private fun applyFilters() {
         var tempFilteredList = products.toList()
 
@@ -120,11 +95,11 @@ class InventoryActivity : AppCompatActivity() {
 
     private fun updateEmptyState() {
         if (filteredProducts.isEmpty()) {
-            viewBinding.rvInventory.visibility = android.view.View.GONE
-            viewBinding.emptyStateContainer.visibility = android.view.View.VISIBLE
+            binding.rvInventory.visibility = android.view.View.GONE
+            binding.emptyStateContainer.visibility = android.view.View.VISIBLE
         } else {
-            viewBinding.rvInventory.visibility = android.view.View.VISIBLE
-            viewBinding.emptyStateContainer.visibility = android.view.View.GONE
+            binding.rvInventory.visibility = android.view.View.VISIBLE
+            binding.emptyStateContainer.visibility = android.view.View.GONE
         }
     }
 
@@ -172,28 +147,29 @@ class InventoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding = ActivityInventoryBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        binding = ActivityInventoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            Toast.makeText(this, "User session expired. Please log in again.", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            return
+        }
 
         // Initialize products list
         products = mutableListOf()
 
         // Setup recycler view
         productAdapter = ProductInventoryAdapter(filteredProducts, editProductLauncher, this::showDeleteConfirmationDialog)
-        viewBinding.rvInventory.layoutManager = LinearLayoutManager(this)
-        viewBinding.rvInventory.adapter = productAdapter
-
-        // Back to Main Button
-        viewBinding.tvBack2Main.setOnClickListener { finish() }
-
-        // Add Product Button
-        viewBinding.btnAddProduct.setOnClickListener {
-            val intent = Intent(this, AddProductActivity::class.java)
-            addProductLauncher.launch(intent)
-        }
+        binding.rvInventory.layoutManager = LinearLayoutManager(this)
+        binding.rvInventory.adapter = productAdapter
 
         // Search / Filter Functionality
-        viewBinding.etSearchBar.addTextChangedListener(object : TextWatcher {
+        binding.etSearchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchQuery = s.toString()
@@ -202,11 +178,13 @@ class InventoryActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        viewBinding.btnFilter.setOnClickListener { showCategoryFilterDialog() }
-        viewBinding.btnFilter.setOnLongClickListener {
+        binding.btnFilter.setOnClickListener { showCategoryFilterDialog() }
+        binding.btnFilter.setOnLongClickListener {
             Toast.makeText(this, "Filter by Category", Toast.LENGTH_SHORT).show()
             true
         }
+        
+        setupNavigation()
     }
 
     override fun onStart() {
@@ -217,6 +195,22 @@ class InventoryActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         productListener?.remove()
+    }
+
+    private fun setupNavigation() {
+        binding.tvNavProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardActivity::class.java) }
+        binding.btnAddProductPage.setOnClickListener { startActivity(Intent(this, AddProductActivity::class.java)) }
+        binding.tvNavHistory.setOnClickListener { navigateTo(TransactionHistoryActivity::class.java) }
+        binding.tvNavPos.setOnClickListener { navigateTo(PosActivity::class.java) }
+    }
+
+    private fun navigateTo(destination: Class<*>) {
+        val intent = Intent(this, destination)
+        // Clear back stack so the user returns to a clean state
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun listenProducts() {

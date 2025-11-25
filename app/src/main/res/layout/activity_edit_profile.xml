@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:text="← Back To Main"
             android:textColor="#FFFFFF"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textStyle="normal" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:gravity="center_vertical"
             android:text="Logout"
             android:textColor="#FBFBFB"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textStyle="normal" />
     </LinearLayout>
 
@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:fontFamily="@font/montserrat"
-                        android:text="Store Name"
+                        android:text="Store Name (Pangalan ng Tindahan)"
                         android:textColor="#0D3B66"
                         android:textSize="14sp"
                         android:textStyle="bold" />

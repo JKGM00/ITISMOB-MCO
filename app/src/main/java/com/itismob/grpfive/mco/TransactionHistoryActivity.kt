@@ -2,6 +2,7 @@ package com.itismob.grpfive.mco
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -11,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.itismob.grpfive.mco.adapters.TransactionHistoryAdapter
 import com.itismob.grpfive.mco.databinding.ActivityTransactionHistoryBinding
 import com.itismob.grpfive.mco.models.Transaction
@@ -39,6 +41,16 @@ class TransactionHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTransactionHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            Toast.makeText(this, "User session expired. Please log in again.", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            return
+        }
         
         // Load transactions from Firebase
         loadTransactionsFromFirebase()
@@ -74,11 +86,6 @@ class TransactionHistoryActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
         
-        // Back button
-        binding.tvBack.setOnClickListener {
-            finish()
-        }
-        
         // Filter button listener
         binding.btnCalendarFilt.setOnClickListener {
             showDateRangePicker()
@@ -107,9 +114,26 @@ class TransactionHistoryActivity : AppCompatActivity() {
             Toast.makeText(this, "Sort by Amount", Toast.LENGTH_SHORT).show()
             true
         }
-        
+
+        setupNavigation()
         // Initial load
         applyFiltersAndSort()
+    }
+
+    private fun setupNavigation() {
+        binding.tvNavProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardActivity::class.java) }
+        binding.tvNavInventory.setOnClickListener { navigateTo(InventoryActivity::class.java) }
+        binding.btnAddProductPage.setOnClickListener { startActivity(Intent(this, AddProductActivity::class.java)) }
+        binding.tvNavPos.setOnClickListener { navigateTo(PosActivity::class.java) }
+    }
+
+    private fun navigateTo(destination: Class<*>) {
+        val intent = Intent(this, destination)
+        // Clear back stack so the user returns to a clean state
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
     
     private fun showDateRangePicker() {

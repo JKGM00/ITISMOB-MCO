@@ -1,5 +1,6 @@
 package com.itismob.grpfive.mco
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -35,6 +36,16 @@ class PosActivity : AppCompatActivity() {
         binding = ActivityPosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val user = auth.currentUser
+        if (user == null) {
+            Toast.makeText(this, "User session expired. Please log in again.", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            return
+        }
+
         // Set up RecyclerView
         posAdapter = PosAdapter(
             cartItems,
@@ -53,7 +64,6 @@ class PosActivity : AppCompatActivity() {
 
         loadCartState()
 
-        binding.tvBack2Main.setOnClickListener { finish() }
         binding.btnAddToCart.setOnClickListener { showAddProductDialog() }
         binding.btnScan.setOnClickListener { showScanBarcodeDialog() }
 
@@ -65,12 +75,29 @@ class PosActivity : AppCompatActivity() {
             }
         }
 
+        setupNavigation()
         updateTotal()
     }
 
     override fun onPause() {
         super.onPause()
         saveCartState()
+    }
+
+    private fun setupNavigation() {
+        binding.tvNavProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardActivity::class.java) }
+        binding.tvNavInventory.setOnClickListener { navigateTo(InventoryActivity::class.java) }
+        binding.btnAddProductPage.setOnClickListener { startActivity(Intent(this, AddProductActivity::class.java)) }
+        binding.tvNavHistory.setOnClickListener { navigateTo(TransactionHistoryActivity::class.java) }
+    }
+
+    private fun navigateTo(destination: Class<*>) {
+        val intent = Intent(this, destination)
+        // Clear back stack so the user returns to a clean state
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun saveCartState() {
