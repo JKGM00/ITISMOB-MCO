@@ -3,7 +3,8 @@ package com.itismob.grpfive.mco.utils
 // Using singleton pattern
 object Validator {
     // Password rules: min 8 chars, at least 1 lowercase, 1 uppercase, 1 special char
-    private val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%^&*])[A-Za-z\\d!@#\$%^&*]{8,}\$")
+
+    private val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$")
 
     // Validate email; returns null if valid, error message otherwise
     fun validateEmail(email: String): String? {
