@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="66dp"
         android:background="@color/Dark_Blue"
-        android:paddingEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
