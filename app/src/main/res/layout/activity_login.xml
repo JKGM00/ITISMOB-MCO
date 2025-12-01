@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
     android:background="@color/IvoryWhite"
     android:orientation="vertical">
 
@@ -79,7 +80,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:padding="5dp"
-            android:paddingBottom="15dp"
             android:text="Forgot Password?"
             android:textColor="@color/Dark_Blue"
             android:textSize="12sp"
@@ -94,6 +94,7 @@
             android:layout_height="48dp"
             android:background="@color/Dark_Blue"
             android:gravity="center_horizontal|center_vertical"
+            android:paddingTop="5dp"
             android:text="@string/login"
             android:textColor="@color/IvoryWhite"
             android:textSize="16sp"

@@ -15,10 +15,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-    companion object {
-        const val USER_KEY = "USER_KEY"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityEditProfileBinding.inflate(layoutInflater)
@@ -103,11 +99,6 @@ class ProfileActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
                 currentUser = updatedUser
-
-                val resultIntent = Intent().apply {
-                    putExtra(USER_KEY, updatedUser)
-                }
-                setResult(RESULT_OK, resultIntent)
                 finish()
             }
             .addOnFailureListener { e ->
