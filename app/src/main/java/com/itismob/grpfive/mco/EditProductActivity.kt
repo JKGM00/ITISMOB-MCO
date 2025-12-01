@@ -78,6 +78,8 @@ class EditProductActivity : AppCompatActivity() {
     }
 
     private fun saveEditedProduct(productID: String?) {
+        if (productID == null) return
+
         val name = viewBinding.etProductName.text.toString().trim()
         val unitCost = viewBinding.etUnitCost.text.toString().trim()
         val sellingPrice = viewBinding.etSellingPrice.text.toString().trim()
@@ -90,15 +92,42 @@ class EditProductActivity : AppCompatActivity() {
             return
         }
 
-        // Number Validation
-        val unitCostNumber : Double = unitCost.toDouble()
-        val sellingPriceNumber : Double = sellingPrice.toDouble()
-        val stockQtyNumber : Int = stockQty.toInt()
+        viewBinding.btnSave.isEnabled = false
 
+        DatabaseHelper.checkProductDuplicates(barcode, name, productID,
+            onResult = { barcodeExists, nameExists ->
+                if (barcodeExists) {
+                    viewBinding.btnSave.isEnabled = true
+                    Toast.makeText(this, "Barcode already used by another product.", Toast.LENGTH_SHORT).show()
+                } else if (nameExists) {
+                    viewBinding.btnSave.isEnabled = true
+                    Toast.makeText(this, "Product Name already exists.", Toast.LENGTH_SHORT).show()
+                } else {
+                    performUpdate(productID, name, category, barcode, unitCost, sellingPrice, stockQty)
+                }
+            },
+            onFailure = { e ->
+                viewBinding.btnSave.isEnabled = true
+                Toast.makeText(this, "Error checking validation: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
-        // Create Updated Object
+    private fun performUpdate(
+        productID: String,
+        name: String,
+        category: String,
+        barcode: String,
+        unitCost: String,
+        sellingPrice: String,
+        stockQty: String
+    ) {
+        val unitCostNumber = unitCost.toDouble()
+        val sellingPriceNumber = sellingPrice.toDouble()
+        val stockQtyNumber = stockQty.toInt()
+
         val updatedProduct = Product(
-            productID = productID ?: "",
+            productID = productID,
             productName = name,
             productCategory = category,
             productBarcode = barcode,
@@ -107,22 +136,28 @@ class EditProductActivity : AppCompatActivity() {
             stockQuantity = stockQtyNumber
         )
 
-        // Send back as Intent to InventoryActivity (EditProductLauncher)
-        val resultIntent = Intent()
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_ID_KEY, updatedProduct.productID)
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_NAME_KEY, updatedProduct.productName)
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_CATEGORY_KEY, updatedProduct.productCategory)
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_BARCODE_KEY, updatedProduct.productBarcode)
+        // Update in Database
+        DatabaseHelper.updateProduct(updatedProduct,
+            onSuccess = {
+                // Send back as Intent to InventoryActivity
+                val resultIntent = Intent()
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_ID_KEY, updatedProduct.productID)
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_NAME_KEY, updatedProduct.productName)
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_CATEGORY_KEY, updatedProduct.productCategory)
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_BARCODE_KEY, updatedProduct.productBarcode)
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY, updatedProduct.unitCost.toString())
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY, updatedProduct.sellingPrice.toString())
+                resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_STOCK_KEY, updatedProduct.stockQuantity)
+                resultIntent.putExtra(ProductInventoryAdapter.POSITION, position)
 
-        // Send Cost back as string values
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_UNIT_COST_KEY, updatedProduct.unitCost.toString())
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_SELLING_PRICE_KEY, updatedProduct.sellingPrice.toString())
-
-        resultIntent.putExtra(ProductInventoryAdapter.PRODUCT_STOCK_KEY, updatedProduct.stockQuantity)
-        resultIntent.putExtra(ProductInventoryAdapter.POSITION, position)
-
-        setResult(RESULT_OK, resultIntent)
-        finish()
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            },
+            onFailure = { e ->
+                viewBinding.btnSave.isEnabled = true
+                Toast.makeText(this, "Error updating product: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     private fun showScanBarcodeDialog() {

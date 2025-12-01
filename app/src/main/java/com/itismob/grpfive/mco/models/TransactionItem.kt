@@ -7,7 +7,7 @@ data class TransactionItem(
     val productID: String = "",
     val productName: String = "",
     val productCategory: String = "",
-    val productPrice: Double = 0.0,
+    val productPrice: Double? = 0.0,
     var quantity: Int = 0,
     val createdAt: Long = System.currentTimeMillis(),
 
@@ -17,6 +17,6 @@ data class TransactionItem(
     */
     @get:Exclude var stockQuantity: Int = 0
 ) : Serializable {
-    val subtotal: Double
-        get() = productPrice * quantity
+    val subtotal: Double?
+        get() = productPrice?.times(quantity)
 }

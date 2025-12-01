@@ -122,6 +122,36 @@ object DatabaseHelper {
             .addOnFailureListener { onFailure(it) }
     }
 
+
+    // Pass productID to exclude self when editing barcode
+    fun checkProductDuplicates(barcode: String, name: String, excludeProductId: String? = null, onResult: (barcodeExists: Boolean, nameExists: Boolean) -> Unit, onFailure: (Exception) -> Unit) {
+        val uid = currentUserId
+        if (uid == null) {
+            onFailure(Exception("User not logged in"))
+            return
+        }
+
+        val productsRef = db.collection("users").document(uid).collection("products")
+
+        productsRef.whereEqualTo("productBarcode", barcode).get()
+            .addOnSuccessListener { barcodeSnap ->
+                // If editing, ignore the document if it matches own ID
+                val barcodeExists = barcodeSnap.documents.any { doc ->
+                    excludeProductId == null || doc.id != excludeProductId
+                }
+
+                productsRef.whereEqualTo("productName", name).get()
+                    .addOnSuccessListener { nameSnap ->
+                        val nameExists = nameSnap.documents.any { doc ->
+                            excludeProductId == null || doc.id != excludeProductId
+                        }
+                        onResult(barcodeExists, nameExists)
+                    }
+                    .addOnFailureListener { onFailure(it) }
+            }
+            .addOnFailureListener { onFailure(it) }
+    }
+
     fun listenToTransactions(onUpdate: (List<Transaction>) -> Unit, onError: (Exception) -> Unit): ListenerRegistration? {
         val uid = currentUserId
         if (uid == null) {
@@ -215,7 +245,7 @@ object DatabaseHelper {
         transactions.forEach { transaction ->
             transaction.items.forEach { item ->
                 val category = item.productCategory
-                categoryTotals[category] = (categoryTotals[category] ?: 0.0) + item.subtotal
+                categoryTotals[category] = (categoryTotals[category] ?: 0.0) + (item.subtotal ?: 0.0)
             }
         }
 

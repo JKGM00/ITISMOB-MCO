@@ -81,27 +81,61 @@ class AddProductActivity : AppCompatActivity() {
             showToast("Please enter valid numeric values.")
             return
         }
+        if (productStock < 0) {
+            showToast("Stock quantity cannot be negative.")
+            return
+        }
+        if (productBarcode.isEmpty()) {
+            showToast("Please enter a barcode.")
+            return
+        }
+        if (productCategory.isEmpty()) {
+            showToast("Please select a category.")
+            return
+        }
 
-        // Create Product Obj
+        // Disable button
+        binding.btnAddProduct.isEnabled = false
+
+        DatabaseHelper.checkProductDuplicates(productBarcode, productName, null,
+            onResult = { barcodeExists, nameExists ->
+                if (barcodeExists) {
+                    binding.btnAddProduct.isEnabled = true
+                    showToast("A product with this barcode already exists.")
+                } else if (nameExists) {
+                    binding.btnAddProduct.isEnabled = true
+                    showToast("A product with this name already exists.")
+                } else {
+                    saveProduct(productName, productCategory, productBarcode, productUnitCost, productSellingPrice, productStock)
+                }
+            },
+            onFailure = { e ->
+                binding.btnAddProduct.isEnabled = true
+                showToast("Error checking validation: ${e.message}")
+            }
+        )
+    }
+
+    private fun saveProduct(name: String, category: String, barcode: String, cost: Double, price: Double, stock: Int) {
         val newProduct = Product(
             productID = UUID.randomUUID().toString(),
-            productName = productName,
-            productCategory = productCategory,
-            productBarcode = productBarcode,
-            unitCost = productUnitCost,
-            sellingPrice = productSellingPrice,
-            stockQuantity = productStock
+            productName = name,
+            productCategory = category,
+            productBarcode = barcode,
+            unitCost = cost,
+            sellingPrice = price,
+            stockQuantity = stock
         )
 
         DatabaseHelper.addProduct(newProduct,
             onSuccess = {
                 showToast("Product added successfully!")
-
                 val newProductIntent = Intent().apply { putExtra("newProduct", newProduct) }
                 setResult(RESULT_OK, newProductIntent)
                 finish()
             },
             onFailure = { e ->
+                binding.btnAddProduct.isEnabled = true
                 showToast("Error adding product: ${e.message}")
             }
         )
