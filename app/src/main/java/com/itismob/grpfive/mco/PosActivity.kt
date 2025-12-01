@@ -173,7 +173,8 @@ class PosActivity : AppCompatActivity() {
 
             var selectedProduct: Product? = null
             val allProducts = mutableListOf<Product>()
-            val productAdapter = ProductSimpleAdapter(allProducts) { product ->
+            val filteredProducts = mutableListOf<Product>()
+            val productAdapter = ProductSimpleAdapter(filteredProducts) { product ->
                 // Handle product selection from RecyclerView
                 selectedProduct = product
                 dialogBinding.etBarcode.setText(product.productBarcode)
@@ -196,8 +197,10 @@ class PosActivity : AppCompatActivity() {
                 onSuccess = { products ->
                     allProducts.clear()
                     allProducts.addAll(products)
+                    filteredProducts.clear()
+                    filteredProducts.addAll(products)
                     productAdapter.notifyDataSetChanged()
-                    if (allProducts.isNotEmpty()) {
+                    if (filteredProducts.isNotEmpty()) {
                         dialogBinding.rvProducts.visibility = android.view.View.VISIBLE
                     }
                 },
@@ -209,35 +212,58 @@ class PosActivity : AppCompatActivity() {
             dialogBinding.etBarcode.doAfterTextChanged { text ->
                 val barcode = text.toString().trim()
                 if (barcode.isNotEmpty()) {
-                    findProductByBarcode(barcode) { product ->
-                        selectedProduct = product
-                        if (selectedProduct != null) {
-                            // Check if product is out of stock
-                            if (selectedProduct!!.stockQuantity == 0) {
-                                dialogBinding.cvProductInfo.visibility = android.view.View.GONE
-                                dialogBinding.tvErrorMessage.text = "⚠ This product is out of stock"
-                                dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
-                                dialogBinding.tilQuantity.visibility = android.view.View.GONE
-                                dialogBinding.rvProducts.visibility = android.view.View.GONE
-                                selectedProduct = null
-                            } else {
-                                dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
-                                dialogBinding.tvProductName.text = selectedProduct!!.productName
-                                dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
-                                dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
-                                dialogBinding.tilQuantity.hint = "Quantity (In Stock: ${selectedProduct!!.stockQuantity})"
-                                dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
-                                dialogBinding.rvProducts.visibility = android.view.View.GONE
-                            }
-                        } else {
+                    // First, try exact match (exact barcode search)
+                    val exactMatch = allProducts.find { it.productBarcode == barcode }
+                    
+                    if (exactMatch != null) {
+                        // Exact match found - show product details
+                        selectedProduct = exactMatch
+                        dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                        dialogBinding.tvProductName.text = exactMatch.productName
+                        dialogBinding.tvProductPrice.text = String.format("₱%.2f", exactMatch.sellingPrice)
+                        dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                        
+                        if (exactMatch.stockQuantity == 0) {
                             dialogBinding.cvProductInfo.visibility = android.view.View.GONE
-                            dialogBinding.tvErrorMessage.text = "⚠ Product not found"
+                            dialogBinding.tvErrorMessage.text = "⚠ This product is out of stock"
                             dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
                             dialogBinding.tilQuantity.visibility = android.view.View.GONE
                             dialogBinding.rvProducts.visibility = android.view.View.GONE
+                            selectedProduct = null
+                        } else {
+                            dialogBinding.tilQuantity.hint = "Quantity (In Stock: ${exactMatch.stockQuantity})"
+                            dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                            dialogBinding.rvProducts.visibility = android.view.View.GONE
+                        }
+                    } else {
+                        // No exact match - filter by prefix (wildcard search)
+                        filteredProducts.clear()
+                        filteredProducts.addAll(
+                            allProducts.filter { it.productBarcode.startsWith(barcode) }
+                        )
+                        productAdapter.notifyDataSetChanged()
+                        
+                        if (filteredProducts.isEmpty()) {
+                            // No matching products
+                            dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                            dialogBinding.tvErrorMessage.text = "⚠ No products found with barcode starting with '$barcode'"
+                            dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
+                            dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                            dialogBinding.rvProducts.visibility = android.view.View.GONE
+                            selectedProduct = null
+                        } else {
+                            // Show matching products in RecyclerView
+                            dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                            dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                            dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                            dialogBinding.rvProducts.visibility = android.view.View.VISIBLE
                         }
                     }
                 } else {
+                    // Empty barcode - show all products
+                    filteredProducts.clear()
+                    filteredProducts.addAll(allProducts)
+                    productAdapter.notifyDataSetChanged()
                     dialogBinding.cvProductInfo.visibility = android.view.View.GONE
                     dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                     dialogBinding.tilQuantity.visibility = android.view.View.GONE
