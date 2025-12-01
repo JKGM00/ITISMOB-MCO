@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.adapters.PosAdapter
+import com.itismob.grpfive.mco.adapters.ProductSimpleAdapter
 import com.itismob.grpfive.mco.databinding.ActivityPosBinding
 import com.itismob.grpfive.mco.databinding.DialogAddProductBinding
 import com.itismob.grpfive.mco.databinding.DialogScanBarcodeBinding
@@ -171,6 +172,38 @@ class PosActivity : AppCompatActivity() {
             val dialog = AlertDialog.Builder(this).setView(dialogBinding.root).create()
 
             var selectedProduct: Product? = null
+            val allProducts = mutableListOf<Product>()
+            val productAdapter = ProductSimpleAdapter(allProducts) { product ->
+                // Handle product selection from RecyclerView
+                selectedProduct = product
+                dialogBinding.etBarcode.setText(product.productBarcode)
+                dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                dialogBinding.tvProductName.text = product.productName
+                dialogBinding.tvProductPrice.text = String.format("₱%.2f", product.sellingPrice)
+                dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                dialogBinding.rvProducts.visibility = android.view.View.GONE
+                dialogBinding.etQuantity.setText("1")
+            }
+
+            // Setup RecyclerView
+            dialogBinding.rvProducts.layoutManager = LinearLayoutManager(this)
+            dialogBinding.rvProducts.adapter = productAdapter
+
+            // Load all products initially
+            DatabaseHelper.getAllProducts(
+                onSuccess = { products ->
+                    allProducts.clear()
+                    allProducts.addAll(products)
+                    productAdapter.notifyDataSetChanged()
+                    if (allProducts.isNotEmpty()) {
+                        dialogBinding.rvProducts.visibility = android.view.View.VISIBLE
+                    }
+                },
+                onFailure = {
+                    showToast("Failed to load products")
+                }
+            )
 
             dialogBinding.etBarcode.doAfterTextChanged { text ->
                 val barcode = text.toString().trim()
@@ -183,16 +216,19 @@ class PosActivity : AppCompatActivity() {
                             dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
                             dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                             dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                            dialogBinding.rvProducts.visibility = android.view.View.GONE
                         } else {
                             dialogBinding.cvProductInfo.visibility = android.view.View.GONE
                             dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
                             dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                            dialogBinding.rvProducts.visibility = android.view.View.GONE
                         }
                     }
                 } else {
                     dialogBinding.cvProductInfo.visibility = android.view.View.GONE
                     dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
                     dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                    dialogBinding.rvProducts.visibility = android.view.View.VISIBLE
                 }
             }
 
@@ -208,7 +244,7 @@ class PosActivity : AppCompatActivity() {
                         showToast("Please enter a valid quantity.")
                     }
                 } else {
-                    showToast("Please enter a valid barcode.")
+                    showToast("Please select a product.")
                 }
             }
             dialog.show()
