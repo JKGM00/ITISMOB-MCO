@@ -41,7 +41,9 @@ class ProfileActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     currentUser = document.toObject(User::class.java)
-                    // If successfully fetched, populate UI
+
+                    currentUser?.userID = document.id
+
                     currentUser?.let { user ->
                         viewBinding.etStoreName.setText(user.storeName)
                         viewBinding.tvEmail.text = user.userEmail
@@ -56,7 +58,6 @@ class ProfileActivity : AppCompatActivity() {
 
         // Back Button
         viewBinding.tvBack2Main.setOnClickListener {
-            // Just finish, no need to pass result back unless you want immediate UI updates on prev screen
             finish()
         }
 
@@ -81,7 +82,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun saveProfileData() {
-        val user = currentUser ?: return // Guard clause if user data hasn't loaded yet
+        val user = currentUser ?: return // If user data hasn't loaded yet
 
         val newStoreName = viewBinding.etStoreName.text.toString().trim()
 
@@ -101,11 +102,8 @@ class ProfileActivity : AppCompatActivity() {
             .set(updatedUser)
             .addOnSuccessListener {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-                // Update local reference
                 currentUser = updatedUser
 
-                // Optional: If Dashboard needs this data immediately, you can still set result,
-                // but Dashboard should ideally reload from DB or Auth too.
                 val resultIntent = Intent().apply {
                     putExtra(USER_KEY, updatedUser)
                 }

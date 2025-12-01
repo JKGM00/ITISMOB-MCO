@@ -81,14 +81,18 @@ class EditProductActivity : AppCompatActivity() {
         if (productID == null) return
 
         val name = viewBinding.etProductName.text.toString().trim()
-        val unitCost = viewBinding.etUnitCost.text.toString().trim()
-        val sellingPrice = viewBinding.etSellingPrice.text.toString().trim()
+        val unitCost = viewBinding.etUnitCost.text.toString().trim().toDoubleOrNull()
+        val sellingPrice = viewBinding.etSellingPrice.text.toString().trim().toDoubleOrNull()
         val stockQty = viewBinding.etStockQuantity.text.toString().trim()
         val barcode = viewBinding.etBarcodeEntry.text.toString().trim()
         val category = viewBinding.spProductCategory.selectedItem.toString()
 
-        if (name.isEmpty() || unitCost.isEmpty() || sellingPrice.isEmpty() || stockQty.isEmpty() || barcode.isEmpty()) {
+        if (name.isEmpty() || stockQty.isEmpty() || barcode.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (unitCost == null || sellingPrice == null || unitCost <= 0 || sellingPrice <= 0) {
+            Toast.makeText(this, "Please enter valid numeric values", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -118,8 +122,8 @@ class EditProductActivity : AppCompatActivity() {
         name: String,
         category: String,
         barcode: String,
-        unitCost: String,
-        sellingPrice: String,
+        unitCost: Double,
+        sellingPrice: Double,
         stockQty: String
     ) {
         val unitCostNumber = unitCost.toDouble()

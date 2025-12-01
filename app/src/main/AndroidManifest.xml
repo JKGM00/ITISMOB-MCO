@@ -75,6 +75,12 @@
             android:label="Transaction History"
             android:theme="@style/Theme.MCO" />
 
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="false"
+            android:label="Forget Password"
+            android:theme="@style/Theme.MCO" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

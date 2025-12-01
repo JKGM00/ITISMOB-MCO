@@ -77,7 +77,7 @@ class AddProductActivity : AppCompatActivity() {
             showToast("Please enter a product name.")
             return
         }
-        if (productUnitCost == null || productSellingPrice == null) {
+        if (productUnitCost == null || productSellingPrice == null || productUnitCost <= 0 || productSellingPrice <= 0) {
             showToast("Please enter valid numeric values.")
             return
         }

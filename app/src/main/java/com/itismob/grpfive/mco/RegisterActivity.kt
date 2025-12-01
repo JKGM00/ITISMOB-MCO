@@ -99,6 +99,7 @@ class RegisterActivity : AppCompatActivity() {
                             onSuccess = {
                                 // Registration successful
                                 Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+                                finish()
                             },
                             onFailure = { e ->
                                 // Database save failed -- Delete user from Firebase Auth to keep clean state

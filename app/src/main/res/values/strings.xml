@@ -9,6 +9,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="logo_image">logo image</string>
+    <string name="back2login"><u>Back To Login</u></string>
 
     <!-- Revenue period options -->
     <string-array name="revenue_period_options">
