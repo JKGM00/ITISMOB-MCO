@@ -122,7 +122,7 @@ class PosActivity : AppCompatActivity() {
     }
 
     private fun updateTotal() {
-        val total = cartItems.sumOf { it.subtotal }
+        val total = cartItems.sumOf { it.subtotal ?: 0.0 }
         binding.btnTotal.text = String.format("Total: ₱%.2f", total)
         updateEmptyState()
     }

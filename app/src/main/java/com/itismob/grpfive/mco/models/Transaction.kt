@@ -6,6 +6,6 @@ import java.io.Serializable
 data class Transaction(
     @get:Exclude @set:Exclude var transactionID: String = "",
     val items: List<TransactionItem> = emptyList(),
-    val totalAmount: Double = items.sumOf { it.subtotal },
+    val totalAmount: Double = items.sumOf { it.subtotal ?: 0.0 },
     val createdAt: Long = System.currentTimeMillis()
 ) : Serializable
