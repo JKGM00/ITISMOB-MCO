@@ -56,6 +56,7 @@ class DashboardActivity : ComponentActivity() {
 
         lowStockAdapter = LowStockAdapter(emptyList())
         binding.rvLowStock.layoutManager = LinearLayoutManager(this@DashboardActivity)
+        binding.rvLowStock.isNestedScrollingEnabled = false
         binding.rvLowStock.adapter = lowStockAdapter
 
         setupNavigation()

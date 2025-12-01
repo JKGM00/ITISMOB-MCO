@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="66dp"
         android:background="@color/Dark_Blue"
-        android:paddingStart="16dp"
         android:paddingEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,324 +53,331 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollableContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/topHeader"
         app:layout_constraintBottom_toTopOf="@+id/llTopNavBar"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topHeader">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Period Selector Row -->
-        <TextView
-            android:id="@+id/tvPeriodLabel"
-            android:layout_width="wrap_content"
+        <!-- MAIN CONTENT CONTAINER -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Period:"
-            android:textColor="@color/Dark_Blue"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="16dp">
 
-        <Spinner
-            android:id="@+id/spinnerRevenuePeriod"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:entries="@array/revenue_period_options"
-            app:layout_constraintBottom_toBottomOf="@+id/tvPeriodLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvPeriodLabel"
-            app:layout_constraintTop_toTopOf="@+id/tvPeriodLabel" />
-
-        <!-- Total Revenue Card -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvRevenue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardBackgroundColor="@color/Dark_Blue"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPeriodLabel">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Period Selector Row -->
+            <TextView
+                android:id="@+id/tvPeriodLabel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:text="Select Period:"
+                android:textColor="@color/Dark_Blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tvRevenueLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Total Revenue"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvRevenueAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="₱15,450.00"
-                    android:textColor="@android:color/white"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvTransactionCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:alpha="0.8"
-                    android:fontFamily="@font/montserrat"
-                    android:text="25 transactions"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Product Categories Section -->
-        <TextView
-            android:id="@+id/tvCategoriesTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/montserrat"
-            android:text="Top 4 Selling Categories (Kategoridad)"
-            android:textColor="@color/Dark_Blue"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvRevenue" />
-
-        <!-- Category 1: Cooking Essentials -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvCategoryTop1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCategoriesTitle">
-
-            <LinearLayout
-                android:id="@+id/llCategoryTop1"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/spinnerRevenuePeriod"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_marginStart="8dp"
+                android:entries="@array/revenue_period_options"
+                app:layout_constraintBottom_toBottomOf="@+id/tvPeriodLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvPeriodLabel"
+                app:layout_constraintTop_toTopOf="@+id/tvPeriodLabel" />
 
-                <TextView
-                    android:id="@+id/tvCategoryName1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Cooking Essentials"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvCategoryAmount1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:text="₱0.00"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Category 2: Snacks -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvCategoryTop2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop1">
-
-            <LinearLayout
-                android:id="@+id/llCategoryTop2"
-                android:layout_width="match_parent"
+            <!-- Total Revenue Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvRevenue"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/Dark_Blue"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPeriodLabel">
 
-                <TextView
-                    android:id="@+id/tvCategoryName2"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Snacks"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tvCategoryAmount2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:text="₱0.00"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/tvRevenueLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Total Revenue"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
 
-        <!-- Category 3: Drinks -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvCategoryTop3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop2">
+                    <TextView
+                        android:id="@+id/tvRevenueAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="₱15,450.00"
+                        android:textColor="@android:color/white"
+                        android:textSize="32sp"
+                        android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/llCategoryTop3"
-                android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvTransactionCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:alpha="0.8"
+                        android:fontFamily="@font/montserrat"
+                        android:text="25 transactions"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Product Categories Section -->
+            <TextView
+                android:id="@+id/tvCategoriesTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Top 4 Selling Categories (Kategoridad)"
+                android:textColor="@color/Dark_Blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cvRevenue" />
 
-                <TextView
-                    android:id="@+id/tvCategoryName3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Drinks"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvCategoryAmount3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:text="₱0.00"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Category 4: Canned Goods -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvCategoryTop4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop3">
-
-            <LinearLayout
-                android:id="@+id/llCategoryTop4"
-                android:layout_width="match_parent"
+            <!-- Category 1: Cooking Essentials -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvCategoryTop1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCategoriesTitle">
 
-                <TextView
-                    android:id="@+id/tvCategoryName4"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/llCategoryTop1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Canned Goods"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
-                <TextView
-                    android:id="@+id/tvCategoryAmount4"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tvCategoryName1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Cooking Essentials"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvCategoryAmount1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="₱0.00"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Category 2: Snacks -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvCategoryTop2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop1">
+
+                <LinearLayout
+                    android:id="@+id/llCategoryTop2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:text="₱0.00"
-                    android:textColor="@color/Dark_Blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
-        <!-- Divider Line -->
-        <View
-            android:id="@+id/dividerLowStock"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/Dark_Blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop4" />
+                    <TextView
+                        android:id="@+id/tvCategoryName2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Snacks"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp" />
 
-        <!-- Low Stock Items Section -->
-        <TextView
-            android:id="@+id/tvLowStockTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/montserrat"
-            android:text="Low Stock Alert (Mababang i-stock)"
-            android:textColor="#D32F2F"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dividerLowStock" />
+                    <TextView
+                        android:id="@+id/tvCategoryAmount2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="₱0.00"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tvLowStockSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/montserrat"
-            android:text="Items with 5 or fewer units remaining"
-            android:textColor="#1A1818"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLowStockTitle" />
+            <!-- Category 3: Drinks -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvCategoryTop3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop2">
 
-        <!-- RecyclerView for Low Stock Items -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvLowStock"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLowStockSubtitle"
-            tools:listitem="@layout/item_low_stock" />
+                <LinearLayout
+                    android:id="@+id/llCategoryTop3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tvCategoryName3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Drinks"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvCategoryAmount3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="₱0.00"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Category 4: Canned Goods -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvCategoryTop4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop3">
+
+                <LinearLayout
+                    android:id="@+id/llCategoryTop4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/tvCategoryName4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:text="Canned Goods"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvCategoryAmount4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="₱0.00"
+                        android:textColor="@color/Dark_Blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Divider Line -->
+            <View
+                android:id="@+id/dividerLowStock"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/Dark_Blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cvCategoryTop4" />
+
+            <!-- Low Stock Items Section -->
+            <TextView
+                android:id="@+id/tvLowStockTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Low Stock Alert (Mababang i-stock)"
+                android:textColor="#D32F2F"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dividerLowStock" />
+
+            <TextView
+                android:id="@+id/tvLowStockSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Items with 5 or fewer units remaining"
+                android:textColor="#1A1818"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLowStockTitle" />
+
+            <!-- RecyclerView for Low Stock Items -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLowStock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLowStockSubtitle"
+                tools:listitem="@layout/item_low_stock" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- BOTTOM NAV BAR -->
     <LinearLayout
@@ -479,5 +485,4 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
