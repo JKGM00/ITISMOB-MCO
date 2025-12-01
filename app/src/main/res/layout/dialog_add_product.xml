@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@android:color/white">
+    android:padding="24dp">
 
     <!-- Dialog Title -->
     <TextView
         android:id="@+id/tvDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Product"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#0D3B66"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:layout_marginBottom="24dp" />
+        android:text="Add Product"
+        android:textColor="#0D3B66"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <!-- Barcode Input -->
     <com.google.android.material.textfield.TextInputLayout
@@ -38,6 +38,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Products RecyclerView -->
+
+    <!-- Product Info Card (Initially Hidden) -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
@@ -45,7 +48,6 @@
         android:layout_marginTop="16dp"
         android:visibility="gone" />
 
-    <!-- Product Info Card (Initially Hidden) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvProductInfo"
         android:layout_width="match_parent"
@@ -104,7 +106,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Quantity"
         android:visibility="gone"
         app:boxStrokeColor="#0D3B66"
         app:hintTextColor="#0D3B66">
@@ -114,6 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:maxLength="5"
             android:maxLines="1"
             android:text="1"
             android:textSize="16sp" />

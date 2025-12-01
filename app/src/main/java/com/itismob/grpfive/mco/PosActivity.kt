@@ -181,6 +181,7 @@ class PosActivity : AppCompatActivity() {
                 dialogBinding.tvProductName.text = product.productName
                 dialogBinding.tvProductPrice.text = String.format("₱%.2f", product.sellingPrice)
                 dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                dialogBinding.tilQuantity.hint = "Quantity (In Stock: ${product.stockQuantity})"
                 dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
                 dialogBinding.rvProducts.visibility = android.view.View.GONE
                 dialogBinding.etQuantity.setText("1")
@@ -211,14 +212,26 @@ class PosActivity : AppCompatActivity() {
                     findProductByBarcode(barcode) { product ->
                         selectedProduct = product
                         if (selectedProduct != null) {
-                            dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
-                            dialogBinding.tvProductName.text = selectedProduct!!.productName
-                            dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
-                            dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
-                            dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
-                            dialogBinding.rvProducts.visibility = android.view.View.GONE
+                            // Check if product is out of stock
+                            if (selectedProduct!!.stockQuantity == 0) {
+                                dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                                dialogBinding.tvErrorMessage.text = "⚠ This product is out of stock"
+                                dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
+                                dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                                dialogBinding.rvProducts.visibility = android.view.View.GONE
+                                selectedProduct = null
+                            } else {
+                                dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                                dialogBinding.tvProductName.text = selectedProduct!!.productName
+                                dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
+                                dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                                dialogBinding.tilQuantity.hint = "Quantity (In Stock: ${selectedProduct!!.stockQuantity})"
+                                dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                                dialogBinding.rvProducts.visibility = android.view.View.GONE
+                            }
                         } else {
                             dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                            dialogBinding.tvErrorMessage.text = "⚠ Product not found"
                             dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
                             dialogBinding.tilQuantity.visibility = android.view.View.GONE
                             dialogBinding.rvProducts.visibility = android.view.View.GONE
@@ -236,12 +249,22 @@ class PosActivity : AppCompatActivity() {
 
             dialogBinding.btnAddtoTransc.setOnClickListener {
                 if (selectedProduct != null) {
-                    val quantity = dialogBinding.etQuantity.text.toString().toIntOrNull() ?: 1
-                    if (quantity > 0) {
-                        addProductToCart(selectedProduct!!, quantity)
-                        dialog.dismiss()
-                    } else {
-                        showToast("Please enter a valid quantity.")
+                    val quantityText = dialogBinding.etQuantity.text.toString().trim()
+                    if (quantityText.isEmpty()) {
+                        showToast("Please enter a quantity.")
+                        return@setOnClickListener
+                    }
+                    
+                    val quantity = quantityText.toIntOrNull() ?: 0
+                    val maxStock = selectedProduct!!.stockQuantity
+                    
+                    when {
+                        quantity < 1 -> showToast("Quantity must be at least 1.")
+                        quantity > maxStock -> showToast("Quantity cannot exceed available stock ($maxStock).")
+                        else -> {
+                            addProductToCart(selectedProduct!!, quantity)
+                            dialog.dismiss()
+                        }
                     }
                 } else {
                     showToast("Please select a product.")
@@ -276,13 +299,25 @@ class PosActivity : AppCompatActivity() {
                             findProductByBarcode(scannedBarcode) { product ->
                                 selectedProduct = product
                                 if (selectedProduct != null) {
-                                    dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
-                                    dialogBinding.tvProductName.text = selectedProduct!!.productName
-                                    dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
-                                    dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
-                                    dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                                    // Check if product is out of stock
+                                    if (selectedProduct!!.stockQuantity == 0) {
+                                        dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                                        dialogBinding.tvErrorMessage.text = "⚠ This product is out of stock"
+                                        dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
+                                        dialogBinding.tilQuantity.visibility = android.view.View.GONE
+                                        selectedProduct = null
+                                    } else {
+                                        dialogBinding.cvProductInfo.visibility = android.view.View.VISIBLE
+                                        dialogBinding.tvProductName.text = selectedProduct!!.productName
+                                        dialogBinding.tvProductPrice.text = String.format("₱%.2f", selectedProduct!!.sellingPrice)
+                                        dialogBinding.tvErrorMessage.visibility = android.view.View.GONE
+                                        dialogBinding.tilQuantity.hint = "Quantity (In Stock: ${selectedProduct!!.stockQuantity})"
+                                        dialogBinding.tilQuantity.visibility = android.view.View.VISIBLE
+                                        dialogBinding.etQuantity.setText("1")
+                                    }
                                 } else {
                                     dialogBinding.cvProductInfo.visibility = android.view.View.GONE
+                                    dialogBinding.tvErrorMessage.text = "⚠ Product not found"
                                     dialogBinding.tvErrorMessage.visibility = android.view.View.VISIBLE
                                     dialogBinding.tilQuantity.visibility = android.view.View.GONE
                                 }
@@ -302,12 +337,22 @@ class PosActivity : AppCompatActivity() {
 
             dialogBinding.btnAddToCart.setOnClickListener {
                 if (selectedProduct != null) {
-                    val quantity = dialogBinding.etQuantity.text.toString().toIntOrNull() ?: 1
-                    if (quantity > 0) {
-                        addProductToCart(selectedProduct!!, quantity)
-                        dialog.dismiss()
-                    } else {
-                        showToast("Please enter a valid quantity.")
+                    val quantityText = dialogBinding.etQuantity.text.toString().trim()
+                    if (quantityText.isEmpty()) {
+                        showToast("Please enter a quantity.")
+                        return@setOnClickListener
+                    }
+                    
+                    val quantity = quantityText.toIntOrNull() ?: 0
+                    val maxStock = selectedProduct!!.stockQuantity
+                    
+                    when {
+                        quantity < 1 -> showToast("Quantity must be at least 1.")
+                        quantity > maxStock -> showToast("Quantity cannot exceed available stock ($maxStock).")
+                        else -> {
+                            addProductToCart(selectedProduct!!, quantity)
+                            dialog.dismiss()
+                        }
                     }
                 } else {
                     showToast("Please scan a valid barcode.")

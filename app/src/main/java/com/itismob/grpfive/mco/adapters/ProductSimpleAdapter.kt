@@ -36,8 +36,14 @@ class ProductSimpleAdapter(
     override fun onBindViewHolder(holder: ProductSimpleViewHolder, position: Int) {
         val product = products[position]
         holder.bind(product, getCategoryImageResource(product.productCategory))
-        holder.itemView.setOnClickListener {
-            onProductSelected(product)
+        
+        // Only allow click if product has stock
+        if (product.stockQuantity > 0) {
+            holder.itemView.setOnClickListener {
+                onProductSelected(product)
+            }
+        } else {
+            holder.itemView.setOnClickListener(null)
         }
     }
 

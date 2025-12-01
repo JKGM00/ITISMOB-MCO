@@ -36,6 +36,23 @@
                 tools:src="@tools:sample/avatars" />
         </androidx.cardview.widget.CardView>
 
+        <!-- Out of Stock Badge -->
+        <TextView
+            android:id="@+id/tvOutOfStock"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#D32F2F"
+            android:gravity="center"
+            android:text="OUT OF STOCK"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/cvImageContainer"
+            app:layout_constraintEnd_toEndOf="@id/cvImageContainer"
+            app:layout_constraintStart_toStartOf="@id/cvImageContainer"
+            app:layout_constraintTop_toTopOf="@id/cvImageContainer" />
+
         <!-- Text Info -->
         <LinearLayout
             android:layout_width="0dp"
