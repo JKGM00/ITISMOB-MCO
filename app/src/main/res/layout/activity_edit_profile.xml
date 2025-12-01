@@ -28,7 +28,7 @@
             android:gravity="center_vertical"
             android:text="← Back To Main"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="normal" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:gravity="center_vertical"
             android:text="Logout"
             android:textColor="#FBFBFB"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="normal" />
     </LinearLayout>
 

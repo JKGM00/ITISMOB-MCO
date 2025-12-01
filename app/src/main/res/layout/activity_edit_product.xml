@@ -154,7 +154,7 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Cost (Puhunan))"
                                 android:textColor="#0D3B66"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:textStyle="bold" />
                             <EditText
                                 android:id="@+id/etUnitCost"
@@ -183,9 +183,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/montserrat"
+                                android:maxLines="1"
                                 android:text="Selling Price (SRP)"
                                 android:textColor="#0D3B66"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:textStyle="bold" />
                             <EditText
                                 android:id="@+id/etSellingPrice"

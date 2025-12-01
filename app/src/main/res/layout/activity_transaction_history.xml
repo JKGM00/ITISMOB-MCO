@@ -268,7 +268,7 @@
             android:paddingTop="10dp"
             android:text="Dashboard"
             android:textColor="#FFFFFFFF"
-            android:textSize="11sp"
+            android:textSize="9sp"
             android:textStyle="bold" />
 
         <!-- POS -->
@@ -287,7 +287,7 @@
             android:paddingTop="10dp"
             android:text="PoS"
             android:textColor="#FFFFFFFF"
-            android:textSize="11sp"
+            android:textSize="9sp"
             android:textStyle="bold" />
 
         <!-- INVENTORY -->
@@ -305,7 +305,7 @@
             android:paddingTop="10dp"
             android:text="Inventory"
             android:textColor="#F6F3F3"
-            android:textSize="11sp"
+            android:textSize="9sp"
             android:textStyle="bold" />
 
         <!-- ADD PRODUCT -->
@@ -323,7 +323,7 @@
             android:paddingTop="10dp"
             android:text="Add Product"
             android:textColor="#F6F3F3"
-            android:textSize="11sp"
+            android:textSize="9sp"
             android:textStyle="bold" />
 
         <!-- TRANSACTIONS -->
@@ -341,7 +341,7 @@
             android:paddingTop="10dp"
             android:text="Transactions"
             android:textColor="#F6F3F3"
-            android:textSize="11sp"
+            android:textSize="9sp"
             android:textStyle="bold" />
 
     </LinearLayout>
