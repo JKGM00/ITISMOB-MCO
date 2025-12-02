@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,6 +9,13 @@ plugins {
     // Firebase Plugin
     id("com.google.gms.google-services")
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
+}
+
 
 android {
     namespace = "com.itismob.grpfive.mco"
@@ -19,6 +29,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val cloudName = localProperties.getProperty("CLOUDINARY_CLOUD_NAME") ?: ""
+        val apiKey = localProperties.getProperty("CLOUDINARY_API_KEY") ?: ""
+        val apiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET") ?: ""
+
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudName\"")
+        buildConfigField("String", "CLOUDINARY_API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "CLOUDINARY_API_SECRET", "\"$apiSecret\"")
     }
 
     buildTypes {
@@ -38,8 +56,10 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -73,6 +93,11 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.4.0")) // Separate ktx modules in this version compared sa 35.4.0
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
+
+    // Glide and Cloudinary for PFP
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.cloudinary:cloudinary-android:2.5.0")
+
 
     // GSON for save state
     implementation("com.google.code.gson:gson:2.10.1")
