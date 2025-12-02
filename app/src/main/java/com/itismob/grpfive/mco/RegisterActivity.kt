@@ -89,6 +89,7 @@ class RegisterActivity : AppCompatActivity() {
                         val newUser = User(
                             userID = user.uid,
                             storeName = storeName,
+                            profilePic = "",
                             userEmail = email,
                             createdAt = currentTime,
                             updatedAt = currentTime,

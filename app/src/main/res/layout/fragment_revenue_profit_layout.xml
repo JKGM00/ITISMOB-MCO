@@ -46,7 +46,7 @@
                         android:fontFamily="@font/montserrat"
                         android:text="Total Revenue and Profit for Specified Time Period"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                             android:fontFamily="@font/montserrat"
                             android:text="₱0.00"
                             android:textColor="@android:color/white"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -73,7 +73,7 @@
                             android:gravity="center"
                             android:text="  |  "
                             android:textColor="@android:color/white"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -84,7 +84,7 @@
                             android:fontFamily="@font/montserrat"
                             android:text="₱0.00"
                             android:textColor="@android:color/holo_green_light"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -104,9 +104,9 @@
 
             <!-- Line Chart -->
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartRevenue"
+                android:id="@+id/lineChartStats"
                 android:layout_width="0dp"
-                android:layout_height="300dp"
+                android:layout_height="400dp"
                 android:layout_margin="10dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"

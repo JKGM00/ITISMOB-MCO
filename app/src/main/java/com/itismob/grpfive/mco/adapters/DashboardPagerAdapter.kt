@@ -18,7 +18,7 @@ class DashboardPagerAdapter(
         val period = periodProvider()
 
         return when(position) {
-            0 -> RevenueProfitFragment() // later you can add newInstance(period) if needed
+            0 -> RevenueProfitFragment.newInstance(period)
             1 -> TopCategoriesFragment.newInstance(period)
             2 -> LowStockAlertsFragment()
             else -> Fragment()
@@ -27,6 +27,3 @@ class DashboardPagerAdapter(
 
     override fun getItemCount() = 3
 }
-
-
-

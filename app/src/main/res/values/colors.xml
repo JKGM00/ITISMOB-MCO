@@ -17,4 +17,7 @@
     <color name="Category_InstantFood">#FF69B4</color> <!-- HotPink -->
     <color name="Category_Hygiene">#8A2BE2</color> <!-- BlueViolet -->
     <color name="Category_Miscellaneous">#FF8C00</color> <!-- DarkOrange -->
+
+    <!-- Green color for Profit Line -->
+    <color name="Dark_Green">#006400</color> <!-- Added for profit line -->
 </resources>

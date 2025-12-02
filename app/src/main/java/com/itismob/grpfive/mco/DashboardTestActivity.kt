@@ -16,6 +16,7 @@ import com.itismob.grpfive.mco.utils.TimeUtils
 
 import com.itismob.grpfive.mco.adapters.DashboardPagerAdapter
 import com.itismob.grpfive.mco.dashboard_fragments.TopCategoriesFragment
+import com.itismob.grpfive.mco.dashboard_fragments.RevenueProfitFragment
 import com.itismob.grpfive.mco.databinding.ActivityDashboardTestBinding
 
 class DashboardTestActivity : AppCompatActivity() {
@@ -57,15 +58,22 @@ class DashboardTestActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedPeriod = parent?.getItemAtPosition(position).toString()
 
-                // Fetch the TopCategoriesFragment from the ViewPager2
-                val fragment = supportFragmentManager.findFragmentByTag("f1") // 1 = Top Categories position
-                if (fragment is TopCategoriesFragment) {
-                    fragment.updateCategoriesForPeriod(selectedPeriod)
+                // Update TopCategories
+                val topCategoriesFragment = supportFragmentManager.findFragmentByTag("f1")
+                if (topCategoriesFragment is TopCategoriesFragment) {
+                    topCategoriesFragment.updateCategoriesForPeriod(selectedPeriod)
+                }
+
+                // Update RevenueProfit
+                val revenueFragment = supportFragmentManager.findFragmentByTag("f0")
+                if (revenueFragment is RevenueProfitFragment) {
+                    revenueFragment.updateRevenueForPeriod(selectedPeriod)
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
 
         // Setup ViewPager2 and tabs
         val dashboardAdapter = DashboardPagerAdapter(this) {
@@ -90,11 +98,6 @@ class DashboardTestActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         selectedPeriod = binding.spinnerRevenuePeriod.selectedItem.toString()
-        val fragment = supportFragmentManager.findFragmentByTag("f1")
-        if (fragment is TopCategoriesFragment) {
-            fragment.updateCategoriesForPeriod(selectedPeriod)
-        }
-//        revenueFragment?.updateRevenueForPeriod(selectedPeriod) // assuming you add similar method
     }
 
     private fun setupNavigation() {

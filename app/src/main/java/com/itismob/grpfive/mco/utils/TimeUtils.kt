@@ -88,4 +88,51 @@ object TimeUtils {
 
         return start to end
     }
+
+    // Had to add ways to separate buckets per week (for month), and per month (for quarterly and yearly)
+    fun monthlyWeekBuckets(start: Long): List<Pair<Long, String>> {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = start
+
+        val buckets = mutableListOf<Pair<Long, String>>()
+
+        repeat(4) { week ->
+            buckets += cal.timeInMillis to "Week ${week + 1}"
+            cal.add(Calendar.WEEK_OF_MONTH, 1)
+        }
+
+        return buckets
+    }
+
+    fun quarterlyMonthBuckets(start: Long): List<Pair<Long, String>> {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = start
+
+        val names = listOf("Month 1", "Month 2", "Month 3")
+        val buckets = mutableListOf<Pair<Long, String>>()
+
+        repeat(3) { i ->
+            buckets += cal.timeInMillis to names[i]
+            cal.add(Calendar.MONTH, 1)
+        }
+
+        return buckets
+    }
+
+    fun yearlyMonthBuckets(start: Long): List<Pair<Long, String>> {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = start
+
+        val monthNames = listOf(
+            "Jan","Feb","Mar","Apr","May","Jun",
+            "Jul","Aug","Sep","Oct","Nov","Dec"
+        )
+
+        return (0..11).map { i ->
+            val monthStart = cal.timeInMillis
+            val label = monthNames[cal.get(Calendar.MONTH)]
+            cal.add(Calendar.MONTH, 1)
+            monthStart to label
+        }
+    }
 }

@@ -224,6 +224,10 @@ object DatabaseHelper {
         return transactions.sumOf { it.totalAmount }
     }
 
+    fun calculateTotalProfit(transactions: List<Transaction>): Double {
+        return transactions.sumOf { it.items.sumOf { it.totalProfit } }
+    }
+
     fun getAllProducts(onSuccess: (List<Product>) -> Unit, onFailure: (Exception) -> Unit) {
         val uid = currentUserId
         if (uid == null) {
