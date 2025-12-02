@@ -3,7 +3,6 @@ package com.itismob.grpfive.mco.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.itismob.grpfive.mco.DashboardTestActivity
 
 import com.itismob.grpfive.mco.dashboard_fragments.LowStockAlertsFragment
 import com.itismob.grpfive.mco.dashboard_fragments.RevenueProfitFragment

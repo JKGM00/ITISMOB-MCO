@@ -118,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
                 showToast("Welcome, ${user.storeName}!")
 
 
-                val intent = Intent(this, DashboardTestActivity::class.java)
+                val intent = Intent(this, DashboardActivity::class.java)
                 intent.putExtra("user", user) // Pass the full User object
                 startActivity(intent)
 

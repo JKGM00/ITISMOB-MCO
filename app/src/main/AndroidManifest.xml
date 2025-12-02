@@ -39,9 +39,9 @@
             android:theme="@style/Theme.MCO" />
 
         <activity
-            android:name=".DashboardTestActivity"
+            android:name=".DashboardActivity"
             android:exported="false"
-            android:label="Dashboard Beta"
+            android:label="Dashboard"
             android:theme="@style/Theme.MCO" />
 
         <activity
