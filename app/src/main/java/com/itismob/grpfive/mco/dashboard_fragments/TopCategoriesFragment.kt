@@ -58,6 +58,12 @@ class TopCategoriesFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Ensure we load the initial period when the fragment's view is ready
+        updateCategoriesForPeriod(selectedPeriod)
+    }
+
     private fun setupPieChart(entries: List<PieEntry>) {
         val dataSet = PieDataSet(entries, "")
         dataSet.valueTextSize = 12f
@@ -147,4 +153,3 @@ class TopCategoriesFragment : Fragment() {
         _binding = null
     }
 }
-
