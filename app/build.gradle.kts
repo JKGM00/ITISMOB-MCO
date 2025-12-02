@@ -80,6 +80,7 @@ dependencies {
     // MPAndroidChart for charts, from https://github.com/PhilJay/MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.legacy.support.v4)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

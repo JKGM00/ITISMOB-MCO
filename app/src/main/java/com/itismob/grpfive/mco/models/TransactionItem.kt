@@ -28,5 +28,5 @@ data class TransactionItem(
 
     @get:Exclude
     val totalProfit: Double
-        get() = profitPerUnit * quantity
+        get() = (profitPerUnit * quantity * 100).roundToInt() / 100.0
 }

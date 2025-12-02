@@ -87,7 +87,7 @@ class PosActivity : AppCompatActivity() {
 
     private fun setupNavigation() {
         binding.tvNavProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
-        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardActivity::class.java) }
+        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardTestActivity::class.java) }
         binding.tvNavInventory.setOnClickListener { navigateTo(InventoryActivity::class.java) }
         binding.btnAddProductPage.setOnClickListener { startActivity(Intent(this, AddProductActivity::class.java)) }
         binding.tvNavHistory.setOnClickListener { navigateTo(TransactionHistoryActivity::class.java) }

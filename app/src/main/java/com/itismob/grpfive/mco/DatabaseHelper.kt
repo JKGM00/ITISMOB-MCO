@@ -244,7 +244,7 @@ object DatabaseHelper {
             .addOnFailureListener(onFailure)
     }
 
-    fun getTopCategories(transactions: List<Transaction>, topX: Int = 4): List<Pair<String, Double>> {
+    fun getTopCategories(transactions: List<Transaction>): List<Pair<String, Double>> {
         // Map to hold total sales per category
         val categoryTotals = mutableMapOf<String, Double>()
 
@@ -255,10 +255,9 @@ object DatabaseHelper {
             }
         }
 
-        // Sort descending by total and take top N
+        // Sort descending by total
         return categoryTotals.entries
             .sortedByDescending { it.value }
-            .take(topX)
             .map { it.key to it.value }  // Convert to Pair<String, Double>
     }
 }

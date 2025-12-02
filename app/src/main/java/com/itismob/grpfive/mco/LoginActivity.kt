@@ -2,14 +2,11 @@ package com.itismob.grpfive.mco
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.MotionEvent
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.itismob.grpfive.mco.databinding.ActivityLoginBinding
 import androidx.core.content.edit
 import com.itismob.grpfive.mco.utils.Validator
@@ -121,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
                 showToast("Welcome, ${user.storeName}!")
 
 
-                val intent = Intent(this, DashboardActivity::class.java)
+                val intent = Intent(this, DashboardTestActivity::class.java)
                 intent.putExtra("user", user) // Pass the full User object
                 startActivity(intent)
 

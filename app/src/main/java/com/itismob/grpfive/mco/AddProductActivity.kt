@@ -51,7 +51,7 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun setupNavigation() {
         binding.tvNavProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
-        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardActivity::class.java) }
+        binding.tvNavDashboard.setOnClickListener { navigateTo(DashboardTestActivity::class.java) }
         binding.tvNavInventory.setOnClickListener { navigateTo(InventoryActivity::class.java) }
         binding.tvNavHistory.setOnClickListener { navigateTo(TransactionHistoryActivity::class.java) }
         binding.tvNavPos.setOnClickListener { navigateTo(PosActivity::class.java) }

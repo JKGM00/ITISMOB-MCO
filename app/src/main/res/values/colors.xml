@@ -8,4 +8,13 @@
     <color name="Error">#FF0000</color>
     <color name="Success">#00FF00</color>
     <color name="IvoryWhite">#F9F8F7</color>
+
+    <!-- Pie chart category colors -->
+    <color name="Category_CookingEssentials">#1E90FF</color> <!-- DodgerBlue -->
+    <color name="Category_Snacks">#FF7F50</color> <!-- Coral -->
+    <color name="Category_Drinks">#3CB371</color> <!-- MediumSeaGreen -->
+    <color name="Category_CannedGoods">#FFD700</color> <!-- Gold -->
+    <color name="Category_InstantFood">#FF69B4</color> <!-- HotPink -->
+    <color name="Category_Hygiene">#8A2BE2</color> <!-- BlueViolet -->
+    <color name="Category_Miscellaneous">#FF8C00</color> <!-- DarkOrange -->
 </resources>

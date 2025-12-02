@@ -52,10 +52,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!-- Period Selector Row -->
-
-
     <!-- BOTTOM NAV BAR -->
     <LinearLayout
         android:id="@+id/llTopNavBar"
@@ -166,7 +162,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clPeriodSection"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +177,7 @@
             android:layout_marginStart="16dp"
             android:text="Select Period:"
             android:textColor="@color/Dark_Blue"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -191,9 +187,12 @@
         <Spinner
             android:id="@+id/spinnerRevenuePeriod"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/text_border"
             android:entries="@array/revenue_period_options"
+            android:outlineProvider="bounds"
             app:layout_constraintBottom_toBottomOf="@+id/tvPeriodLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -218,18 +217,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="@color/Dark_Blue"
+            app:tabTextColor="@color/tab_text_selector"
+            app:tabTextAppearance="@style/tab_text"
+            >
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Revenue" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Profit" />
+                android:text="Revenue &amp; Profit" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -239,10 +238,11 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Low Stock" />
+                android:text="Low Stock Alerts" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="1dp"
