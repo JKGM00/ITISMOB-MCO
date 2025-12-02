@@ -408,6 +408,7 @@ class PosActivity : AppCompatActivity() {
                     productName = product.productName,
                     productCategory = product.productCategory,
                     productPrice = product.sellingPrice,
+                    unitCost = product.unitCost,
                     quantity = quantity,
                     stockQuantity = product.stockQuantity
                 )

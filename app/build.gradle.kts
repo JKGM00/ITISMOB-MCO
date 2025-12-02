@@ -77,6 +77,10 @@ dependencies {
     // GSON for save state
     implementation("com.google.code.gson:gson:2.10.1")
 
+    // MPAndroidChart for charts, from https://github.com/PhilJay/MPAndroidChart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.androidx.viewpager2)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
