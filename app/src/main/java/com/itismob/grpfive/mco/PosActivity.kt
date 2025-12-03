@@ -129,10 +129,10 @@ class PosActivity : AppCompatActivity() {
 
     private fun updateEmptyState() {
         if (cartItems.isEmpty()) {
-            binding.recyclerView.visibility = android.view.View.GONE
+            binding.listContainerCard.visibility = android.view.View.GONE
             binding.emptyStateContainer.visibility = android.view.View.VISIBLE
         } else {
-            binding.recyclerView.visibility = android.view.View.VISIBLE
+            binding.listContainerCard.visibility = android.view.View.VISIBLE
             binding.emptyStateContainer.visibility = android.view.View.GONE
         }
     }

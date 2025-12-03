@@ -76,6 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="16dp"
+                android:visibility="gone"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
@@ -88,8 +89,8 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="8dp"
                     android:clipToPadding="false"
+                    android:padding="8dp"
                     android:visibility="visible" />
 
             </androidx.cardview.widget.CardView>
@@ -99,7 +100,7 @@
                 android:id="@+id/emptyStateContainer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -27,14 +27,15 @@ class TransactionHistoryActivity : AppCompatActivity() {
     
     private var startDateMillis: Long? = null
     private var endDateMillis: Long? = null
-    private var sortOrder = SortOrder.NEWEST
+    private var sortOrder = SortOrder.NONE
     private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     private var tempStartDateMillis: Long? = null
     private var tempEndDateMillis: Long? = null
     private var listenerRegistration: com.google.firebase.firestore.ListenerRegistration? = null
+    private var isInitialLoadComplete = false
     
     private enum class SortOrder {
-        NEWEST, OLDEST, HIGHEST_AMOUNT, LOWEST_AMOUNT
+        NONE, NEWEST, OLDEST, HIGHEST_AMOUNT, LOWEST_AMOUNT
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,27 +62,43 @@ class TransactionHistoryActivity : AppCompatActivity() {
         binding.recyclerViewTransactions.adapter = transactionAdapter
         
         // Set up Sort Spinner (Date)
-        val sortOptions = arrayOf("Newest First", "Oldest First")
+        val sortOptions = arrayOf("None", "Newest First", "Oldest First")
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, sortOptions)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSort.adapter = spinnerAdapter
+        binding.spinnerSort.setSelection(0)
         binding.spinnerSort.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                sortOrder = if (position == 0) SortOrder.NEWEST else SortOrder.OLDEST
-                applyFiltersAndSort()
+                if (isInitialLoadComplete) {
+                    sortOrder = when (position) {
+                        0 -> SortOrder.NONE
+                        1 -> SortOrder.NEWEST
+                        2 -> SortOrder.OLDEST
+                        else -> SortOrder.NONE
+                    }
+                    applyFiltersAndSort()
+                }
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
         
         // Set up Total Amount Sort Spinner
-        val amountSortOptions = arrayOf("Highest Amount", "Lowest Amount")
+        val amountSortOptions = arrayOf("None", "Highest Amount", "Lowest Amount")
         val amountSpinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, amountSortOptions)
         amountSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerPriceSort.adapter = amountSpinnerAdapter
+        binding.spinnerPriceSort.setSelection(0)
         binding.spinnerPriceSort.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                sortOrder = if (position == 0) SortOrder.HIGHEST_AMOUNT else SortOrder.LOWEST_AMOUNT
-                applyFiltersAndSort()
+                if (isInitialLoadComplete) {
+                    sortOrder = when (position) {
+                        0 -> SortOrder.NONE
+                        1 -> SortOrder.HIGHEST_AMOUNT
+                        2 -> SortOrder.LOWEST_AMOUNT
+                        else -> SortOrder.NONE
+                    }
+                    applyFiltersAndSort()
+                }
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
@@ -116,8 +133,8 @@ class TransactionHistoryActivity : AppCompatActivity() {
         }
 
         setupNavigation()
-        // Initial load
-        applyFiltersAndSort()
+        // Mark initial load as complete to enable spinner listeners
+        isInitialLoadComplete = true
     }
 
     private fun setupNavigation() {
@@ -253,7 +270,7 @@ class TransactionHistoryActivity : AppCompatActivity() {
     private fun resetFilters() {
         startDateMillis = null
         endDateMillis = null
-        sortOrder = SortOrder.NEWEST
+        sortOrder = SortOrder.NONE
         binding.spinnerSort.setSelection(0)
         binding.spinnerPriceSort.setSelection(0)
         applyFiltersAndSort()
@@ -265,7 +282,10 @@ class TransactionHistoryActivity : AppCompatActivity() {
             onUpdate = { fetchedTransactions ->
                 transactions.clear()
                 transactions.addAll(fetchedTransactions)
-                applyFiltersAndSort()
+                // Apply default filters after transactions are loaded
+                if (isInitialLoadComplete) {
+                    applyFiltersAndSort()
+                }
             },
             onError = { error ->
                 Toast.makeText(this, "Error loading transactions: ${error.message}", Toast.LENGTH_SHORT).show()
@@ -298,6 +318,9 @@ class TransactionHistoryActivity : AppCompatActivity() {
         
         // Sort
         when (sortOrder) {
+            SortOrder.NONE -> {
+                // No sorting, keep original order
+            }
             SortOrder.NEWEST -> {
                 filteredTransactions.sortByDescending { it.createdAt }
             }

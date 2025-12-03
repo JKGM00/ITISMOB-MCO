@@ -136,7 +136,7 @@
         android:id="@+id/emptyStateContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:background="@color/IvoryWhite"
         app:layout_constraintBottom_toTopOf="@+id/llTopNavBar"
         app:layout_constraintEnd_toEndOf="parent"
