@@ -89,7 +89,33 @@ object TimeUtils {
         return start to end
     }
 
-    // Had to add ways to separate buckets per week (for month), and per month (for quarterly and yearly)
+    // Had to add ways to separate buckets per hour (daily view), per week (for month), and per month (for quarterly and yearly)
+    fun dailyHourBuckets(start: Long): List<Pair<Long, String>> {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = start
+
+        val buckets = mutableListOf<Pair<Long, String>>()
+
+        repeat(24) { hour ->
+            buckets += cal.timeInMillis to "${hour}:00"
+            cal.add(Calendar.HOUR_OF_DAY, 1)
+        }
+
+        return buckets
+    }
+
+    fun weeklyDayBuckets(start: Long): List<Pair<Long, String>> {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = start
+
+        return List(7) { i ->
+            val ts = cal.timeInMillis
+            val label = "Day ${i + 1}"
+            cal.add(Calendar.DAY_OF_MONTH, 1)
+            ts to label
+        }
+    }
+
     fun monthlyWeekBuckets(start: Long): List<Pair<Long, String>> {
         val cal = Calendar.getInstance()
         cal.timeInMillis = start

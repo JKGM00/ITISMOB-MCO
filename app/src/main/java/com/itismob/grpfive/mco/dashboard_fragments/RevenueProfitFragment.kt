@@ -13,6 +13,7 @@ import com.itismob.grpfive.mco.models.Transaction
 import com.itismob.grpfive.mco.DatabaseHelper
 import com.itismob.grpfive.mco.R
 import com.itismob.grpfive.mco.utils.TimeUtils
+import java.util.Calendar
 
 class RevenueProfitFragment : Fragment() {
     companion object {
@@ -97,20 +98,13 @@ class RevenueProfitFragment : Fragment() {
     private fun updateLineChart(transactions: List<Transaction>, period: String) {
         val chart = binding.lineChartStats
 
-        // Hide chart for Daily
-        if (period == "Daily") {
-            chart.visibility = View.GONE
-            return
-        } else {
-            chart.visibility = View.VISIBLE
-        }
-
         val revenueEntries = mutableListOf<Entry>()
         val profitEntries = mutableListOf<Entry>()
         val labels = mutableListOf<String>()
 
         // Determine time range
         val (periodStart, _) = when (period) {
+            "Daily" -> TimeUtils.dayRange()
             "Weekly" -> TimeUtils.weekRange()
             "Monthly" -> TimeUtils.monthRange()
             "Quarterly" -> TimeUtils.quarterRange()
@@ -120,22 +114,11 @@ class RevenueProfitFragment : Fragment() {
 
         // Determine buckets based on selected period
         val buckets: List<Pair<Long, String>> = when (period) {
-            "Weekly" -> {   // 7 days → generate day buckets
-                val cal = java.util.Calendar.getInstance().apply { timeInMillis = periodStart }
-                List(7) { i ->
-                    val label = "Day ${i + 1}"
-                    val ts = cal.timeInMillis
-                    cal.add(java.util.Calendar.DAY_OF_MONTH, 1)
-                    ts to label
-                }
-            }
-
+            "Daily" -> TimeUtils.dailyHourBuckets(periodStart)
+            "Weekly" -> TimeUtils.weeklyDayBuckets(periodStart)
             "Monthly" -> TimeUtils.monthlyWeekBuckets(periodStart)
-
             "Quarterly" -> TimeUtils.quarterlyMonthBuckets(periodStart)
-
             "Yearly" -> TimeUtils.yearlyMonthBuckets(periodStart)
-
             else -> emptyList()
         }
 
@@ -148,13 +131,24 @@ class RevenueProfitFragment : Fragment() {
                 buckets[index + 1].first
             } else {
                 // Last bucket: estimate end (month or period edge)
-                when (period) {
-                    "Weekly" -> bucketStart + 24 * 60 * 60 * 1000L
-                    "Monthly" -> bucketStart + 7 * 24 * 60 * 60 * 1000L
-                    "Quarterly" -> bucketStart + 30L * 24 * 60 * 60 * 1000L
-                    "Yearly" -> bucketStart + 30L * 24 * 60 * 60 * 1000L
-                    else -> bucketStart
-                }
+//                when (period) {
+//                    "Daily" -> bucketStart + 60 * 60 * 1000L
+//                    "Weekly" -> bucketStart + 24 * 60 * 60 * 1000L
+//                    "Monthly" -> bucketStart + 7 * 24 * 60 * 60 * 1000L
+//                    "Quarterly" -> bucketStart + 30L * 24 * 60 * 60 * 1000L
+//                    "Yearly" -> bucketStart + 30L * 24 * 60 * 60 * 1000L
+//                    else -> bucketStart
+//                }
+
+                Calendar.getInstance().apply {
+                    timeInMillis = bucketStart
+                    when (period) {
+                        "Daily" -> add(Calendar.HOUR_OF_DAY, 1)
+                        "Weekly" -> add(Calendar.DAY_OF_MONTH, 1)
+                        "Monthly" -> add(Calendar.WEEK_OF_MONTH, 1)
+                        "Quarterly", "Yearly" -> add(Calendar.MONTH, 1)
+                    }
+                }.timeInMillis
             }
 
             // Filter transactions inside this bucket
