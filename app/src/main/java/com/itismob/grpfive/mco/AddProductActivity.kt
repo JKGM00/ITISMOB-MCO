@@ -130,8 +130,7 @@ class AddProductActivity : AppCompatActivity() {
         DatabaseHelper.addProduct(newProduct,
             onSuccess = {
                 showToast("Product added successfully!")
-                val newProductIntent = Intent().apply { putExtra("newProduct", newProduct) }
-                setResult(RESULT_OK, newProductIntent)
+                // Return to previous activity
                 finish()
             },
             onFailure = { e ->
